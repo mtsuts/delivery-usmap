@@ -4,6 +4,7 @@ import * as topojson from 'topojson-client'
 import tippy from 'tippy.js'
 import 'tippy.js/dist/tippy.css'
 import 'tippy.js/themes/light.css'
+import { drawCounties } from './HelperFunctions'
 import { useEffect } from 'react'
 
 interface MapProps {
@@ -47,12 +48,6 @@ function UsMap({
       .on('click', reset)
 
     const g = svg.append('g')
-
-    // Define a projection (for example, Albers USA)
-    const projection = d3
-      .geoAlbersUsa()
-      .scale(1000)
-      .translate([width / 2, height / 2])
 
     // Create a path generator
     const path = d3.geoPath()
@@ -142,11 +137,11 @@ function UsMap({
       )
       const stateId = d.id
       const filteredCounties = countiesGeoJSON.features.filter(
-        (county) => county.id.slice(0, 2) === stateId
+        (county: any) => county.id.slice(0, 2) === stateId
       )
       console.log(filteredCounties)
       // Draw counties
-      drawCounties(filteredCounties)
+      drawCounties(filteredCounties, g, path)
     }
 
     function zoomed(event) {
@@ -160,21 +155,7 @@ function UsMap({
       svg.attr('width', (container.node() as HTMLElement)?.clientWidth || 800)
     })
 
-    // Draw Counties
-    function drawCounties(counties) {
-      // Remove existing counties, if any
-      g.selectAll('.county').remove()
-
-      // Draw counties as paths
-      g.selectAll('.county')
-        .data(counties)
-        .join('path')
-        .attr('class', 'county')
-        .attr('d', path)
-        .attr('fill', '#ccc')
-        .attr('stroke', '#333')
-        .attr('stroke-width', 0.5)
-    }
+  
 
     // Cleanup on component unmount
     return () => {
