@@ -14,7 +14,6 @@ function drawCounties(counties: [], g: any, path: any) {
   const latitude = 37.566932805711126
   const longitude = -121.874156346511
 
-
   // Draw counties as paths
   g.selectAll('.county')
     .data(counties)
@@ -63,6 +62,18 @@ function drawCounties(counties: [], g: any, path: any) {
       .attr('stroke', '#01579b')
       .attr('stroke-width', 1.5)
       .style('cursor', 'pointer')
+      .on('mouseover', (event: any) => {
+        if (tippyInstance) {
+          tippyInstance.destroy()
+        }
+        tippyInstance = tippy(event.target, {
+          allowHTML: true,
+          content: `<div> Info </div>`,
+          arrow: false,
+          theme: 'light',
+          placement: 'top',
+        })
+      })
   }
 }
 
