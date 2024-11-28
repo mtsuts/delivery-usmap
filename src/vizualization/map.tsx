@@ -89,8 +89,14 @@ function UsMap({
         if (tippyInstance) {
           tippyInstance.destroy()
         }
+        const pieces = data
+          .filter((state) => state.id === d.id)
+          .map((state) => Number(state.value))
+          .reduce((a, b) => a + b, 0)
+          
         tippyInstance = tippy(event.target, {
-          content: d.properties?.name,
+          allowHTML: true,
+          content: `<div> ${d.properties?.name} ${pieces} </div>`,
           arrow: false,
           theme: 'light',
           placement: 'top',
