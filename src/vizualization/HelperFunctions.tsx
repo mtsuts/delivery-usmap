@@ -14,6 +14,7 @@ function drawCounties(counties: [], g: any, path: any) {
   const latitude = 37.566932805711126
   const longitude = -121.874156346511
 
+
   // Draw counties as paths
   g.selectAll('.county')
     .data(counties)
@@ -26,13 +27,14 @@ function drawCounties(counties: [], g: any, path: any) {
 
   // Add a circle at the projected point
   const projectedCoords = projection([longitude, latitude])
+  const another = projection([-120.84792, 34.0983])
 
   if (projectedCoords) {
     // Ensure the point is within the projection's bounds
     g.append('circle')
       .attr('cx', projectedCoords[0])
       .attr('cy', projectedCoords[1])
-      .attr('r', 8)
+      .attr('r', 15)
       .attr('fill', 'transparent')
       .attr('stroke', '#01579b')
       .attr('stroke-width', 1.5)
@@ -49,6 +51,18 @@ function drawCounties(counties: [], g: any, path: any) {
           placement: 'top',
         })
       })
+  }
+
+  if (another) {
+    // Ensure the point is within the projection's bounds
+    g.append('circle')
+      .attr('cx', another[0])
+      .attr('cy', another[1])
+      .attr('r', 8)
+      .attr('fill', 'transparent')
+      .attr('stroke', '#01579b')
+      .attr('stroke-width', 1.5)
+      .style('cursor', 'pointer')
   }
 }
 
