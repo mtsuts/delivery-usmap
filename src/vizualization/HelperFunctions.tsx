@@ -34,7 +34,7 @@ function drawCounties(counties: [], g: any, path: any) {
       .attr('cy', projectedCoords[1])
       .attr('r', 8)
       .attr('fill', 'transparent')
-      .attr('stroke', 'red')
+      .attr('stroke', '#01579b')
       .attr('stroke-width', 1.5)
       .style('cursor', 'pointer')
       .on('mouseover', (event: any) => {
