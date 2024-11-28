@@ -4,12 +4,13 @@ import * as topojson from 'topojson-client'
 import tippy from 'tippy.js'
 import 'tippy.js/dist/tippy.css'
 import 'tippy.js/themes/light.css'
-import { drawCounties} from './HelperFunctions'
+import { drawCounties } from './HelperFunctions'
 import { useEffect } from 'react'
 
 interface MapProps {
   params: { container: string } // Container ID for the SVG
-  topojsons: any
+  stateJson: any
+  countiesJson: any
   data: { id: string; value: number }[] // Data to map
   mobileHeight: number // Height for mobile devices
   desktopHeight: number // Height for desktops
@@ -18,7 +19,8 @@ interface MapProps {
 
 function UsMap({
   params,
-  topojsons,
+  stateJson,
+  countiesJson,
   data,
   mobileHeight,
   desktopHeight,
@@ -28,13 +30,18 @@ function UsMap({
     const container = d3.select(`#${params.container}`)
     container.selectAll('*').remove()
 
-    if (!topojsons || !data) return
+    if (!stateJson || !data) return
 
-    const stateJson: any = topojson.feature(topojsons, topojsons.objects.states)
     // Set dimensions based on screen size
     const isMobile = window.innerWidth < 768
     const width = (container.node() as HTMLElement)?.clientWidth || 800
     const height = isMobile ? mobileHeight : desktopHeight
+
+    // projection
+    var projection = d3
+      .geoAlbers()
+      .translate([width / 2, height / 2])
+      .scale(1000)
 
     // Zoom behavior
     const zoom = d3.zoom().scaleExtent([1, 8]).on('zoom', zoomed)
@@ -71,7 +78,10 @@ function UsMap({
       .data(stateJson.features)
       .join('path')
       .attr('class', 'path')
-      .attr('fill', (d) => colorScale(mapData.get((d as any).id)))
+      .attr(
+        'fill',
+        (d) => colorScale(mapData.get((d as any).id)) || 'lightblue'
+      )
       .attr('stroke', 'black')
       .attr('stroke-width', 0.5)
       .style('cursor', 'pointer')
@@ -131,12 +141,8 @@ function UsMap({
           d3.zoomIdentity.translate(translateX, translateY).scale(scale)
         )
       // Filter counties by the clicked state
-      const countiesGeoJSON: any = topojson.feature(
-        topojsons,
-        topojsons.objects.counties
-      )
       const stateId = d.id
-      const filteredCounties = countiesGeoJSON.features.filter(
+      const filteredCounties = countiesJson.features.filter(
         (county: any) => county.id.slice(0, 2) === stateId
       )
       // Draw counties
@@ -149,21 +155,25 @@ function UsMap({
       g.attr('stroke-width', 1 / transform.k)
     }
 
-
-
     // Add responsive behavior
     window.addEventListener('resize', () => {
       svg.attr('width', (container.node() as HTMLElement)?.clientWidth || 800)
     })
-
-  
 
     // Cleanup on component unmount
     return () => {
       container.selectAll('*').remove()
       window.removeEventListener('resize', () => {})
     }
-  }, [params.container, topojsons, data, mobileHeight, desktopHeight, color])
+  }, [
+    params.container,
+    stateJson,
+    countiesJson,
+    data,
+    mobileHeight,
+    desktopHeight,
+    color,
+  ])
 
   return <div id={params.container}></div>
 }
