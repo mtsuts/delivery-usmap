@@ -5,6 +5,7 @@ import { useEffect } from 'react'
 import UsMap from './vizualization/Map'
 import mapjson from './data/map.json'
 import { AppContext } from './components/AppContext'
+import { geocode } from './vizualization/HelperFunctions'
 
 interface Data {
   data: []
@@ -23,8 +24,16 @@ function App() {
 
   useEffect(() => {
     d3.csv('./data.csv')
-      .then((data) => {
-        setData(data)
+      .then(async (data) => {
+        const updatedData = await Promise.all(
+          data.map(async (d) => {
+            return {
+              ...d,
+              state: await geocode(d.longitude, d.latitude),
+            }
+          })
+        )
+        setData(updatedData)
       })
       .catch((err) => {
         console.log(err)

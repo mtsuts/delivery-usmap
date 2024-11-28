@@ -4,7 +4,7 @@ import * as topojson from 'topojson-client'
 import tippy from 'tippy.js'
 import 'tippy.js/dist/tippy.css'
 import 'tippy.js/themes/light.css'
-import { drawCounties } from './HelperFunctions'
+import { drawCounties} from './HelperFunctions'
 import { useEffect } from 'react'
 
 interface MapProps {
@@ -139,7 +139,6 @@ function UsMap({
       const filteredCounties = countiesGeoJSON.features.filter(
         (county: any) => county.id.slice(0, 2) === stateId
       )
-      console.log(filteredCounties)
       // Draw counties
       drawCounties(filteredCounties, g, path)
     }
@@ -149,6 +148,8 @@ function UsMap({
       g.attr('transform', transform)
       g.attr('stroke-width', 1 / transform.k)
     }
+
+
 
     // Add responsive behavior
     window.addEventListener('resize', () => {
