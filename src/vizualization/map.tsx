@@ -1,6 +1,5 @@
 import * as React from 'react'
 import * as d3 from 'd3'
-import * as topojson from 'topojson-client'
 import tippy from 'tippy.js'
 import 'tippy.js/dist/tippy.css'
 import 'tippy.js/themes/light.css'
@@ -37,11 +36,7 @@ function UsMap({
     const width = (container.node() as HTMLElement)?.clientWidth || 800
     const height = isMobile ? mobileHeight : desktopHeight
 
-    // projection
-    var projection = d3
-      .geoAlbers()
-      .translate([width / 2, height / 2])
-      .scale(1000)
+    // Project the lat/lon to screen coordinates
 
     // Zoom behavior
     const zoom = d3.zoom().scaleExtent([1, 8]).on('zoom', zoomed)
@@ -86,14 +81,15 @@ function UsMap({
       .attr('stroke-width', 0.5)
       .style('cursor', 'pointer')
       .on('mouseover', (event, d: any) => {
-        if (tippyInstance) {
-          tippyInstance.destroy()
-        }
         const pieces = data
           .filter((state) => state.id === d.id)
           .map((state) => Number(state.value))
           .reduce((a, b) => a + b, 0)
-          
+
+        if (tippyInstance) {
+          tippyInstance.destroy()
+        }
+
         tippyInstance = tippy(event.target, {
           allowHTML: true,
           content: `<div> ${d.properties?.name} ${pieces} </div>`,

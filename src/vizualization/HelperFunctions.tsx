@@ -1,7 +1,18 @@
+import * as d3 from 'd3'
+import tippy from 'tippy.js'
+
 // Draw Counties
 function drawCounties(counties: [], g: any, path: any) {
   // Remove existing counties, if any
   g.selectAll('.county').remove()
+
+  // tippy instance
+  let tippyInstance: any
+  // projection
+  var projection = d3.geoAlbers().scale(1280)
+
+  const latitude = 37.566932805711126
+  const longitude = -121.874156346511
 
   // Draw counties as paths
   g.selectAll('.county')
@@ -12,6 +23,33 @@ function drawCounties(counties: [], g: any, path: any) {
     .attr('fill', '#ccc')
     .attr('stroke', '#333')
     .attr('stroke-width', 0.5)
+
+  // Add a circle at the projected point
+  const projectedCoords = projection([longitude, latitude])
+
+  if (projectedCoords) {
+    // Ensure the point is within the projection's bounds
+    g.append('circle')
+      .attr('cx', projectedCoords[0])
+      .attr('cy', projectedCoords[1])
+      .attr('r', 8)
+      .attr('fill', 'transparent')
+      .attr('stroke', 'red')
+      .attr('stroke-width', 1.5)
+      .style('cursor', 'pointer')
+      .on('mouseover', (event: any) => {
+        if (tippyInstance) {
+          tippyInstance.destroy()
+        }
+        tippyInstance = tippy(event.target, {
+          allowHTML: true,
+          content: `<div> Info </div>`,
+          arrow: false,
+          theme: 'light',
+          placement: 'top',
+        })
+      })
+  }
 }
 
 // Geocoding
