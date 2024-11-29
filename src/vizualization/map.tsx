@@ -10,7 +10,14 @@ interface MapProps {
   params: { container: string } // Container ID for the SVG
   stateJson: any
   countiesJson: any
-  data: { id: string; value: number }[] // Data to map
+  data: {
+    id: string
+    value: number
+    location: string
+    delivery_date: string
+    status: string
+    state: string
+  }[] // Data to map
   mobileHeight: number // Height for mobile devices
   desktopHeight: number // Height for desktops
   color: string[] // Array of colors for the color scale
@@ -81,22 +88,24 @@ function UsMap({
       .attr('stroke-width', 0.5)
       .style('cursor', 'pointer')
       .on('mouseover', (event, d: any) => {
-        const pieces = data
-          .filter((state) => state.id === d.id)
-          .map((state) => Number(state.value))
-          .reduce((a, b) => a + b, 0)
+        const stateData = data.find((state) => state.id === d.id)
+        
+        if (stateData?.value) {
+          if (tippyInstance) {
+            tippyInstance.destroy()
+          }
 
-        if (tippyInstance) {
-          tippyInstance.destroy()
+          tippyInstance = tippy(event.target, {
+            allowHTML: true,
+            content: `<div>  
+            <div class='state-title bold'> ${stateData?.state || ''} </div>
+            <div>  Record Count: ${stateData?.value || ''} </div>
+            </div>`,
+            arrow: false,
+            theme: 'light',
+            placement: 'top',
+          })
         }
-
-        tippyInstance = tippy(event.target, {
-          allowHTML: true,
-          content: `<div> ${d.properties?.name} ${pieces} </div>`,
-          arrow: false,
-          theme: 'light',
-          placement: 'top',
-        })
       })
       .on('click', clicked)
       .attr('d', path)
@@ -117,7 +126,7 @@ function UsMap({
         )
     }
 
-    function clicked(event, d) {
+    function clicked(event: any, d: any) {
       // Get the bounding box of the state
       const [[x0, y0], [x1, y1]] = path.bounds(d)
 
@@ -148,10 +157,10 @@ function UsMap({
         (county: any) => county.id.slice(0, 2) === stateId
       )
       // Draw counties
-      drawCounties(filteredCounties, g, path)
+      drawCounties(filteredCounties, g, path, data)
     }
 
-    function zoomed(event) {
+    function zoomed(event: any) {
       const { transform } = event
       g.attr('transform', transform)
       g.attr('stroke-width', 1 / transform.k)

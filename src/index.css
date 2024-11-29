@@ -12,14 +12,3 @@ code {
     monospace;
 }
 
-.path {
-  outline: none;
-}
-
-.path:focus {
-  outline: none;
-}
-
-.path:focus-visible {
-  outline: none;
-}

@@ -26,6 +26,8 @@ function App() {
     mapjson as any,
     (mapjson as any).objects.counties
   )
+
+  // ids
   const ids = (stateJson as any).features.map((d: any) => {
     return {
       id: d.id,
@@ -33,12 +35,8 @@ function App() {
     }
   })
 
-  const dat = Array.from({ length: 60 })
-    .fill(0)
-    .map((_, i) => ({
-      id: (i + 1).toString().padStart(2, '0'),
-      value: Math.round(Math.random() * 100),
-    }))
+  // projection
+  var projection = d3.geoAlbersUsa().scale(1280)
 
   useEffect(() => {
     d3.csv(csvData)
@@ -47,10 +45,24 @@ function App() {
           data.map(async (d) => {
             return {
               ...d,
+              delivery_date: d.delivery_date.replace(/\[|\]/g, ''),
+              status:
+                new Date(d.delivery_date.replace(/\[|\]/g, '')) < new Date()
+                  ? 'In Transit'
+                  : 'Delivered',
               state: await geocode(d.longitude, d.latitude),
+              x:
+                d.longitude && d.latitude
+                  ? projection([Number(d.longitude), Number(d.latitude)])[0]
+                  : 0,
+              y:
+                d.longitude && d.latitude
+                  ? projection([Number(d.longitude), Number(d.latitude)])[1]
+                  : 0,
             }
           })
         )
+
         const finalData = updatedData.map((d) => ({
           ...d,
           value: d['distinct_job_imb_count'],
@@ -63,10 +75,6 @@ function App() {
       })
   }, [])
 
-  if (data) {
-    console.log(data)
-  }
-
   return (
     <>
       <UsMap
@@ -76,7 +84,7 @@ function App() {
         data={data}
         mobileHeight={400}
         desktopHeight={800}
-        color={['#f1c40f', '#e67e22', '#e74c3c']}
+        color={['#dc143c', '#b22222', '#8b0000']}
       ></UsMap>
     </>
   )
