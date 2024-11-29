@@ -71,26 +71,27 @@ function UsMap({
       .domain([0, maxDataValue])
       .range(color)
 
-    // Map data to stateJson
-    const mapData = new Map(data.map((d) => [d.id, d.value]))
-    // Draw map regions
+    const mapData = d3.rollup(
+      data,
+      (d) => d3.sum(d, (x) => x.value),
+      (d) => d.id
+    )
 
+    // Draw map regions
     const states = g
       .selectAll('path')
       .data(stateJson.features)
       .join('path')
       .attr('class', 'path')
-      .attr(
-        'fill',
-        (d) => colorScale(mapData.get((d as any).id)) || 'lightblue'
-      )
+      .attr('fill', (d: any) => colorScale(mapData.get(d.id) || 0))
       .attr('stroke', 'black')
       .attr('stroke-width', 0.5)
       .style('cursor', 'pointer')
       .on('mouseover', (event, d: any) => {
-        const stateData = data.find((state) => state.id === d.id)
-        
-        if (stateData?.value) {
+        const state = data.filter((state) => state.id === d.id)
+        const value = state.map((d) => +d.value).reduce((a, b) => a + b, 0) || 0
+
+        if (value) {
           if (tippyInstance) {
             tippyInstance.destroy()
           }
@@ -98,8 +99,8 @@ function UsMap({
           tippyInstance = tippy(event.target, {
             allowHTML: true,
             content: `<div>  
-            <div class='state-title bold'> ${stateData?.state || ''} </div>
-            <div>  Record Count: ${stateData?.value || ''} </div>
+            <div class='state-title bold'> ${state[0]?.state || ''} </div>
+            <div>  Record Count: ${value || ''} </div>
             </div>`,
             arrow: false,
             theme: 'light',

@@ -66,7 +66,7 @@ function App() {
         const finalData = updatedData.map((d) => ({
           ...d,
           value: d['distinct_job_imb_count'],
-          id: ids.find((id: any) => id.state === d.state)?.id,
+          id: ids.find((id: any) => id.state === d.state)?.id || '0'
         }))
         setData(finalData)
       })
