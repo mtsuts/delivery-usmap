@@ -36,7 +36,7 @@ function App() {
   })
 
   // projection
-  var projection = d3.geoAlbersUsa().scale(1280)
+  var projection = d3.geoAlbersUsa().scale(1300).translate([487.5, 305])
 
   useEffect(() => {
     d3.csv(csvData)
@@ -66,7 +66,7 @@ function App() {
         const finalData = updatedData.map((d) => ({
           ...d,
           value: d['distinct_job_imb_count'],
-          id: ids.find((id: any) => id.state === d.state)?.id || '0'
+          id: ids.find((id: any) => id.state === d.state)?.id || '0',
         }))
         setData(finalData)
       })
