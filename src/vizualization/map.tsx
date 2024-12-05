@@ -3,7 +3,7 @@ import * as d3 from 'd3'
 import tippy from 'tippy.js'
 import 'tippy.js/dist/tippy.css'
 import 'tippy.js/themes/light.css'
-import { drawCounties } from './HelperFunctions'
+import { drawCounties } from './Utils'
 import { useEffect } from 'react'
 
 interface MapProps {
@@ -54,13 +54,29 @@ function UsMap({
       .attr('viewBox', '0 0 975 710')
       .on('click', reset)
 
+    // Create zoom buttons
+    container
+      .append('button')
+      .text('Reset')
+      .on('click', reset)
+      .style('position', 'absolute')
+      .style('left', '40px')
+      .style('top', '20px')
+      .style('z-index', '1000')
+      .style('border', 'none')
+      .style('padding', '10px')
+      .style('border-radius', '10px')
+      .style('background-color', '#c93235')
+      .style('color', '#ffffff')
+      .style('cursor', 'pointer')
+
     // Create g element
     const g = svg.append('g')
 
     // Create a path generator
     const path = d3.geoPath()
 
-    // tippy instance
+    // Tippy tooltip instance
     let tippyInstance: any
 
     // Create color scale
@@ -77,19 +93,27 @@ function UsMap({
     )
 
     // Draw State Map
-    drawMap(stateJson.features, g, path, colorScale, mapData)
+    drawMap(stateJson.features)
 
-    // Svg zoom functionality
+    // Svg zoom call
     svg.call(zoom)
 
+    // Zoom reset
+    function reset() {
+      svg.transition().style('fill', null)
+      svg
+        .transition()
+        .duration(750)
+        .call(
+          zoom.transform,
+          d3.zoomIdentity,
+          d3.zoomTransform(svg.node()).invert([width / 2, height / 2])
+        )
+      drawMap(stateJson.features)
+    }
+
     // Draw map
-    function drawMap(
-      data: any,
-      g: any,
-      path: any,
-      colorScale: any,
-      mapData: any
-    ) {
+    function drawMap(data: any) {
       g.selectAll('path')
         .data(data)
         .join('path')
@@ -113,9 +137,9 @@ function UsMap({
             tippyInstance = tippy(event.target, {
               allowHTML: true,
               content: `<div>  
-        <div class='state-title bold'> ${state[0]?.state || ''} </div>
-        <div>  Record Count: ${value || ''} </div>
-        </div>`,
+            <div class='state-title bold'> ${state[0]?.state || ''} </div>
+            <div>  Record Count: ${value || ''} </div>
+            </div>`,
               arrow: false,
               theme: 'light',
               placement: 'top',
@@ -126,19 +150,7 @@ function UsMap({
         .attr('d', path)
     }
 
-    // Zoom event
-    function reset() {
-      svg.transition().style('fill', null)
-      svg
-        .transition()
-        .duration(750)
-        .call(
-          zoom.transform,
-          d3.zoomIdentity,
-          d3.zoomTransform(svg.node()).invert([width / 2, height / 2])
-        )
-    }
-
+    // Path click event
     function clicked(event: any, d: any) {
       // Get the bounding box of the state
       const [[x0, y0], [x1, y1]] = path.bounds(d)
@@ -169,10 +181,11 @@ function UsMap({
       const filteredCounties = countiesJson.features.filter(
         (county: any) => county.id.slice(0, 2) === stateId
       )
-      // Draw counties
-      drawCounties(filteredCounties, g, path, data)
+      // Draw counties and circles on this state
+      // drawCounties(filteredCounties, g, path, data)
     }
 
+    // Zoom event
     function zoomed(event: any) {
       const { transform } = event
       g.attr('transform', transform)

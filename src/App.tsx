@@ -6,7 +6,7 @@ import { useEffect } from 'react'
 import UsMap from './vizualization/Map'
 import mapjson from './data/map.json'
 import { AppContext } from './components/AppContext'
-import { geocode } from './vizualization/HelperFunctions'
+import { geocode } from './vizualization/Utils'
 import csvData from './data/data.csv'
 
 interface Data {
@@ -83,7 +83,7 @@ function App() {
         countiesJson={countiesJson}
         data={data}
         mobileHeight={400}
-        desktopHeight={800}
+        desktopHeight={600}
         color={['#c93235','#b71c1c']}
       ></UsMap>
     </>
