@@ -17,7 +17,7 @@ interface Data {
 function App() {
   const { data, setData } = React.useContext(AppContext) as Data
 
-  // topojson to geojson
+  // Topojson to geojson
   const stateJson = topojson.feature(
     mapjson as any,
     (mapjson as any).objects.states
@@ -27,7 +27,7 @@ function App() {
     (mapjson as any).objects.counties
   )
 
-  // ids
+  // Ids
   const ids = (stateJson as any).features.map((d: any) => {
     return {
       id: d.id,
@@ -35,7 +35,7 @@ function App() {
     }
   })
 
-  // projection
+  // Projection
   var projection = d3.geoAlbersUsa().scale(1300).translate([487.5, 305])
 
   useEffect(() => {
@@ -50,7 +50,8 @@ function App() {
                 new Date(d.delivery_date.replace(/\[|\]/g, '')) < new Date()
                   ? 'In Transit'
                   : 'Delivered',
-              state: await geocode(d.longitude, d.latitude),
+              state: (await geocode(d.longitude, d.latitude))?.stateData,
+              county: (await geocode(d.longitude, d.latitude))?.countyData,
               x:
                 d.longitude && d.latitude
                   ? projection([Number(d.longitude), Number(d.latitude)])[0]
@@ -84,7 +85,7 @@ function App() {
         data={data}
         mobileHeight={400}
         desktopHeight={600}
-        color={['#c93235','#b71c1c']}
+        color={['#c93235', '#b71c1c']}
       ></UsMap>
     </>
   )

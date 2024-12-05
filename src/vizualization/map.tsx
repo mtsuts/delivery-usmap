@@ -3,7 +3,7 @@ import * as d3 from 'd3'
 import tippy from 'tippy.js'
 import 'tippy.js/dist/tippy.css'
 import 'tippy.js/themes/light.css'
-import { drawCounties } from './Utils'
+import { drawStateCounties, drawCircles } from './Utils'
 import { useEffect } from 'react'
 
 interface MapProps {
@@ -98,6 +98,44 @@ function UsMap({
     // Svg zoom call
     svg.call(zoom)
 
+    // Draw map
+    function drawMap(pathData: any) {
+      g.selectAll('path')
+        .data(pathData)
+        .join('path')
+        .attr('class', 'path')
+        .attr('d', path)
+        .attr('fill', (d: any) => colorScale(mapData.get(d.id)) || '#ccc')
+        .attr('stroke', 'white')
+        .attr('stroke-width', 0.5)
+        .style('cursor', 'pointer')
+        .on('mouseover', (event: any, d: any) => {
+          const state = data.filter((state: any) => state.id === d.id)
+          const value =
+            state
+              .map((d: any) => +d.value)
+              .reduce((a: any, b: any) => a + b, 0) || 20
+
+          if (value) {
+            if (tippyInstance) {
+              tippyInstance.destroy()
+            }
+
+            tippyInstance = tippy(event.target, {
+              allowHTML: true,
+              content: `<div>  
+                <div class='state-title bold'> ${state[0]?.state || ''} </div>
+                <div>  Record Count: ${value || ''} </div>
+                </div>`,
+              arrow: false,
+              theme: 'light',
+              placement: 'top',
+            })
+          }
+        })
+        .on('click', clicked)
+    }
+
     // Zoom reset
     function reset() {
       svg.transition().style('fill', null)
@@ -110,44 +148,6 @@ function UsMap({
           d3.zoomTransform(svg.node()).invert([width / 2, height / 2])
         )
       drawMap(stateJson.features)
-    }
-
-    // Draw map
-    function drawMap(data: any) {
-      g.selectAll('path')
-        .data(data)
-        .join('path')
-        .attr('class', 'path')
-        .attr('fill', (d: any) => colorScale(mapData.get(d.id)) || '#ccc')
-        .attr('stroke', 'white')
-        .attr('stroke-width', 0.5)
-        .style('cursor', 'pointer')
-        .on('mouseover', (event: any, d: any) => {
-          const state = data.filter((state: any) => state.id === d.id)
-          const value =
-            state
-              .map((d: any) => +d.value)
-              .reduce((a: number, b: number) => a + b, 0) || 0
-
-          if (value) {
-            if (tippyInstance) {
-              tippyInstance.destroy()
-            }
-
-            tippyInstance = tippy(event.target, {
-              allowHTML: true,
-              content: `<div>  
-            <div class='state-title bold'> ${state[0]?.state || ''} </div>
-            <div>  Record Count: ${value || ''} </div>
-            </div>`,
-              arrow: false,
-              theme: 'light',
-              placement: 'top',
-            })
-          }
-        })
-        .on('click', clicked)
-        .attr('d', path)
     }
 
     // Path click event
@@ -181,8 +181,10 @@ function UsMap({
       const filteredCounties = countiesJson.features.filter(
         (county: any) => county.id.slice(0, 2) === stateId
       )
+
       // Draw counties and circles on this state
-      // drawCounties(filteredCounties, g, path, data)
+      drawStateCounties(filteredCounties, g, path)
+      // drawCircles(data, g)
     }
 
     // Zoom event
