@@ -67,6 +67,23 @@ function UsMap({
       .attr('viewBox', '0 0 975 710')
       .on('click', reset)
 
+    // Reset Button on sidebar
+    container
+      .append('button')
+      .text('Reset')
+      .style('position', 'absolute')
+      .style('top', '40px')
+      .style('left', '40px')
+      .style('z-index', 1000)
+      .style('background-color', '#c93235')
+      .style('border', 'none')
+      .style('border-radius', '5px')
+      .style('color', '#fff')
+      .style('padding', '10px')
+      .style('font-weight', '600')
+      .style('cursor', 'pointer')
+      .on('click', reset)
+
     const g = svg.append('g')
     const path = d3.geoPath()
     const colorScale = d3
@@ -91,13 +108,37 @@ function UsMap({
         .attr('stroke-width', 0.5)
         .on('click', clicked)
 
+      // Append text elements
+      g.selectAll('text')
+        .data(pathData)
+        .join('text')
+        .attr('class', 'path-label')
+        .attr('x', (d: any) => {
+          const centroid = path.centroid(d)
+          return centroid[0]
+        })
+        .attr('y', (d: any) => {
+          const centroid = path.centroid(d)
+          return centroid[1]
+        })
+        .attr('text-anchor', 'middle')
+        .attr('dx', '0.2em')
+        .attr('dy', '0.35em')
+        .text((d: any) => d.properties.code)
+        .style('font-size', '15px')
+        .style('fill', '#fff')
+
       if (view === 'counties') drawCircles(data, g)
     }
 
     function reset() {
       svg.transition().duration(750).call(zoom.transform, d3.zoomIdentity)
       drawMap(view === 'states' ? stateJson.features : countiesJson.features)
-      if (view !== 'states') drawCircles(data, g)
+      if (view !== 'states') {
+        drawCircles(data, g)
+      } else {
+        drawCircles([], g)
+      }
     }
 
     function clicked(event: any, d: any) {
@@ -128,11 +169,12 @@ function UsMap({
     }
 
     function zoomed(event: any) {
-      g.attr('transform', event.transform)
+      g.attr('transform', event.transform).on('wheel', null)
     }
 
     drawMap(view === 'states' ? stateJson.features : countiesJson.features)
-    svg.call(zoom)
+
+    svg.call(zoom).on('wheel.zoom', null) // Disables zoom on wheel
 
     return () => {
       container.selectAll('*').remove()

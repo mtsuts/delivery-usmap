@@ -14,24 +14,6 @@ type SideBarProps = {
 const SideBar = ({ data }: SideBarProps) => {
   return (
     <div>
-      <button
-        // onClick={buttonClick}
-        style={{
-          position: 'absolute',
-          top: '40px',
-          left: '40px',
-          zIndex: 1000,
-          backgroundColor: '#c93235',
-          border: 'none',
-          padding: '10px',
-          color: '#fff',
-          borderRadius: '8px',
-          fontWeight: '600',
-          cursor: 'pointer',
-        }}
-      >
-        Reset
-      </button>
       {data.map((d, index) => (
         <div
           key={index}
