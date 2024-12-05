@@ -22,6 +22,7 @@ function drawStateCounties(counties: [], g: any, path: any) {
 
 // Draw Circles
 function drawCircles(circlesData: any, g: any) {
+  if(!circlesData) return
   g.selectAll('.circle').remove()
   // circle radius scale
   const radiusScale = d3
@@ -30,7 +31,7 @@ function drawCircles(circlesData: any, g: any) {
       d3.min(circlesData, (d: any) => Number(d.value)),
       d3.max(circlesData, (d: any) => Number(d.value)),
     ])
-    .range([5, 15])
+    .range([10, 25])
 
   // tippy instance
   let tippyInstance: any
