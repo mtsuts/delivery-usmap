@@ -53,9 +53,9 @@ function App() {
               state: (await geocode(d.longitude, d.latitude))?.stateData,
               county: (await geocode(d.longitude, d.latitude))?.countyData,
               x:
-                d.longitude && d.latitude && projection([Number(d.longitude), Number(d.latitude)])[0],
+                d.longitude && d.latitude ? projection([Number(d.longitude), Number(d.latitude)])[0] : 0,
               y:
-                d.longitude && d.latitude && projection([Number(d.longitude), Number(d.latitude)])[1]
+                d.longitude && d.latitude ? projection([Number(d.longitude), Number(d.latitude)])[1] : 0
             }
           })
         )

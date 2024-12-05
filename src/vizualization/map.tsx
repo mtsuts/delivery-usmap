@@ -112,14 +112,14 @@ function UsMap({
           const recordsCount = data
             .filter((x) => x.state === d.properties.name)
             .reduce((acc, curr) => acc + curr.value, 0)
-          if (tippyInstanceState) {
-            tippyInstanceState.destroy()
-          }
           if (recordsCount) {
+            if (tippyInstanceState) {
+              tippyInstanceState.destroy()
+            }
             tippyInstanceState = tippy(event.target, {
               allowHTML: true,
               content: `<div>
-            <div style='font-weight: bold; font-size: 20px;'> ${stateName} </div>
+            <div style='font-weight: bold; font-size: 18px;'> ${stateName} </div>
             <div style='color: #616161;'> Records Count: ${recordsCount}  </div>
             </div>`,
               arrow: false,
@@ -151,6 +151,7 @@ function UsMap({
       if (view === 'counties') drawCircles(data, g)
     }
 
+    let tippyInstanceCircle: any
     // Draw Circles
     function drawCircles(circlesData: any, g: any) {
       if (!circlesData) return
@@ -165,9 +166,8 @@ function UsMap({
         .range([10, 25])
 
       if (circlesData.length) {
-        // ensure the point is within the projection's bounds
         g.selectAll('circle')
-          .data(circlesData)
+          .data(circlesData.filter((d: any) => d.x !== 0 && d.y !== 0))
           .join('circle')
           .attr('class', 'circle')
           .attr('cx', (d: any) => d.x)
@@ -175,9 +175,20 @@ function UsMap({
           .attr('r', (d: any) => radiusScale(d.value))
           .attr('fill', '#2596be')
           .style('opacity', 0.5)
-          .attr('stroke', '#ff1744')
-          .attr('stroke-width', 0.5)
           .style('cursor', 'pointer')
+          .on('mouseover', (event: any, d: any) => {
+            console.log(d)
+            if (tippyInstanceCircle) {
+              tippyInstanceCircle.destroy()
+            }
+            tippyInstanceCircle = tippy(event.target, {
+              allowHTML: true,
+              content: `<div>
+              ${d.state}
+              </div>`,
+              theme: 'light',
+            })
+          })
       }
     }
 

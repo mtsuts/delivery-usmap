@@ -69,3 +69,8 @@
 .state-title {
   font-size: 1.5em
 }
+
+.tippy-box[data-theme~='map'] {
+  background-color: #c62828;
+  color: yellow;
+}
