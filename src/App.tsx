@@ -62,7 +62,7 @@ function App() {
 
         const finalData = updatedData.map((d) => ({
           ...d,
-          value: d['distinct_job_imb_count'],
+          value: Number(d['distinct_job_imb_count']),
           id: ids.find((id: any) => id.state === d.state)?.id || '0',
         }))
         setData(finalData)
@@ -80,8 +80,8 @@ function App() {
         countiesJson={countiesJson}
         data={data}
         mobileHeight={400}
-        desktopHeight={800}
-        color={['#c93235', '#b71c1c']}
+        desktopHeight={750}
+        color={['#e57373', '#b71c1c']}
       ></UsMap>
     </>
   )
