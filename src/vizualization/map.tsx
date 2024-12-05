@@ -67,6 +67,24 @@ function UsMap({
       .attr('viewBox', '0 0 975 710')
       .on('click', reset)
 
+    // Reset Button
+
+    container
+      .append('button')
+      .text('Reset')
+      .style('position', 'absolute')
+      .style('top', '40px')
+      .style('left', '40px')
+      .style('z-index', 1000)
+      .style('background-color', '#c93235')
+      .style('border', 'none')
+      .style('border-radius', '5px')
+      .style('color', '#fff')
+      .style('padding', '10px')
+      .style('font-weight', '600')
+      .style('cursor', 'pointer')
+      .on('click', reset)
+
     const g = svg.append('g')
     const path = d3.geoPath()
     const colorScale = d3
@@ -97,8 +115,13 @@ function UsMap({
     function reset() {
       svg.transition().duration(750).call(zoom.transform, d3.zoomIdentity)
       drawMap(view === 'states' ? stateJson.features : countiesJson.features)
-      if (view !== 'states') drawCircles(data, g)
+      if (view !== 'states') {
+        drawCircles(data, g)
+      } else {
+        drawCircles([], g)
+      }
     }
+
 
     function clicked(event: any, d: any) {
       const [[x0, y0], [x1, y1]] = path.bounds(d)
