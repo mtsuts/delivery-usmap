@@ -67,8 +67,7 @@ function UsMap({
       .attr('viewBox', '0 0 975 710')
       .on('click', reset)
 
-    // Reset Button
-
+    // Reset Button on sidebar
     container
       .append('button')
       .text('Reset')
@@ -109,6 +108,26 @@ function UsMap({
         .attr('stroke-width', 0.5)
         .on('click', clicked)
 
+      // Append text elements
+      g.selectAll('text')
+        .data(pathData)
+        .join('text')
+        .attr('class', 'path-label')
+        .attr('x', (d: any) => {
+          const centroid = path.centroid(d)
+          return centroid[0]
+        })
+        .attr('y', (d: any) => {
+          const centroid = path.centroid(d)
+          return centroid[1]
+        })
+        .attr('text-anchor', 'middle')
+        .attr('dx', '0.2em')
+        .attr('dy', '0.35em')
+        .text((d: any) => d.properties.code)
+        .style('font-size', '15px')
+        .style('fill', '#fff')
+
       if (view === 'counties') drawCircles(data, g)
     }
 
@@ -121,7 +140,6 @@ function UsMap({
         drawCircles([], g)
       }
     }
-
 
     function clicked(event: any, d: any) {
       const [[x0, y0], [x1, y1]] = path.bounds(d)
@@ -151,11 +169,12 @@ function UsMap({
     }
 
     function zoomed(event: any) {
-      g.attr('transform', event.transform)
+      g.attr('transform', event.transform).on('wheel', null)
     }
 
     drawMap(view === 'states' ? stateJson.features : countiesJson.features)
-    svg.call(zoom)
+
+    svg.call(zoom).on('wheel.zoom', null) // Disables zoom on wheel
 
     return () => {
       container.selectAll('*').remove()
