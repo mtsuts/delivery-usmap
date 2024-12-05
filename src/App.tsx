@@ -84,7 +84,7 @@ function App() {
         data={data}
         mobileHeight={400}
         desktopHeight={800}
-        color={['#dc143c', '#b22222', '#8b0000']}
+        color={['#c93235','#b71c1c']}
       ></UsMap>
     </>
   )

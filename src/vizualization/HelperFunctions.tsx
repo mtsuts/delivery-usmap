@@ -3,10 +3,7 @@ import tippy from 'tippy.js'
 
 // draw Counties
 function drawCounties(counties: [], g: any, path: any, data: any) {
-
   g.selectAll('.county').remove()
-
-  var projection = d3.geoAlbers().scale(1280)
 
   const stateId = counties
     .map((d: any) => d.id)[0]
@@ -15,7 +12,6 @@ function drawCounties(counties: [], g: any, path: any, data: any) {
 
   const stateData = data.filter((d: any) => d.id === stateId)
   console.log(stateData)
-
 
   // circle radius scale
   const radiusScale = d3
@@ -35,8 +31,8 @@ function drawCounties(counties: [], g: any, path: any, data: any) {
     .join('path')
     .attr('class', 'county')
     .attr('d', path)
-    .attr('fill', '#ccc')
-    .attr('stroke', '#333')
+    .attr('fill', '#ffffff')
+    .attr('stroke', '#ccc')
     .attr('stroke-width', 0.5)
 
   if (stateData.length) {
@@ -48,9 +44,9 @@ function drawCounties(counties: [], g: any, path: any, data: any) {
       .attr('cx', (d: any) => d.x)
       .attr('cy', (d: any) => d.y)
       .attr('r', (d: any) => radiusScale(d.value))
-      .attr('fill', '#dc143c')
+      .attr('fill', '#2596be')
       .style('opacity', 0.5)
-      .attr('stroke', '#ba55d3')
+      .attr('stroke', '#ff1744')
       .attr('stroke-width', 0.5)
       .style('cursor', 'pointer')
       .on('mouseover', (event: any, d: any) => {
@@ -80,5 +76,6 @@ async function geocode(longitude: string, latitude: string) {
   const stateData = data?.features[0]?.properties?.context?.region?.name || ''
   return stateData
 }
+
 
 export { drawCounties, geocode }

@@ -7,7 +7,7 @@ import { drawCounties } from './HelperFunctions'
 import { useEffect } from 'react'
 
 interface MapProps {
-  params: { container: string } // Container ID for the SVG
+  params: { container: string }
   stateJson: any
   countiesJson: any
   data: {
@@ -17,10 +17,10 @@ interface MapProps {
     delivery_date: string
     status: string
     state: string
-  }[] // Data to map
-  mobileHeight: number // Height for mobile devices
-  desktopHeight: number // Height for desktops
-  color: string[] // Array of colors for the color scale
+  }[]
+  mobileHeight: number
+  desktopHeight: number
+  color: string[]
 }
 
 function UsMap({
@@ -43,8 +43,6 @@ function UsMap({
     const width = (container.node() as HTMLElement)?.clientWidth || 800
     const height = isMobile ? mobileHeight : desktopHeight
 
-    // Project the lat/lon to screen coordinates
-
     // Zoom behavior
     const zoom = d3.zoom().scaleExtent([1, 8]).on('zoom', zoomed)
 
@@ -56,6 +54,7 @@ function UsMap({
       .attr('viewBox', '0 0 975 710')
       .on('click', reset)
 
+    // Create g element
     const g = svg.append('g')
 
     // Create a path generator
@@ -65,58 +64,71 @@ function UsMap({
     let tippyInstance: any
 
     // Create color scale
-    const maxDataValue = d3.max(data, (d) => d.value) || 0
     const colorScale = d3
-      .scaleQuantize<string>()
-      .domain([0, maxDataValue])
+      .scaleLog<string>()
+      .domain(d3.extent(data, (d) => d.value) as [number, number])
       .range(color)
 
+    // Rollup data
     const mapData = d3.rollup(
       data,
       (d) => d3.sum(d, (x) => x.value),
       (d) => d.id
     )
 
-    // Draw map regions
-    const states = g
-      .selectAll('path')
-      .data(stateJson.features)
-      .join('path')
-      .attr('class', 'path')
-      .attr('fill', (d: any) => colorScale(mapData.get(d.id) || 0))
-      .attr('stroke', 'black')
-      .attr('stroke-width', 0.5)
-      .style('cursor', 'pointer')
-      .on('mouseover', (event, d: any) => {
-        const state = data.filter((state) => state.id === d.id)
-        const value = state.map((d) => +d.value).reduce((a, b) => a + b, 0) || 0
+    // Draw State Map
+    drawMap(stateJson.features, g, path, colorScale, mapData)
 
-        if (value) {
-          if (tippyInstance) {
-            tippyInstance.destroy()
-          }
-
-          tippyInstance = tippy(event.target, {
-            allowHTML: true,
-            content: `<div>  
-            <div class='state-title bold'> ${state[0]?.state || ''} </div>
-            <div>  Record Count: ${value || ''} </div>
-            </div>`,
-            arrow: false,
-            theme: 'light',
-            placement: 'top',
-          })
-        }
-      })
-      .on('click', clicked)
-      .attr('d', path)
-
+    // Svg zoom functionality
     svg.call(zoom)
 
-    // Zoom event
+    // Draw map
+    function drawMap(
+      data: any,
+      g: any,
+      path: any,
+      colorScale: any,
+      mapData: any
+    ) {
+      g.selectAll('path')
+        .data(data)
+        .join('path')
+        .attr('class', 'path')
+        .attr('fill', (d: any) => colorScale(mapData.get(d.id)) || '#ccc')
+        .attr('stroke', 'white')
+        .attr('stroke-width', 0.5)
+        .style('cursor', 'pointer')
+        .on('mouseover', (event: any, d: any) => {
+          const state = data.filter((state: any) => state.id === d.id)
+          const value =
+            state
+              .map((d: any) => +d.value)
+              .reduce((a: number, b: number) => a + b, 0) || 0
 
+          if (value) {
+            if (tippyInstance) {
+              tippyInstance.destroy()
+            }
+
+            tippyInstance = tippy(event.target, {
+              allowHTML: true,
+              content: `<div>  
+        <div class='state-title bold'> ${state[0]?.state || ''} </div>
+        <div>  Record Count: ${value || ''} </div>
+        </div>`,
+              arrow: false,
+              theme: 'light',
+              placement: 'top',
+            })
+          }
+        })
+        .on('click', clicked)
+        .attr('d', path)
+    }
+
+    // Zoom event
     function reset() {
-      states.transition().style('fill', null)
+      svg.transition().style('fill', null)
       svg
         .transition()
         .duration(750)
