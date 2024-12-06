@@ -2,7 +2,8 @@ import React from 'react'
 import * as d3 from 'd3'
 import tippy from 'tippy.js'
 import 'tippy.js/dist/tippy.css'
-import 'tippy.js/themes/light.css'
+import 'tippy.js/themes/light-border.css'
+import 'tippy.js/dist/backdrop.css';
 import { createRoot } from 'react-dom/client'
 
 interface MapVizProps {
@@ -87,21 +88,60 @@ function MapViz({
       .on('click', clicked)
       .on('mouseover', (event: any, d: any) => {
         const stateName = d.properties.name
-        const recordsCount = data
-          .filter((x) => x.state === d.properties.name)
-          .reduce((acc, curr) => acc + curr.value, 0)
+        const stateDeliveries = data.filter(
+          (x) => x.state === d.properties.name
+        )
+        const recordsCount = stateDeliveries.reduce(
+          (acc, curr) => acc + curr.value,
+          0
+        )
+        const inTransitPercentage = Math.floor(
+          (stateDeliveries.filter((d) => d.status === 'In Transit').length /
+            stateDeliveries.length) *
+            100
+        )
+        const deliverCountPercentage = Math.floor(
+          (stateDeliveries.filter((d) => d.status === 'Delivered').length /
+            stateDeliveries.length) *
+            100
+        )
+
+        const content = (
+          <>
+            <div style={{ fontSize: '20px', fontWeight: 'bold' }}>
+              {stateName}
+            </div>
+            <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+              <thead>
+                <tr>
+                  <th style={{ paddingRight: 15 }}>Records Count</th>
+                  <th style={{ paddingRight: 15 }}>Delivered %</th>
+                  <th>In Transit %</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>{recordsCount}</td>
+                  <td>{deliverCountPercentage}%</td>
+                  <td>{inTransitPercentage}%</td>
+                </tr>
+              </tbody>
+            </table>
+          </>
+        )
+        const container = document.createElement('div')
+        createRoot(container).render(content)
+
         if (recordsCount) {
           if (tippyInstanceState) {
             tippyInstanceState.destroy()
           }
           tippyInstanceState = tippy(event.target, {
             allowHTML: true,
-            content: `<div>
-            <div style='font-weight: bold; font-size: 18px;'> ${stateName} </div>
-            <div style='color: #616161;'> Records Count: ${recordsCount}  </div>
-            </div>`,
+            content: container,
             arrow: false,
-            theme: 'light',
+            theme: 'light-border',
+            placement: 'bottom-start'
           })
         }
       })
@@ -125,7 +165,6 @@ function MapViz({
       .text((d: any) => d.properties.code)
       .style('font-size', '15px')
       .style('fill', '#fff')
-
   }
 
   let tippyInstanceCircle: any
@@ -216,7 +255,7 @@ function MapViz({
     if (view === 'states') {
       drawMap(stateJson.features)
       drawCircles([], g)
-    } else if(view === 'counties') {
+    } else if (view === 'counties') {
       drawMap(countiesJson.features)
       drawCircles(data, g)
     }

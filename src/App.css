@@ -70,3 +70,17 @@
   font-size: 1.5em
 }
 
+/* Table */
+th {
+  color: #7c7c7c;
+}
+
+thead th {
+  font-weight: 600;
+  font-size: 15px;
+  font-family: DM sans;
+}
+
+tbody td {
+  font-size: 12px
+}
