@@ -70,7 +70,6 @@ function UsMap(params: MapProps) {
       })
     }
   }, [data])
-
   React.useEffect(() => {
     if (map.current) {
       map.current.updateView(view)

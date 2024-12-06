@@ -126,7 +126,6 @@ function MapViz({
       .style('font-size', '15px')
       .style('fill', '#fff')
 
-    if (view === 'counties') drawCircles(data, g)
   }
 
   let tippyInstanceCircle: any
@@ -216,8 +215,10 @@ function MapViz({
   function updateView(view: 'states' | 'counties') {
     if (view === 'states') {
       drawMap(stateJson.features)
+      drawCircles([], g)
     } else if(view === 'counties') {
       drawMap(countiesJson.features)
+      drawCircles(data, g)
     }
   }
 
