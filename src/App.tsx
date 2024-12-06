@@ -53,16 +53,16 @@ function App() {
               state: (await geocode(d.longitude, d.latitude))?.stateData,
               county: (await geocode(d.longitude, d.latitude))?.countyData,
               x:
-                d.longitude && d.latitude && projection([Number(d.longitude), Number(d.latitude)])[0],
+                d.longitude && d.latitude ? projection([Number(d.longitude), Number(d.latitude)])[0] : 0,
               y:
-                d.longitude && d.latitude && projection([Number(d.longitude), Number(d.latitude)])[1]
+                d.longitude && d.latitude ? projection([Number(d.longitude), Number(d.latitude)])[1] : 0
             }
           })
         )
 
         const finalData = updatedData.map((d) => ({
           ...d,
-          value: d['distinct_job_imb_count'],
+          value: Number(d['distinct_job_imb_count']),
           id: ids.find((id: any) => id.state === d.state)?.id || '0',
         }))
         setData(finalData)
@@ -80,8 +80,8 @@ function App() {
         countiesJson={countiesJson}
         data={data}
         mobileHeight={400}
-        desktopHeight={800}
-        color={['#c93235', '#b71c1c']}
+        desktopHeight={750}
+        color={['#e57373', '#b71c1c']}
       ></UsMap>
     </>
   )

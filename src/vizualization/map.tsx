@@ -1,8 +1,12 @@
 import * as React from 'react'
+import { createRoot } from 'react-dom/client'
 import * as d3 from 'd3'
 import SideBar from './SideBar'
-import { drawStateCounties, drawCircles } from './Utils'
+import tippy from 'tippy.js'
+import 'tippy.js/dist/tippy.css'
+import 'tippy.js/themes/light.css'
 import countiesViewImage from '../images/countiesView.png'
+import stateView from '../images/stateView.png'
 
 interface MapProps {
   params: { container: string }
@@ -35,7 +39,7 @@ function UsMap({
   const sideBarData = [
     {
       label: 'State View',
-      imageSrc: countiesViewImage,
+      imageSrc: stateView,
       position: 80,
       onClick: () => setView('states'),
       isActive: view === 'states',
@@ -59,7 +63,10 @@ function UsMap({
     const width = (container.node() as HTMLElement)?.clientWidth || 800
     const height = isMobile ? mobileHeight : desktopHeight
 
+    // Initial zoom
     const zoom = d3.zoom().scaleExtent([1, 8]).on('zoom', zoomed)
+
+    // SVG container
     const svg = container
       .append('svg')
       .attr('width', width)
@@ -67,36 +74,29 @@ function UsMap({
       .attr('viewBox', '0 0 975 710')
       .on('click', reset)
 
-    // Reset Button on sidebar
-    container
-      .append('button')
-      .text('Reset')
-      .style('position', 'absolute')
-      .style('top', '40px')
-      .style('left', '40px')
-      .style('z-index', 1000)
-      .style('background-color', '#c93235')
-      .style('border', 'none')
-      .style('border-radius', '5px')
-      .style('color', '#fff')
-      .style('padding', '10px')
-      .style('font-weight', '600')
-      .style('cursor', 'pointer')
-      .on('click', reset)
-
+    // Group element
     const g = svg.append('g')
+
+    // Path generator
     const path = d3.geoPath()
+
+    // State color scale of the map
     const colorScale = d3
       .scaleLog<string>()
       .domain(d3.extent(data, (d) => d.value) as [number, number])
       .range(color)
 
+    // Rollup data by state id for colorscale
     const mapData = d3.rollup(
       data,
       (d) => d3.sum(d, (x) => x.value),
       (d) => d.id
     )
 
+    // tippy instance
+    let tippyInstanceState: any
+
+    // Draw main map
     function drawMap(pathData: any) {
       g.selectAll('path')
         .data(pathData)
@@ -106,9 +106,30 @@ function UsMap({
         .attr('fill', (d: any) => colorScale(mapData.get(d.id)) || '#ccc')
         .attr('stroke', 'white')
         .attr('stroke-width', 0.5)
+        .style('cursor', 'pointer')
         .on('click', clicked)
+        .on('mouseover', (event: any, d: any) => {
+          const stateName = d.properties.name
+          const recordsCount = data
+            .filter((x) => x.state === d.properties.name)
+            .reduce((acc, curr) => acc + curr.value, 0)
+          if (recordsCount) {
+            if (tippyInstanceState) {
+              tippyInstanceState.destroy()
+            }
+            tippyInstanceState = tippy(event.target, {
+              allowHTML: true,
+              content: `<div>
+            <div style='font-weight: bold; font-size: 18px;'> ${stateName} </div>
+            <div style='color: #616161;'> Records Count: ${recordsCount}  </div>
+            </div>`,
+              arrow: false,
+              theme: 'light',
+            })
+          }
+        })
 
-      // Append text elements
+      // Append text elements on state paths
       g.selectAll('text')
         .data(pathData)
         .join('text')
@@ -131,6 +152,110 @@ function UsMap({
       if (view === 'counties') drawCircles(data, g)
     }
 
+    let tippyInstanceCircle: any
+    // Draw Circles
+    function drawCircles(circlesData: any, g: any) {
+      if (!circlesData) return
+      g.selectAll('.circle').remove()
+      // circle radius scale
+      const radiusScale = d3
+        .scaleLinear()
+        .domain([
+          d3.min(circlesData, (d: any) => Number(d.value)),
+          d3.max(circlesData, (d: any) => Number(d.value)),
+        ])
+        .range([5, 15])
+
+      if (circlesData.length) {
+        g.selectAll('circle')
+          .data(circlesData.filter((d: any) => d.x !== 0 && d.y !== 0))
+          .join('circle')
+          .attr('class', 'circle')
+          .attr('cx', (d: any) => d.x)
+          .attr('cy', (d: any) => d.y)
+          .attr('r', (d: any) => radiusScale(d.value))
+          .attr('fill', (d: any) =>
+            d.status === 'In Transit' ? '#2596be' : '#d50000'
+          )
+          .attr('stroke', '#fff')
+          .attr('stroke-width', 0.5)
+          .style('opacity', 0.5)
+          .style('cursor', 'pointer')
+          .on('mouseover', (event: any, d: any) => {
+            if (tippyInstanceCircle) {
+              tippyInstanceCircle.destroy()
+            }
+            const content = (
+              <div>
+                <div>
+                  Total piece count: <span className='bold'>{d.value}</span>
+                </div>
+                <div>
+                  Zip code:
+                  <span className='bold'>{d.location.split(',')[0]}</span>
+                </div>
+                <div className='bold'> {d.status} </div>
+
+                {d.status === 'In Transit' && (
+                  <div>
+                    Delivery Date:
+                    <span className='bold'>{d.delivery_date} </span>{' '}
+                  </div>
+                )}
+              </div>
+            )
+
+            // Create a container to render the React element
+            const container = document.createElement('div')
+            createRoot(container).render(content)
+
+            tippyInstanceCircle = tippy(event.target, {
+              allowHTML: true,
+              content: container,
+              theme: 'light',
+              placement: 'bottom',
+            })
+          })
+      }
+    }
+
+    // Draw State Counties
+    function drawStateCounties(counties: [], g: any, path: any) {
+      g.selectAll('.county').remove()
+      const stateId = counties
+        .map((d: any) => d.id)[0]
+        .slice(0, 2)
+        .toString()
+
+      // Draw counties as paths
+      g.selectAll('.county')
+        .data(counties)
+        .join('path')
+        .attr('class', 'county')
+        .attr('d', path)
+        .attr('fill', '#ffffff')
+        .attr('stroke', '#ccc')
+        .attr('stroke-width', 0.5)
+    }
+
+    // Reset Button on sidebar
+    container
+      .append('button')
+      .text('Reset')
+      .style('position', 'absolute')
+      .style('top', '40px')
+      .style('left', '40px')
+      .style('z-index', 1000)
+      .style('background-color', '#c93235')
+      .style('border', 'none')
+      .style('border-radius', '5px')
+      .style('color', '#fff')
+      .style('padding', '10px')
+      .style('font-weight', '600')
+      .style('cursor', 'pointer')
+      .on('click', reset)
+
+    // Zoom reset
     function reset() {
       svg.transition().duration(750).call(zoom.transform, d3.zoomIdentity)
       drawMap(view === 'states' ? stateJson.features : countiesJson.features)
@@ -141,6 +266,7 @@ function UsMap({
       }
     }
 
+    // Handle click event on state path
     function clicked(event: any, d: any) {
       const [[x0, y0], [x1, y1]] = path.bounds(d)
       const scale = Math.min(
@@ -163,18 +289,20 @@ function UsMap({
         (county: any) => county.id.slice(0, 2) === d.id
       )
       const stateData = data.filter((x) => x.id === d.id)
-
       drawStateCounties(filteredCounties, g, path)
       drawCircles(stateData, g)
     }
 
+    // Zoom event
     function zoomed(event: any) {
       g.attr('transform', event.transform).on('wheel', null)
     }
 
+    // Draw map based on view
     drawMap(view === 'states' ? stateJson.features : countiesJson.features)
 
-    svg.call(zoom).on('wheel.zoom', null) // Disables zoom on wheel
+    // SVG call zoom and disable it on wheel event
+    svg.call(zoom).on('wheel.zoom', null)
 
     return () => {
       container.selectAll('*').remove()

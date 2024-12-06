@@ -21,6 +21,7 @@ const SideBar = ({ data }: SideBarProps) => {
             backgroundColor: 'white',
             position: 'absolute',
             top: `${d.position}px`,
+            left: '10px',
             cursor: 'pointer',
             textAlign: 'center',
             marginTop: '20px',
