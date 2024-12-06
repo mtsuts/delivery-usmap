@@ -36,7 +36,7 @@ function App() {
   })
 
   // Projection
-  var projection = d3.geoAlbersUsa().scale(1300).translate([487.5, 305])
+  const projection = d3.geoAlbersUsa().scale(1300).translate([487.5, 305])
 
   useEffect(() => {
     d3.csv(csvData)
@@ -53,9 +53,13 @@ function App() {
               state: (await geocode(d.longitude, d.latitude))?.stateData,
               county: (await geocode(d.longitude, d.latitude))?.countyData,
               x:
-                d.longitude && d.latitude ? projection([Number(d.longitude), Number(d.latitude)])[0] : 0,
+                d.longitude && d.latitude
+                  ? projection([Number(d.longitude), Number(d.latitude)])[0]
+                  : 0,
               y:
-                d.longitude && d.latitude ? projection([Number(d.longitude), Number(d.latitude)])[1] : 0
+                d.longitude && d.latitude
+                  ? projection([Number(d.longitude), Number(d.latitude)])[1]
+                  : 0,
             }
           })
         )
@@ -75,10 +79,10 @@ function App() {
   return (
     <>
       <UsMap
-        params={{ container: 'us-map' }}
+        data={data}
+        container='us-map'
         stateJson={stateJson}
         countiesJson={countiesJson}
-        data={data}
         mobileHeight={400}
         desktopHeight={750}
         color={['#e57373', '#b71c1c']}

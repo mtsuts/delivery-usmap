@@ -7,25 +7,37 @@ type SideBarProps = {
     imageSrc: string
     label: string
     isActive: boolean
-  }[],
-  // buttonClick: () => void
+  }[]
+  buttonClick: () => void
 }
 
-const SideBar = ({ data }: SideBarProps) => {
+const SideBar = ({ data, buttonClick }: SideBarProps) => {
   return (
     <div>
+      <button
+        onClick={buttonClick}
+        style={{
+          backgroundColor: '#c93235',
+          borderRadius: '5px',
+          color: '#fff',
+          padding: '10px',
+          fontWeight: '600',
+          zIndex: 1000,
+          cursor: 'pointer',
+          border: 'none',
+          margin: '20px 40px',
+        }}
+      >
+        Reset
+      </button>
       {data.map((d, index) => (
         <div
           key={index}
           style={{
             backgroundColor: 'white',
-            position: 'absolute',
-            top: `${d.position}px`,
-            left: '10px',
+            width: 220,
             cursor: 'pointer',
             textAlign: 'center',
-            marginTop: '20px',
-            zIndex: 1000,
           }}
           onClick={d.onClick}
         >
