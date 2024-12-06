@@ -1,4 +1,5 @@
 import * as React from 'react'
+import { createRoot } from 'react-dom/client'
 import * as d3 from 'd3'
 import SideBar from './SideBar'
 import tippy from 'tippy.js'
@@ -163,7 +164,7 @@ function UsMap({
           d3.min(circlesData, (d: any) => Number(d.value)),
           d3.max(circlesData, (d: any) => Number(d.value)),
         ])
-        .range([10, 25])
+        .range([5, 15])
 
       if (circlesData.length) {
         g.selectAll('circle')
@@ -173,20 +174,46 @@ function UsMap({
           .attr('cx', (d: any) => d.x)
           .attr('cy', (d: any) => d.y)
           .attr('r', (d: any) => radiusScale(d.value))
-          .attr('fill', '#2596be')
+          .attr('fill', (d: any) =>
+            d.status === 'In Transit' ? '#2596be' : '#d50000'
+          )
+          .attr('stroke', '#fff')
+          .attr('stroke-width', 0.5)
           .style('opacity', 0.5)
           .style('cursor', 'pointer')
           .on('mouseover', (event: any, d: any) => {
-            console.log(d)
             if (tippyInstanceCircle) {
               tippyInstanceCircle.destroy()
             }
+            const content = (
+              <div>
+                <div>
+                  Total piece count: <span className='bold'>{d.value}</span>
+                </div>
+                <div>
+                  Zip code:
+                  <span className='bold'>{d.location.split(',')[0]}</span>
+                </div>
+                <div className='bold'> {d.status} </div>
+
+                {d.status === 'In Transit' && (
+                  <div>
+                    Delivery Date:
+                    <span className='bold'>{d.delivery_date} </span>{' '}
+                  </div>
+                )}
+              </div>
+            )
+
+            // Create a container to render the React element
+            const container = document.createElement('div')
+            createRoot(container).render(content)
+
             tippyInstanceCircle = tippy(event.target, {
               allowHTML: true,
-              content: `<div>
-              ${d.state}
-              </div>`,
+              content: container,
               theme: 'light',
+              placement: 'bottom',
             })
           })
       }
