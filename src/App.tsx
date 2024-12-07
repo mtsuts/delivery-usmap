@@ -5,6 +5,7 @@ import './App.css'
 import { useEffect } from 'react'
 import UsMap from './vizualization/Map'
 import mapjson from './data/map.json'
+import dayjs from 'dayjs'
 import { AppContext } from './components/AppContext'
 import { geocode } from './vizualization/Utils'
 import csvData from './data/data.csv'
@@ -46,6 +47,7 @@ function App() {
             return {
               ...d,
               delivery_date: d.delivery_date.replace(/\[|\]/g, ''),
+              mailing_date: d.mailing_date,
               status:
                 new Date(d.delivery_date.replace(/\[|\]/g, '')) < new Date()
                   ? 'In Transit'
@@ -67,6 +69,10 @@ function App() {
         const finalData = updatedData.map((d) => ({
           ...d,
           value: Number(d['distinct_job_imb_count']),
+          delivery_speed: dayjs(d.delivery_date).diff(
+            dayjs(d.mailing_date),
+            'day'
+          ) || 0,
           id: ids.find((id: any) => id.state === d.state)?.id || '0',
         }))
         setData(finalData)

@@ -3,7 +3,7 @@ import * as d3 from 'd3'
 import tippy from 'tippy.js'
 import 'tippy.js/dist/tippy.css'
 import 'tippy.js/themes/light-border.css'
-import 'tippy.js/dist/backdrop.css';
+import 'tippy.js/dist/backdrop.css'
 import { createRoot } from 'react-dom/client'
 
 interface MapVizProps {
@@ -17,6 +17,7 @@ interface MapVizProps {
     delivery_date: string
     status: string
     state: string
+    delivery_speed: number
   }[]
   mapData: Map<string, number>
   mobileHeight: number
@@ -105,6 +106,15 @@ function MapViz({
             stateDeliveries.length) *
             100
         )
+    
+
+        const averageDeliverySpeed = (
+          stateDeliveries
+            .map((x) => x.delivery_speed)
+            .reduce((acc, curr) => acc + curr, 0) / stateDeliveries.length
+        ).toFixed(1)
+
+        console.log(averageDeliverySpeed)
 
         const content = (
           <>
@@ -114,9 +124,10 @@ function MapViz({
             <table style={{ width: '100%', borderCollapse: 'collapse' }}>
               <thead>
                 <tr>
-                  <th style={{ paddingRight: 15 }}>Records Count</th>
-                  <th style={{ paddingRight: 15 }}>Delivered %</th>
-                  <th>In Transit %</th>
+                  <th>Records</th>
+                  <th>Delivered (%)</th>
+                  <th>In Transit (%)</th>
+                  <th>Avg. Speed</th>
                 </tr>
               </thead>
               <tbody>
@@ -124,6 +135,7 @@ function MapViz({
                   <td>{recordsCount}</td>
                   <td>{deliverCountPercentage}%</td>
                   <td>{inTransitPercentage}%</td>
+                  <td> {averageDeliverySpeed}</td>
                 </tr>
               </tbody>
             </table>
@@ -141,7 +153,7 @@ function MapViz({
             content: container,
             arrow: false,
             theme: 'light-border',
-            placement: 'bottom-start'
+            placement: 'bottom-start',
           })
         }
       })
@@ -191,7 +203,7 @@ function MapViz({
         .attr('cy', (d: any) => d.y)
         .attr('r', (d: any) => radiusScale(d.value))
         .attr('fill', (d: any) =>
-          d.status === 'In Transit' ? '#2596be' : '#d50000'
+          d.status === 'In Transit' ? '#006CD0' : '#00D06C'
         )
         .attr('stroke', '#fff')
         .attr('stroke-width', 0.5)
@@ -228,7 +240,8 @@ function MapViz({
           tippyInstanceCircle = tippy(event.target, {
             allowHTML: true,
             content: container,
-            theme: 'light',
+            arrow: false,
+            theme: 'light-border',
             placement: 'bottom',
           })
         })
