@@ -6,7 +6,6 @@ import 'tippy.js/dist/backdrop.css'
 import { createRoot } from 'react-dom/client'
 
 function StateLevelTooltip(event: any, d: any, data: any) {
-  console.log(data)
   // Generate Tooltip Data
   const stateName = d.properties.name
   const stateDeliveries = data.filter((x: any) => x.state === d.properties.name)
@@ -76,7 +75,9 @@ function StateLevelTooltip(event: any, d: any, data: any) {
 function CountyLevelTooltip(event: any, d: any) {
   const content = (
     <>
-      <div style={{ fontSize: '16px', fontWeight: 'bold' }}>{d.county} County</div>
+      <div style={{ fontSize: '16px', fontWeight: 'bold' }}>
+        {d.county} County
+      </div>
       <table style={{ width: '100%', borderCollapse: 'collapse' }}>
         <thead>
           <tr>
@@ -111,4 +112,41 @@ function CountyLevelTooltip(event: any, d: any) {
   })
 }
 
-export { StateLevelTooltip, CountyLevelTooltip }
+function ZipCodeLevelTooltip(event: any, data: any) {
+  const content = (
+    <>
+      <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+        <thead>
+          <tr>
+            <th>Zip Code</th>
+            <th>Records</th>
+            <th>Delivery Status</th>
+            {data.status === 'In Transit' && <th>Delivery Time</th>} 
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>{data.location.split(',')[0]}</td>
+            <td>{data.value}</td>
+            <td>{data.status}</td>
+            {data.status === 'In Transit' && <td>{data.delivery_date}</td>} 
+          </tr>
+        </tbody>
+      </table>
+    </>
+  )
+
+  // Create a container to render the React element
+  const container = document.createElement('div')
+  createRoot(container).render(content)
+
+  return tippy(event.target, {
+    allowHTML: true,
+    content: container,
+    arrow: false,
+    theme: 'light-border',
+    placement: 'bottom-end',
+  })
+}
+
+export { StateLevelTooltip, CountyLevelTooltip, ZipCodeLevelTooltip }

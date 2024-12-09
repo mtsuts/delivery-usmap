@@ -1,7 +1,7 @@
 import React from 'react'
 import * as d3 from 'd3'
 import { MapVizProps } from './types'
-import { CountyLevelTooltip } from './Tooltips'
+import { CountyLevelTooltip, ZipCodeLevelTooltip } from './Tooltips'
 import { StateLevelMap } from './MapLevels'
 import { countyLevelData } from '../data/data'
 
@@ -35,7 +35,7 @@ function MapViz({
     .attr('width', width)
     .attr('height', height)
     .attr('viewBox', '0 0 975 710')
-    .on('click', reset)
+  // .on('click', reset)
 
   // Group element
   const g = svg.append('g')
@@ -78,7 +78,7 @@ function MapViz({
         .attr('class', 'circle')
         .attr('cx', (d: any) => d.x)
         .attr('cy', (d: any) => d.y)
-        .attr('r', (d: any) => radiusScale(d.aggreagteValue))
+        .attr('r', (d: any) => radiusScale(d.aggreagteValue) / transform.k)
         .attr('fill', '#006CD0')
         .attr('stroke', '#fff')
         .attr('stroke-width', 0.5)
@@ -86,9 +86,19 @@ function MapViz({
         .style('cursor', 'pointer')
         .on('click', (event: any, d: any) => {
           const zipCodeLevelData = data.filter((x) => x.county === d.county)
-          event.stopPropagation()
           if (d.aggreagteValue === 1) return
           drawZipCodeLevelCircles(zipCodeLevelData, g)
+          console.log(
+            countiesJson.features.filter(
+              (x: any) => x.properties.name === d.county
+            )
+          )
+          zoomToCounty(
+            event.target,
+            countiesJson.features.filter(
+              (x: any) => x.properties.name === d.county
+            )[0]
+          )
         })
         .on('mouseover', (event: any, d: any) => {
           if (tippyInstanceCountyLevel) {
@@ -106,12 +116,12 @@ function MapViz({
 
     // Circle Radius Scale
     const radiusScale = d3
-      .scaleLinear()
+      .scaleLog()
       .domain([
         d3.min(circlesData, (d: any) => Number(d.value)),
         d3.max(circlesData, (d: any) => Number(d.value)),
       ])
-      .range([5, 10])
+      .range([5, 7])
 
     if (circlesData.length) {
       g.selectAll('circle')
@@ -131,7 +141,9 @@ function MapViz({
         .on('click', (event: any, d: any) => {
           event.stopPropagation()
         })
-        .on('mouseover', (event: any, d: any) => {})
+        .on('mouseover', (event: any, d: any) => {
+          ZipCodeLevelTooltip(event, d)
+        })
     }
   }
 
@@ -159,7 +171,7 @@ function MapViz({
         IdmapDataState,
         clicked,
         colorScale,
-        view, 
+        view,
         data
       )
       drawCountyLevelCircles([], g)
@@ -170,7 +182,7 @@ function MapViz({
         IdmapDataState,
         clicked,
         colorScale,
-        view, 
+        view,
         data
       )
       drawCountyLevelCircles(countyLevelData(null, data), g)
@@ -186,7 +198,7 @@ function MapViz({
       IdmapDataState,
       clicked,
       colorScale,
-      view, 
+      view,
       data
     )
     if (view !== 'states') {
@@ -203,7 +215,7 @@ function MapViz({
     const translateX = 975 / 2 - (scale * (x0 + x1)) / 2
     const translateY = 710 / 2 - (scale * (y0 + y1)) / 2
 
-    event.stopPropagation()
+    // event.stopPropagation()
     svg
       .transition()
       .duration(750)
@@ -215,10 +227,7 @@ function MapViz({
 
   // Handle click event on state path
   function clicked(event: any, d: any) {
-    console.log(d)
     zoomToCounty(event, d)
-    if (view === 'counties') event.stopPropagation()
-
     // Filter counties based on state id
     const filteredCounties = countiesJson.features.filter(
       (county: any) => county.id.slice(0, 2) === d.id
@@ -227,9 +236,11 @@ function MapViz({
     drawCountyLevelCircles(countyLevelData(d.id, data), g)
   }
 
+  let transform = { k: 1, x: 0, y: 0 }
   // Zoom event
   function zoomed(event: any) {
     g.attr('transform', event.transform).on('wheel', null)
+    transform = event.transform
   }
 
   // SVG call zoom and disable it on wheel event

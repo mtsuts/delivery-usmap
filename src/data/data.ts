@@ -3,7 +3,6 @@ import * as d3 from 'd3'
 function countyLevelData(id: any, data: any) {
   // Filter data based on state id
   const stateData = id ? data.filter((x: any) => x.id === id) : data
-  console.log(stateData)
 
   // Rollup data based on county name
   const rolledUpDataValue = d3.rollup(
