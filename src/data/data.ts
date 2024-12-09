@@ -27,10 +27,10 @@ function countyLevelData(id: any, data: any) {
       return {
         countyId: d.countyId,
         county: d.county,
-        aggreagteValue: rolledUpDataValue.get(d.county),
+        aggregateValue: rolledUpDataValue.get(d.county),
         aggregateAvgSpeed: rolledUpDataSpeed.get(d.county),
         deliveryPrc: Math.floor(
-          (stateData.filter((d) => d.status === 'Delivered').length /
+          (stateData.filter((d:any) => d.status === 'Delivered').length /
             stateData.length) *
             100
         ),
@@ -52,4 +52,49 @@ function countyLevelData(id: any, data: any) {
     })
 }
 
-export { countyLevelData }
+function stateLevelData(d: any, data: any) {
+  const stateDeliveries = data.filter((x: any) => x.state === d.properties.name)
+
+  const recordsCount = stateDeliveries.reduce(
+    (acc: number, curr: any) => acc + curr.value,
+    0
+  )
+  const inTransitPercentage = Math.floor(
+    (stateDeliveries.filter((d: any) => d.status === 'In Transit').length /
+      stateDeliveries.length) *
+      100
+  )
+  const deliverCountPercentage = Math.floor(
+    (stateDeliveries.filter((d: any) => d.status === 'Delivered').length /
+      stateDeliveries.length) *
+      100
+  )
+
+  const averageDeliverySpeed = (
+    stateDeliveries
+      .map((x: any) => x.delivery_speed)
+      .reduce((acc: number, curr: any) => acc + curr, 0) /
+    stateDeliveries.length
+  ).toFixed(1)
+
+  const uniqueStateData = new Set()
+  return stateDeliveries
+    .map((x: any) => {
+      return {
+        state: x.state,
+        aggregateValue: recordsCount,
+        deliveryPrc: deliverCountPercentage,
+        inTransitPrc: inTransitPercentage,
+        aggregateAvgSpeed: averageDeliverySpeed,
+      }
+    })
+    .filter((item: any) => {
+      if (uniqueStateData.has(item.state)) {
+        return false
+      }
+      uniqueStateData.add(item.state)
+      return true
+    })[0]
+}
+
+export { countyLevelData, stateLevelData }

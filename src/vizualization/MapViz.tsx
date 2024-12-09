@@ -213,7 +213,6 @@ function MapViz({
   function zoomToCounty(event: any, d: any) {
     const [[x0, y0], [x1, y1]] = path.bounds(d)
     const scale = Math.min(12, 0.9 / Math.max((x1 - x0) / 975, (y1 - y0) / 710))
-    console.log(scale)
     const translateX = 975 / 2 - (scale * (x0 + x1)) / 2
     const translateY = 710 / 2 - (scale * (y0 + y1)) / 2
 
