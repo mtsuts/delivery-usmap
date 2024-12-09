@@ -2,6 +2,7 @@ import React from 'react'
 import * as d3 from 'd3'
 import { MapVizProps } from './types'
 import { StateLevelTooltip, CountyLevelTooltip } from './Tooltips'
+import { StateLevelMap } from './MapLevels'
 
 function MapViz({
   mainContainer,
@@ -47,54 +48,16 @@ function MapViz({
     .domain(d3.extent(data, (d) => d.value) as [number, number])
     .range(color)
 
-  // tippy instance
-  let tippyInstanceState: any
-
-  // Draw main map
-  function drawMap(pathData: any) {
-    g.selectAll('path')
-      .data(pathData)
-      .join('path')
-      .attr('class', 'path')
-      .attr('d', path)
-      .attr('fill', (d: any) => colorScale(mapData.get(d.id)) || '#ccc')
-      .attr('stroke', 'white')
-      .attr('stroke-width', 0.5)
-      .style('cursor', 'pointer')
-      .on('click', clicked)
-      .on('mouseover', (event: any, d: any) => {
-        if (tippyInstanceState) {
-          tippyInstanceState.destroy()
-        }
-        tippyInstanceState = StateLevelTooltip(event, d, data)
-      })
-
-    // Append text elements on state paths
-    g.selectAll('text')
-      .data(pathData)
-      .join('text')
-      .attr('class', 'path-label')
-      .attr('x', (d: any) => {
-        const centroid = path.centroid(d)
-        return centroid[0]
-      })
-      .attr('y', (d: any) => {
-        const centroid = path.centroid(d)
-        return centroid[1]
-      })
-      .attr('text-anchor', 'middle')
-      .attr('dx', '0.2em')
-      .attr('dy', '0.35em')
-      .text((d: any) => d.properties.code)
-      .style('font-size', '15px')
-      .style('fill', '#fff')
-  }
-
   let tippyInstanceCountyLevel: any
   // Draw circles for county level
   function drawCountyLevelCircles(circlesData: any, g: any) {
     if (!circlesData) return
     g.selectAll('.circle').remove()
+
+    const colorScale = d3
+      .scaleLog<string>()
+      .domain(d3.extent(data, (d: any) => d.value) as [number, number])
+      .range(color)
 
     // Circle Radius Scale
     const radiusScale = d3
@@ -187,10 +150,17 @@ function MapViz({
   // Draw map based on view
   function updateView(view: 'states' | 'counties') {
     if (view === 'states') {
-      drawMap(stateJson.features)
+      StateLevelMap(stateJson.features, g, mapData, clicked, colorScale, view)
       drawCountyLevelCircles([], g)
     } else if (view === 'counties') {
-      drawMap(countiesJson.features)
+      StateLevelMap(
+        countiesJson.features,
+        g,
+        mapData,
+        clicked,
+        colorScale,
+        view
+      )
       drawCountyLevelCircles(data, g)
     }
   }
@@ -198,7 +168,14 @@ function MapViz({
   // Zoom reset
   function reset() {
     svg.transition().duration(750).call(zoom.transform, d3.zoomIdentity)
-    drawMap(view === 'states' ? stateJson.features : countiesJson.features)
+    StateLevelMap(
+      view === 'states' ? stateJson.features : countiesJson.features,
+      g,
+      mapData,
+      clicked,
+      colorScale,
+      view
+    )
     if (view !== 'states') {
       drawCountyLevelCircles(data, g)
     } else {

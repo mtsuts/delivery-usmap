@@ -36,6 +36,14 @@ function App() {
     }
   })
 
+  const countiesIds = (countiesJson as any).features.map((d: any) => {
+    return {
+      id: d.id,
+      county: d.properties.name,
+    }
+  })
+  console.log(countiesIds)
+
   // Projection
   const projection = d3.geoAlbersUsa().scale(1300).translate([487.5, 305])
   useEffect(() => {
@@ -71,6 +79,7 @@ function App() {
           delivery_speed:
             dayjs(d.delivery_date).diff(dayjs(d.mailing_date), 'day') || 0,
           id: ids.find((id: any) => id.state === d.state)?.id || '0',
+          countyId: countiesIds.find((x: any) => x.county === d.county)?.id,
         }))
         setData(finalData)
       })

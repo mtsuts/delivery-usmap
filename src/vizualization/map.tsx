@@ -31,6 +31,7 @@ function UsMap(params: MapProps) {
     },
   ]
 
+  console.log(data)
   React.useEffect(() => {
     if (data.length) {
       map.current = MapViz({
