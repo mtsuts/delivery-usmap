@@ -41,7 +41,11 @@ const SideBar = ({ data, buttonClick }: SideBarProps) => {
           }}
           onClick={d.onClick}
         >
-          <img src={d.imageSrc} alt={d.label} style={{ height: '100px' }} />
+          <img
+            src={d.imageSrc}
+            alt={d.label}
+            style={{ height: '100px', opacity: d.isActive ? 1 : 0.5 }}
+          />
           <div style={{ fontWeight: d.isActive ? 'bold' : 'normal' }}>
             {d.label}
           </div>

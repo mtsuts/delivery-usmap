@@ -1,7 +1,3 @@
-import * as d3 from 'd3'
-import tippy from 'tippy.js'
-
-
 // Geocoding
 async function geocode(longitude: string, latitude: string) {
   const accessToken =
