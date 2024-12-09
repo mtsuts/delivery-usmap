@@ -23,7 +23,7 @@ function StateLevelMap(
     .join('path')
     .attr('class', 'path')
     .attr('d', path)
-    .attr('fill', (d: any) => colorScale(IdmapDataState.get(d.id)) || '#ccc')
+    .attr('fill', (d: any) => colorScale(IdmapDataState.get(d.id)) || '#f3f3f3')
     .attr('stroke', 'white')
     .attr('stroke-width', 0.5)
     .style('cursor', 'pointer')
@@ -57,7 +57,7 @@ function StateLevelMap(
     .attr('dy', '0.35em')
     .text((d: any) => d.properties.code)
     .style('font-size', '15px')
-    .attr('fill', '#fff')
+    .attr('fill', '#e1f5fe')
     .style('font-weight', 'bold')
 }
 
