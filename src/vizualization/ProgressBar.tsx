@@ -1,7 +1,7 @@
 import React from 'react'
 import * as d3 from 'd3'
 
-const ProgressBar = ({ progress, width }) => {
+const ProgressBar = ({ progress, width, color }) => {
   React.useEffect(() => {
     // Set dimensions for the progress bar
     const height = 17
@@ -31,7 +31,7 @@ const ProgressBar = ({ progress, width }) => {
       .append('rect')
       .attr('width', 0)
       .attr('height', height)
-      .attr('fill', '#c93235')
+      .attr('fill', color)
       .attr('rx', borderRadius)
       .attr('ry', borderRadius)
       .transition()

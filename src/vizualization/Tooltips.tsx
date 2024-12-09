@@ -55,7 +55,11 @@ function StateLevelTooltip(event: any, d: any, data: any) {
         </tbody>
       </table>
       <div style={{ marginTop: '10px' }}>
-        <ProgressBar progress={deliverCountPercentage / 100} width={300} />
+        <ProgressBar
+          progress={deliverCountPercentage / 100}
+          width={300}
+          color={deliverCountPercentage > 50 ? '#006CD0' : '#c93235'}
+        />
       </div>
     </>
   )
@@ -101,8 +105,12 @@ function CountyLevelTooltip(event: any, d: any) {
           </tr>
         </tbody>
       </table>
-      <div style={{marginTop: '10px'}}>
-      <ProgressBar progress={d.deliveryPrc / 100} width={300} />
+      <div style={{ marginTop: '10px' }}>
+        <ProgressBar
+          progress={d.deliveryPrc / 100}
+          width={300}
+          color={d.deliveryPrc > 50 ? '#006CD0' : '#c93235'}
+        />
       </div>
     </>
   )
