@@ -53,3 +53,9 @@ export type SideBarProps = {
   }[]
   buttonClick: () => void
 }
+
+export type ProgressBarProps = {
+  progress: number
+  width: number
+  color: string
+}

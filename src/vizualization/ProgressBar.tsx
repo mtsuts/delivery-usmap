@@ -1,7 +1,8 @@
 import React from 'react'
 import * as d3 from 'd3'
+import { ProgressBarProps } from './types'
 
-const ProgressBar = ({ progress, width, color }) => {
+const ProgressBar = ({ progress, width, color }: ProgressBarProps) => {
   React.useEffect(() => {
     // Set dimensions for the progress bar
     const height = 17
