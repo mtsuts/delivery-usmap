@@ -11,19 +11,18 @@ let tippyInstanceState: any
 function StateLevelMap(
   data: any,
   g: any,
-  mapData: any,
+  IdmapDataState: any,
   clicked: Function,
   colorScale: Function,
   view: string
 ) {
-
   // Draw state paths
   g.selectAll('path')
     .data(data)
     .join('path')
     .attr('class', 'path')
     .attr('d', path)
-    .attr('fill', (d: any) => colorScale(mapData.get(d.id)) || '#ccc')
+    .attr('fill', (d: any) => colorScale(IdmapDataState.get(d.id)) || '#ccc')
     .attr('stroke', 'white')
     .attr('stroke-width', 0.5)
     .style('cursor', 'pointer')
@@ -57,7 +56,8 @@ function StateLevelMap(
     .attr('dy', '0.35em')
     .text((d: any) => d.properties.code)
     .style('font-size', '15px')
-    .style('fill', '#fff')
+    .attr('fill', '#fff')
+    .style('font-weight', 'bold')
 }
 
 export { StateLevelMap }

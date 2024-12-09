@@ -7,7 +7,6 @@ import stateView from '../images/stateView.png'
 import MapViz from './MapViz'
 import { MapProps, Data } from './types'
 
-
 function UsMap(params: MapProps) {
   const [view, setView] = React.useState<'states' | 'counties'>('states')
   const { data, setData } = React.useContext(AppContext) as Data
@@ -30,8 +29,8 @@ function UsMap(params: MapProps) {
       isActive: view === 'counties',
     },
   ]
+ 
 
-  console.log(data)
   React.useEffect(() => {
     if (data.length) {
       map.current = MapViz({
@@ -42,7 +41,7 @@ function UsMap(params: MapProps) {
         mobileHeight: params.mobileHeight,
         desktopHeight: params.desktopHeight,
         color: params.color,
-        mapData: d3.rollup(
+        IdmapDataState: d3.rollup(
           data,
           (d) => d3.sum(d, (x: any) => x.value),
           (d: any) => d.id

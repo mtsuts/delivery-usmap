@@ -1,15 +1,16 @@
 import React from 'react'
 import * as d3 from 'd3'
 import { MapVizProps } from './types'
-import { StateLevelTooltip, CountyLevelTooltip } from './Tooltips'
+import { CountyLevelTooltip } from './Tooltips'
 import { StateLevelMap } from './MapLevels'
+import { countyLevelData } from '../data/data'
 
 function MapViz({
   mainContainer,
   stateJson,
   countiesJson,
   data,
-  mapData,
+  IdmapDataState,
   mobileHeight,
   desktopHeight,
   color,
@@ -48,7 +49,9 @@ function MapViz({
     .domain(d3.extent(data, (d) => d.value) as [number, number])
     .range(color)
 
+  // Tippy instance for county level
   let tippyInstanceCountyLevel: any
+
   // Draw circles for county level
   function drawCountyLevelCircles(circlesData: any, g: any) {
     if (!circlesData) return
@@ -132,7 +135,7 @@ function MapViz({
     }
   }
 
-  // Draw State Counties
+  // Draw state counties on state path click
   function drawStateCounties(counties: [], g: any, path: any) {
     g.selectAll('.county').remove()
 
@@ -147,21 +150,28 @@ function MapViz({
       .attr('stroke-width', 0.5)
   }
 
-  // Draw map based on view
+  // Draw map, based on view
   function updateView(view: 'states' | 'counties') {
     if (view === 'states') {
-      StateLevelMap(stateJson.features, g, mapData, clicked, colorScale, view)
+      StateLevelMap(
+        stateJson.features,
+        g,
+        IdmapDataState,
+        clicked,
+        colorScale,
+        view
+      )
       drawCountyLevelCircles([], g)
     } else if (view === 'counties') {
       StateLevelMap(
         countiesJson.features,
         g,
-        mapData,
+        IdmapDataState,
         clicked,
         colorScale,
         view
       )
-      drawCountyLevelCircles(data, g)
+      drawCountyLevelCircles(countyLevelData(null, data), g)
     }
   }
 
@@ -171,7 +181,7 @@ function MapViz({
     StateLevelMap(
       view === 'states' ? stateJson.features : countiesJson.features,
       g,
-      mapData,
+      IdmapDataState,
       clicked,
       colorScale,
       view
@@ -202,63 +212,16 @@ function MapViz({
 
   // Handle click event on state path
   function clicked(event: any, d: any) {
+    console.log(d)
     zoomToCounty(event, d)
+    if (view === 'counties') event.stopPropagation()
 
     // Filter counties based on state id
     const filteredCounties = countiesJson.features.filter(
       (county: any) => county.id.slice(0, 2) === d.id
     )
-    // Filter data based on state id
-    const stateData = data.filter((x) => x.id === d.id)
-
-    // Rollup data based on county name
-    const rolledUpDataValue = d3.rollup(
-      stateData,
-      (group) => d3.sum(group, (d) => d.value),
-      (x) => x.county
-    )
-
-    const rolledUpDataSpeed = d3.rollup(
-      stateData,
-      (group) =>
-        Math.floor(
-          d3.sum(group, (d) => d.delivery_speed) / group.length
-        ).toFixed(1),
-      (x) => x.county
-    )
-
-    //  Generate county level data
-    const uniqueCountyData = new Set()
-    const countyLevelData = stateData
-      .map((d) => {
-        return {
-          county: d.county,
-          aggreagteValue: rolledUpDataValue.get(d.county),
-          aggregateAvgSpeed: rolledUpDataSpeed.get(d.county),
-          deliveryPrc: Math.floor(
-            (stateData.filter((d) => d.status === 'Delivered').length /
-              stateData.length) *
-              100
-          ),
-          inTransitPrc: Math.floor(
-            (stateData.filter((d) => d.status === 'In Transit').length /
-              stateData.length) *
-              100
-          ),
-          x: d.x,
-          y: d.y,
-        }
-      })
-      .filter((item) => {
-        if (uniqueCountyData.has(item.county)) {
-          return false
-        }
-        uniqueCountyData.add(item.county)
-        return true
-      })
-
     drawStateCounties(filteredCounties, g, path)
-    drawCountyLevelCircles(countyLevelData, g)
+    drawCountyLevelCircles(countyLevelData(d.id, data), g)
   }
 
   // Zoom event

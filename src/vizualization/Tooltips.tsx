@@ -14,12 +14,12 @@ function StateLevelTooltip(event: any, d: any, data: any) {
     0
   )
   const inTransitPercentage = Math.floor(
-    (stateDeliveries.filter((d) => d.status === 'In Transit').length /
+    (stateDeliveries.filter((d: any) => d.status === 'In Transit').length /
       stateDeliveries.length) *
       100
   )
   const deliverCountPercentage = Math.floor(
-    (stateDeliveries.filter((d) => d.status === 'Delivered').length /
+    (stateDeliveries.filter((d: any) => d.status === 'Delivered').length /
       stateDeliveries.length) *
       100
   )
@@ -67,17 +67,16 @@ function StateLevelTooltip(event: any, d: any, data: any) {
       content: container,
       arrow: false,
       theme: 'light-border',
-      placement: 'bottom-start',
+      placement: 'left-start',
     })
   }
 }
 
 // County level tooltip generator
 function CountyLevelTooltip(event: any, d: any) {
-  console.log(d)
   const content = (
     <>
-      <div style={{ fontSize: '20px', fontWeight: 'bold' }}>{d.county}</div>
+      <div style={{ fontSize: '16px', fontWeight: 'bold' }}>{d.county}</div>
       <table style={{ width: '100%', borderCollapse: 'collapse' }}>
         <thead>
           <tr>
@@ -108,7 +107,7 @@ function CountyLevelTooltip(event: any, d: any) {
     content: container,
     arrow: false,
     theme: 'light-border',
-    placement: 'bottom',
+    placement: 'bottom-end',
   })
 }
 

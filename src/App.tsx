@@ -42,7 +42,7 @@ function App() {
       county: d.properties.name,
     }
   })
-  console.log(countiesIds)
+
 
   // Projection
   const projection = d3.geoAlbersUsa().scale(1300).translate([487.5, 305])
@@ -60,7 +60,9 @@ function App() {
                   ? 'In Transit'
                   : 'Delivered',
               state: (await geocode(d.longitude, d.latitude))?.stateData,
-              county: (await geocode(d.longitude, d.latitude))?.countyData,
+              county: (
+                await geocode(d.longitude, d.latitude)
+              )?.countyData.replace(' County', ''),
               x:
                 d.longitude && d.latitude
                   ? projection([Number(d.longitude), Number(d.latitude)])[0]
