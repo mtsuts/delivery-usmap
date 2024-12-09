@@ -1,6 +1,7 @@
 import React from 'react'
 import { SideBarProps } from './types'
 
+
 const SideBar = ({ data, buttonClick }: SideBarProps) => {
   return (
     <div>
@@ -41,6 +42,7 @@ const SideBar = ({ data, buttonClick }: SideBarProps) => {
           </div>
         </div>
       ))}
+      <div style={{ marginLeft: '40px', marginTop: '30px', fontWeight: 'bold' }}> Legend</div>
     </div>
   )
 }

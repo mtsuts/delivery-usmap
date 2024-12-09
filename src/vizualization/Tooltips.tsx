@@ -4,6 +4,7 @@ import 'tippy.js/dist/tippy.css'
 import 'tippy.js/themes/light-border.css'
 import 'tippy.js/dist/backdrop.css'
 import { createRoot } from 'react-dom/client'
+import ProgressBar from './ProgressBar'
 
 function StateLevelTooltip(event: any, d: any, data: any) {
   // Generate Tooltip Data
@@ -30,6 +31,7 @@ function StateLevelTooltip(event: any, d: any, data: any) {
       .reduce((acc: number, curr: any) => acc + curr, 0) /
     stateDeliveries.length
   ).toFixed(1)
+  console.log(deliverCountPercentage)
   // Tooltip content
   const content = (
     <>
@@ -52,6 +54,9 @@ function StateLevelTooltip(event: any, d: any, data: any) {
           </tr>
         </tbody>
       </table>
+      <div style={{ marginTop: '10px' }}>
+        <ProgressBar progress={deliverCountPercentage / 100} width={300} />
+      </div>
     </>
   )
 
@@ -96,6 +101,9 @@ function CountyLevelTooltip(event: any, d: any) {
           </tr>
         </tbody>
       </table>
+      <div style={{marginTop: '10px'}}>
+      <ProgressBar progress={d.deliveryPrc / 100} width={300} />
+      </div>
     </>
   )
 
@@ -121,7 +129,7 @@ function ZipCodeLevelTooltip(event: any, data: any) {
             <th>Zip Code</th>
             <th>Records</th>
             <th>Delivery Status</th>
-            {data.status === 'In Transit' && <th>Delivery Time</th>} 
+            {data.status === 'In Transit' && <th>Delivery Time</th>}
           </tr>
         </thead>
         <tbody>
@@ -129,7 +137,7 @@ function ZipCodeLevelTooltip(event: any, data: any) {
             <td>{data.location.split(',')[0]}</td>
             <td>{data.value}</td>
             <td>{data.status}</td>
-            {data.status === 'In Transit' && <td>{data.delivery_date}</td>} 
+            {data.status === 'In Transit' && <td>{data.delivery_date}</td>}
           </tr>
         </tbody>
       </table>

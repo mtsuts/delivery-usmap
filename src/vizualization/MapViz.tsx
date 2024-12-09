@@ -70,7 +70,7 @@ function MapViz({
         d3.min(circlesData, (d: any) => Number(d.aggreagteValue)),
         d3.max(circlesData, (d: any) => Number(d.aggreagteValue)),
       ])
-      .range([5, 25])
+      .range([5, 20])
 
     if (circlesData.length) {
       g.selectAll('circle')
@@ -88,7 +88,6 @@ function MapViz({
         .on('click', (event: any, d: any) => {
           const zipCodeLevelData = data.filter((x) => x.county === d.county)
           if (d.aggreagteValue === 1) return
-          console.log(transform)
           drawZipCodeLevelCircles(zipCodeLevelData, g)
           const zipCodeData = countiesJson.features.filter(
             (x: any) => x.id === d.countyId

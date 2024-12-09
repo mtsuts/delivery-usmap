@@ -57,8 +57,8 @@ function App() {
               mailing_date: d.mailing_date,
               status:
                 new Date(d.delivery_date.replace(/\[|\]/g, '')) < new Date()
-                  ? 'In Transit'
-                  : 'Delivered',
+                  ? 'Delivered'
+                  : 'In Transit',
               state: (await geocode(d.longitude, d.latitude))?.stateData,
               county: (
                 await geocode(d.longitude, d.latitude)
@@ -99,7 +99,7 @@ function App() {
         countiesJson={countiesJson}
         mobileHeight={400}
         desktopHeight={750}
-        color={['#e57373', '#b71c1c']}
+        color={['#3388E6', '#006CD0']}
       ></UsMap>
     </>
   )
