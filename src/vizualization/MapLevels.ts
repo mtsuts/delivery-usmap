@@ -17,13 +17,14 @@ function StateLevelMap(
   view: string,
   data: any
 ) {
+  console.log(data)
   // Draw state paths
   g.selectAll('path')
     .data(pathData)
     .join('path')
     .attr('class', 'path')
     .attr('d', path)
-    .attr('fill', (d: any) => colorScale(IdmapDataState.get(d.id)) || '#f3f3f3')
+    .attr('fill', (d: any) => colorScale(IdmapDataState.get(d.id)) || '#006CD0')
     .attr('stroke', 'white')
     .attr('stroke-width', 0.5)
     .style('cursor', 'pointer')

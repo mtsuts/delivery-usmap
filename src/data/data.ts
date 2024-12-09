@@ -25,6 +25,7 @@ function countyLevelData(id: any, data: any) {
   return stateData
     .map((d: any) => {
       return {
+        countyId: d.countyId,
         county: d.county,
         aggreagteValue: rolledUpDataValue.get(d.county),
         aggregateAvgSpeed: rolledUpDataSpeed.get(d.county),

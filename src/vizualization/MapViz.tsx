@@ -26,6 +26,7 @@ function MapViz({
     (container.node() as HTMLElement)?.getBoundingClientRect().width || 800
   const height = isMobile ? mobileHeight : desktopHeight
 
+  let transform = d3.zoomIdentity
   // Initial zoom
   const zoom = d3.zoom().scaleExtent([1, 8]).on('zoom', zoomed)
 
@@ -78,7 +79,7 @@ function MapViz({
         .attr('class', 'circle')
         .attr('cx', (d: any) => d.x)
         .attr('cy', (d: any) => d.y)
-        .attr('r', (d: any) => radiusScale(d.aggreagteValue) / transform.k)
+        .attr('r', (d: any) => radiusScale(d.aggreagteValue))
         .attr('fill', '#006CD0')
         .attr('stroke', '#fff')
         .attr('stroke-width', 0.5)
@@ -87,18 +88,13 @@ function MapViz({
         .on('click', (event: any, d: any) => {
           const zipCodeLevelData = data.filter((x) => x.county === d.county)
           if (d.aggreagteValue === 1) return
+          console.log(transform)
           drawZipCodeLevelCircles(zipCodeLevelData, g)
-          console.log(
-            countiesJson.features.filter(
-              (x: any) => x.properties.name === d.county
-            )
+          const zipCodeData = countiesJson.features.filter(
+            (x: any) => x.id === d.countyId
           )
-          zoomToCounty(
-            event.target,
-            countiesJson.features.filter(
-              (x: any) => x.properties.name === d.county
-            )[0]
-          )
+
+          zoomToCounty(event.target, zipCodeData[0])
         })
         .on('mouseover', (event: any, d: any) => {
           if (tippyInstanceCountyLevel) {
@@ -121,7 +117,8 @@ function MapViz({
         d3.min(circlesData, (d: any) => Number(d.value)),
         d3.max(circlesData, (d: any) => Number(d.value)),
       ])
-      .range([5, 7])
+      .range([5, 15])
+
 
     if (circlesData.length) {
       g.selectAll('circle')
@@ -130,7 +127,7 @@ function MapViz({
         .attr('class', 'circle')
         .attr('cx', (d: any) => d.x)
         .attr('cy', (d: any) => d.y)
-        .attr('r', (d: any) => radiusScale(d.value))
+        .attr('r', (d: any) => radiusScale(d.value) / transform.k)
         .attr('fill', (d: any) =>
           d.status === 'In Transit' ? '#006CD0' : '#00D06C'
         )
@@ -142,6 +139,7 @@ function MapViz({
           event.stopPropagation()
         })
         .on('mouseover', (event: any, d: any) => {
+          if (d.length === 0) return
           ZipCodeLevelTooltip(event, d)
         })
     }
@@ -211,7 +209,8 @@ function MapViz({
   // Handle click zoom
   function zoomToCounty(event: any, d: any) {
     const [[x0, y0], [x1, y1]] = path.bounds(d)
-    const scale = Math.min(8, 0.9 / Math.max((x1 - x0) / 975, (y1 - y0) / 710))
+    const scale = Math.min(12, 0.9 / Math.max((x1 - x0) / 975, (y1 - y0) / 710))
+    console.log(scale)
     const translateX = 975 / 2 - (scale * (x0 + x1)) / 2
     const translateY = 710 / 2 - (scale * (y0 + y1)) / 2
 
@@ -236,7 +235,6 @@ function MapViz({
     drawCountyLevelCircles(countyLevelData(d.id, data), g)
   }
 
-  let transform = { k: 1, x: 0, y: 0 }
   // Zoom event
   function zoomed(event: any) {
     g.attr('transform', event.transform).on('wheel', null)
