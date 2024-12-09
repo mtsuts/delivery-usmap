@@ -1,40 +1,16 @@
 import React from 'react'
 import * as d3 from 'd3'
-import tippy from 'tippy.js'
-import 'tippy.js/dist/tippy.css'
-import 'tippy.js/themes/light-border.css'
-import 'tippy.js/dist/backdrop.css'
-import { createRoot } from 'react-dom/client'
-
-interface MapVizProps {
-  mainContainer: string
-  stateJson: any
-  countiesJson: any
-  data: {
-    id: string
-    value: number
-    location: string
-    delivery_date: string
-    status: string
-    state: string
-    delivery_speed: number
-    county: string
-    x: number
-    y: number
-  }[]
-  mapData: Map<string, number>
-  mobileHeight: number
-  desktopHeight: number
-  color: string[]
-  view: 'states' | 'counties'
-}
+import { MapVizProps } from './types'
+import { CountyLevelTooltip } from './Tooltips'
+import { StateLevelMap } from './MapLevels'
+import { countyLevelData } from '../data/data'
 
 function MapViz({
   mainContainer,
   stateJson,
   countiesJson,
   data,
-  mapData,
+  IdmapDataState,
   mobileHeight,
   desktopHeight,
   color,
@@ -73,120 +49,18 @@ function MapViz({
     .domain(d3.extent(data, (d) => d.value) as [number, number])
     .range(color)
 
-  // tippy instance
-  let tippyInstanceState: any
-
-  // Draw main map
-  function drawMap(pathData: any) {
-    g.selectAll('path')
-      .data(pathData)
-      .join('path')
-      .attr('class', 'path')
-      .attr('d', path)
-      .attr('fill', (d: any) => colorScale(mapData.get(d.id)) || '#ccc')
-      .attr('stroke', 'white')
-      .attr('stroke-width', 0.5)
-      .style('cursor', 'pointer')
-      .on('click', clicked)
-      .on('mouseover', (event: any, d: any) => {
-        // Generate Tooltip Data
-        const stateName = d.properties.name
-        const stateDeliveries = data.filter(
-          (x) => x.state === d.properties.name
-        )
-        const recordsCount = stateDeliveries.reduce(
-          (acc, curr) => acc + curr.value,
-          0
-        )
-        const inTransitPercentage = Math.floor(
-          (stateDeliveries.filter((d) => d.status === 'In Transit').length /
-            stateDeliveries.length) *
-            100
-        )
-        const deliverCountPercentage = Math.floor(
-          (stateDeliveries.filter((d) => d.status === 'Delivered').length /
-            stateDeliveries.length) *
-            100
-        )
-
-        const averageDeliverySpeed = (
-          stateDeliveries
-            .map((x) => x.delivery_speed)
-            .reduce((acc, curr) => acc + curr, 0) / stateDeliveries.length
-        ).toFixed(1)
-
-        // Tooltip content
-        const content = (
-          <>
-            <div style={{ fontSize: '20px', fontWeight: 'bold' }}>
-              {stateName}
-            </div>
-            <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-              <thead>
-                <tr>
-                  <th>Records</th>
-                  <th>Delivered (%)</th>
-                  <th>In Transit (%)</th>
-                  <th>Avg. Speed</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>{recordsCount}</td>
-                  <td>{deliverCountPercentage}%</td>
-                  <td>{inTransitPercentage}%</td>
-                  <td> {averageDeliverySpeed}</td>
-                </tr>
-              </tbody>
-            </table>
-          </>
-        )
-        const container = document.createElement('div')
-        createRoot(container).render(content)
-
-        // Tooltip instance
-        if (recordsCount) {
-          if (tippyInstanceState) {
-            tippyInstanceState.destroy()
-          }
-          tippyInstanceState = tippy(event.target, {
-            allowHTML: true,
-            content: container,
-            arrow: false,
-            theme: 'light-border',
-            placement: 'bottom-start',
-          })
-        }
-      })
-
-    // Append text elements on state paths
-    g.selectAll('text')
-      .data(pathData)
-      .join('text')
-      .attr('class', 'path-label')
-      .attr('x', (d: any) => {
-        const centroid = path.centroid(d)
-        return centroid[0]
-      })
-      .attr('y', (d: any) => {
-        const centroid = path.centroid(d)
-        return centroid[1]
-      })
-      .attr('text-anchor', 'middle')
-      .attr('dx', '0.2em')
-      .attr('dy', '0.35em')
-      .text((d: any) => d.properties.code)
-      .style('font-size', '15px')
-      .style('fill', '#fff')
-  }
-
-  let tippyInstanceCircle: any
+  // Tippy instance for county level
+  let tippyInstanceCountyLevel: any
 
   // Draw circles for county level
   function drawCountyLevelCircles(circlesData: any, g: any) {
     if (!circlesData) return
     g.selectAll('.circle').remove()
-    console.log(circlesData)
+
+    const colorScale = d3
+      .scaleLog<string>()
+      .domain(d3.extent(data, (d: any) => d.value) as [number, number])
+      .range(color)
 
     // Circle Radius Scale
     const radiusScale = d3
@@ -217,44 +91,10 @@ function MapViz({
           drawZipCodeLevelCircles(zipCodeLevelData, g)
         })
         .on('mouseover', (event: any, d: any) => {
-          const content = (
-            <>
-              <div style={{ fontSize: '20px', fontWeight: 'bold' }}>County</div>
-              <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-                <thead>
-                  <tr>
-                    <th>Records</th>
-                    <th>Delivered (%)</th>
-                    <th>In Transit (%)</th>
-                    <th>Avg. Speed</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>{d.aggreagteValue}</td>
-                    <td>{d.deliveryPrc}%</td>
-                    <td>{d.inTransitPrc}%</td>
-                    <td>{d.aggregateAvgSpeed}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </>
-          )
-          // Create a container to render the React element
-          const container = document.createElement('div')
-          createRoot(container).render(content)
-
-          if (tippyInstanceCircle) {
-            tippyInstanceCircle.destroy()
+          if (tippyInstanceCountyLevel) {
+            tippyInstanceCountyLevel.destroy()
           }
-
-          tippyInstanceCircle = tippy(event.target, {
-            allowHTML: true,
-            content: container,
-            arrow: false,
-            theme: 'light-border',
-            placement: 'bottom',
-          })
+          tippyInstanceCountyLevel = CountyLevelTooltip(event, d)
         })
     }
   }
@@ -273,7 +113,6 @@ function MapViz({
       ])
       .range([5, 10])
 
-    console.log(circlesData)
     if (circlesData.length) {
       g.selectAll('circle')
         .data(circlesData.filter((d: any) => d.x !== 0 && d.y !== 0))
@@ -292,13 +131,11 @@ function MapViz({
         .on('click', (event: any, d: any) => {
           event.stopPropagation()
         })
-        .on('mouseover', (event: any, d: any) => {
-          console.log(d)
-        })
+        .on('mouseover', (event: any, d: any) => {})
     }
   }
 
-  // Draw State Counties
+  // Draw state counties on state path click
   function drawStateCounties(counties: [], g: any, path: any) {
     g.selectAll('.county').remove()
 
@@ -313,21 +150,45 @@ function MapViz({
       .attr('stroke-width', 0.5)
   }
 
-  // Draw map based on view
+  // Draw map, based on view
   function updateView(view: 'states' | 'counties') {
     if (view === 'states') {
-      drawMap(stateJson.features)
+      StateLevelMap(
+        stateJson.features,
+        g,
+        IdmapDataState,
+        clicked,
+        colorScale,
+        view, 
+        data
+      )
       drawCountyLevelCircles([], g)
     } else if (view === 'counties') {
-      drawMap(countiesJson.features)
-      drawCountyLevelCircles(data, g)
+      StateLevelMap(
+        countiesJson.features,
+        g,
+        IdmapDataState,
+        clicked,
+        colorScale,
+        view, 
+        data
+      )
+      drawCountyLevelCircles(countyLevelData(null, data), g)
     }
   }
 
   // Zoom reset
   function reset() {
     svg.transition().duration(750).call(zoom.transform, d3.zoomIdentity)
-    drawMap(view === 'states' ? stateJson.features : countiesJson.features)
+    StateLevelMap(
+      view === 'states' ? stateJson.features : countiesJson.features,
+      g,
+      IdmapDataState,
+      clicked,
+      colorScale,
+      view, 
+      data
+    )
     if (view !== 'states') {
       drawCountyLevelCircles(data, g)
     } else {
@@ -354,63 +215,16 @@ function MapViz({
 
   // Handle click event on state path
   function clicked(event: any, d: any) {
+    console.log(d)
     zoomToCounty(event, d)
+    if (view === 'counties') event.stopPropagation()
 
     // Filter counties based on state id
     const filteredCounties = countiesJson.features.filter(
       (county: any) => county.id.slice(0, 2) === d.id
     )
-    // Filter data based on state id
-    const stateData = data.filter((x) => x.id === d.id)
-
-    // Rollup data based on county name
-    const rolledUpDataValue = d3.rollup(
-      stateData,
-      (group) => d3.sum(group, (d) => d.value),
-      (x) => x.county
-    )
-
-    const rolledUpDataSpeed = d3.rollup(
-      stateData,
-      (group) =>
-        Math.floor(
-          d3.sum(group, (d) => d.delivery_speed) / group.length
-        ).toFixed(1),
-      (x) => x.county
-    )
-
-    //  Generate county level data
-    const uniqueCountyData = new Set()
-    const countyLevelData = stateData
-      .map((d) => {
-        return {
-          county: d.county,
-          aggreagteValue: rolledUpDataValue.get(d.county),
-          aggregateAvgSpeed: rolledUpDataSpeed.get(d.county),
-          deliveryPrc: Math.floor(
-            (stateData.filter((d) => d.status === 'Delivered').length /
-              stateData.length) *
-              100
-          ),
-          inTransitPrc: Math.floor(
-            (stateData.filter((d) => d.status === 'In Transit').length /
-              stateData.length) *
-              100
-          ),
-          x: d.x,
-          y: d.y,
-        }
-      })
-      .filter((item) => {
-        if (uniqueCountyData.has(item.county)) {
-          return false
-        }
-        uniqueCountyData.add(item.county)
-        return true
-      })
-
     drawStateCounties(filteredCounties, g, path)
-    drawCountyLevelCircles(countyLevelData, g)
+    drawCountyLevelCircles(countyLevelData(d.id, data), g)
   }
 
   // Zoom event

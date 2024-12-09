@@ -1,15 +1,5 @@
 import React from 'react'
-
-type SideBarProps = {
-  data: {
-    position: number
-    onClick: () => void
-    imageSrc: string
-    label: string
-    isActive: boolean
-  }[]
-  buttonClick: () => void
-}
+import { SideBarProps } from './types'
 
 const SideBar = ({ data, buttonClick }: SideBarProps) => {
   return (

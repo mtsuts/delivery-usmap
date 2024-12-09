@@ -5,28 +5,7 @@ import SideBar from './SideBar'
 import countiesViewImage from '../images/countiesView.png'
 import stateView from '../images/stateView.png'
 import MapViz from './MapViz'
-
-interface MapProps {
-  container: string
-  stateJson: any
-  countiesJson: any
-  data: {
-    id: string
-    value: number
-    location: string
-    delivery_date: string
-    status: string
-    state: string
-  }[]
-  mobileHeight: number
-  desktopHeight: number
-  color: string[]
-}
-
-interface Data {
-  data: []
-  setData: Function
-}
+import { MapProps, Data } from './types'
 
 function UsMap(params: MapProps) {
   const [view, setView] = React.useState<'states' | 'counties'>('states')
@@ -50,6 +29,7 @@ function UsMap(params: MapProps) {
       isActive: view === 'counties',
     },
   ]
+ 
 
   React.useEffect(() => {
     if (data.length) {
@@ -61,7 +41,7 @@ function UsMap(params: MapProps) {
         mobileHeight: params.mobileHeight,
         desktopHeight: params.desktopHeight,
         color: params.color,
-        mapData: d3.rollup(
+        IdmapDataState: d3.rollup(
           data,
           (d) => d3.sum(d, (x: any) => x.value),
           (d: any) => d.id

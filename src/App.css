@@ -50,6 +50,10 @@
   outline: none;
 }
 
+.path-label {
+  text-shadow: 0px 0px 2px #000;
+}
+
 .circle {
   outline: none;
 }
@@ -92,7 +96,7 @@ thead th {
 }
 
 tbody td {
-  font-size: 15px;
+  font-size: 13px;
   border: 1px solid #ccc;
   padding: 4px;
   font-weight: 600;
