@@ -38,7 +38,6 @@ function App() {
 
   // Projection
   const projection = d3.geoAlbersUsa().scale(1300).translate([487.5, 305])
-
   useEffect(() => {
     d3.csv(csvData)
       .then(async (data) => {
@@ -69,10 +68,8 @@ function App() {
         const finalData = updatedData.map((d) => ({
           ...d,
           value: Number(d['distinct_job_imb_count']),
-          delivery_speed: dayjs(d.delivery_date).diff(
-            dayjs(d.mailing_date),
-            'day'
-          ) || 0,
+          delivery_speed:
+            dayjs(d.delivery_date).diff(dayjs(d.mailing_date), 'day') || 0,
           id: ids.find((id: any) => id.state === d.state)?.id || '0',
         }))
         setData(finalData)
