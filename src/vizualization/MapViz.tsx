@@ -95,11 +95,16 @@ function MapViz({
 
           zoomToCounty(event.target, zipCodeData[0])
         })
-        .on('mouseover', (event: any, d: any) => {
+        .on('mouseover', function (event: any, d: any) {
+          d3.select(this).attr('stroke', '#000')
+          d3.select(this).style('opacity', 1)
           if (tippyInstanceCountyLevel) {
             tippyInstanceCountyLevel.destroy()
           }
           tippyInstanceCountyLevel = CountyLevelTooltip(event, d)
+        }).on('mouseout', function(event:any, d:any){
+          d3.select(this).attr('stroke', '#fff')
+          d3.select(this).style('opacity', 0.5)
         })
     }
   }
@@ -117,7 +122,6 @@ function MapViz({
         d3.max(circlesData, (d: any) => Number(d.value)),
       ])
       .range([5, 15])
-
 
     if (circlesData.length) {
       g.selectAll('circle')
@@ -137,7 +141,7 @@ function MapViz({
         .on('click', (event: any, d: any) => {
           event.stopPropagation()
         })
-        .on('mouseover', (event: any, d: any) => {
+        .on('mouseover', function (event: any, d: any) {
           if (d.length === 0) return
           ZipCodeLevelTooltip(event, d)
         })
