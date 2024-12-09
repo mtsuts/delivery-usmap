@@ -5,29 +5,8 @@ import 'tippy.js/dist/tippy.css'
 import 'tippy.js/themes/light-border.css'
 import 'tippy.js/dist/backdrop.css'
 import { createRoot } from 'react-dom/client'
-
-interface MapVizProps {
-  mainContainer: string
-  stateJson: any
-  countiesJson: any
-  data: {
-    id: string
-    value: number
-    location: string
-    delivery_date: string
-    status: string
-    state: string
-    delivery_speed: number
-    county: string
-    x: number
-    y: number
-  }[]
-  mapData: Map<string, number>
-  mobileHeight: number
-  desktopHeight: number
-  color: string[]
-  view: 'states' | 'counties'
-}
+import { MapVizProps } from './types'
+import { StateLevelTooltip } from './Tooltips'
 
 function MapViz({
   mainContainer,
@@ -78,6 +57,7 @@ function MapViz({
 
   // Draw main map
   function drawMap(pathData: any) {
+    console.log('draw', pathData)
     g.selectAll('path')
       .data(pathData)
       .join('path')
@@ -89,74 +69,10 @@ function MapViz({
       .style('cursor', 'pointer')
       .on('click', clicked)
       .on('mouseover', (event: any, d: any) => {
-        // Generate Tooltip Data
-        const stateName = d.properties.name
-        const stateDeliveries = data.filter(
-          (x) => x.state === d.properties.name
-        )
-        const recordsCount = stateDeliveries.reduce(
-          (acc, curr) => acc + curr.value,
-          0
-        )
-        const inTransitPercentage = Math.floor(
-          (stateDeliveries.filter((d) => d.status === 'In Transit').length /
-            stateDeliveries.length) *
-            100
-        )
-        const deliverCountPercentage = Math.floor(
-          (stateDeliveries.filter((d) => d.status === 'Delivered').length /
-            stateDeliveries.length) *
-            100
-        )
-
-        const averageDeliverySpeed = (
-          stateDeliveries
-            .map((x) => x.delivery_speed)
-            .reduce((acc, curr) => acc + curr, 0) / stateDeliveries.length
-        ).toFixed(1)
-
-        // Tooltip content
-        const content = (
-          <>
-            <div style={{ fontSize: '20px', fontWeight: 'bold' }}>
-              {stateName}
-            </div>
-            <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-              <thead>
-                <tr>
-                  <th>Records</th>
-                  <th>Delivered (%)</th>
-                  <th>In Transit (%)</th>
-                  <th>Avg. Speed</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>{recordsCount}</td>
-                  <td>{deliverCountPercentage}%</td>
-                  <td>{inTransitPercentage}%</td>
-                  <td> {averageDeliverySpeed}</td>
-                </tr>
-              </tbody>
-            </table>
-          </>
-        )
-        const container = document.createElement('div')
-        createRoot(container).render(content)
-
-        // Tooltip instance
-        if (recordsCount) {
-          if (tippyInstanceState) {
-            tippyInstanceState.destroy()
-          }
-          tippyInstanceState = tippy(event.target, {
-            allowHTML: true,
-            content: container,
-            arrow: false,
-            theme: 'light-border',
-            placement: 'bottom-start',
-          })
+        if (tippyInstanceState) {
+          tippyInstanceState.destroy()
         }
+        StateLevelTooltip(event, d, data, tippyInstanceState)
       })
 
     // Append text elements on state paths

@@ -5,28 +5,8 @@ import SideBar from './SideBar'
 import countiesViewImage from '../images/countiesView.png'
 import stateView from '../images/stateView.png'
 import MapViz from './MapViz'
+import { MapProps, Data } from './types'
 
-interface MapProps {
-  container: string
-  stateJson: any
-  countiesJson: any
-  data: {
-    id: string
-    value: number
-    location: string
-    delivery_date: string
-    status: string
-    state: string
-  }[]
-  mobileHeight: number
-  desktopHeight: number
-  color: string[]
-}
-
-interface Data {
-  data: []
-  setData: Function
-}
 
 function UsMap(params: MapProps) {
   const [view, setView] = React.useState<'states' | 'counties'>('states')
