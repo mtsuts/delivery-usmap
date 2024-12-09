@@ -5,9 +5,7 @@ import 'tippy.js/themes/light-border.css'
 import 'tippy.js/dist/backdrop.css'
 import { createRoot } from 'react-dom/client'
 
-function StateLevelTooltip(event: any, d: any, data: any, instance: any) {
-  // Create tippy instance
-
+function StateLevelTooltip(event: any, d: any, data: any) {
   // Generate Tooltip Data
   const stateName = d.properties.name
   const stateDeliveries = data.filter((x: any) => x.state === d.properties.name)
@@ -57,15 +55,14 @@ function StateLevelTooltip(event: any, d: any, data: any, instance: any) {
       </table>
     </>
   )
+
+  // Create a container to render the React element for tippy
   const container = document.createElement('div')
   createRoot(container).render(content)
 
   // Tooltip instance
   if (recordsCount) {
-    if (instance) {
-      instance.destroy()
-    }
-    instance = tippy(event.target, {
+    return tippy(event.target, {
       allowHTML: true,
       content: container,
       arrow: false,
@@ -75,4 +72,44 @@ function StateLevelTooltip(event: any, d: any, data: any, instance: any) {
   }
 }
 
-export {StateLevelTooltip}
+// County level tooltip generator
+function CountyLevelTooltip(event: any, d: any) {
+  console.log(d)
+  const content = (
+    <>
+      <div style={{ fontSize: '20px', fontWeight: 'bold' }}>{d.county}</div>
+      <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+        <thead>
+          <tr>
+            <th>Records</th>
+            <th>Delivered (%)</th>
+            <th>In Transit (%)</th>
+            <th>Avg. Speed</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>{d.aggreagteValue}</td>
+            <td>{d.deliveryPrc}%</td>
+            <td>{d.inTransitPrc}%</td>
+            <td>{d.aggregateAvgSpeed}</td>
+          </tr>
+        </tbody>
+      </table>
+    </>
+  )
+
+  // Create a container to render the React element
+  const container = document.createElement('div')
+  createRoot(container).render(content)
+
+  return tippy(event.target, {
+    allowHTML: true,
+    content: container,
+    arrow: false,
+    theme: 'light-border',
+    placement: 'bottom',
+  })
+}
+
+export { StateLevelTooltip, CountyLevelTooltip }

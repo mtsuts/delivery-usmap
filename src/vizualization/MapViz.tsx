@@ -1,12 +1,7 @@
 import React from 'react'
 import * as d3 from 'd3'
-import tippy from 'tippy.js'
-import 'tippy.js/dist/tippy.css'
-import 'tippy.js/themes/light-border.css'
-import 'tippy.js/dist/backdrop.css'
-import { createRoot } from 'react-dom/client'
 import { MapVizProps } from './types'
-import { StateLevelTooltip } from './Tooltips'
+import { StateLevelTooltip, CountyLevelTooltip } from './Tooltips'
 
 function MapViz({
   mainContainer,
@@ -57,7 +52,6 @@ function MapViz({
 
   // Draw main map
   function drawMap(pathData: any) {
-    console.log('draw', pathData)
     g.selectAll('path')
       .data(pathData)
       .join('path')
@@ -72,7 +66,7 @@ function MapViz({
         if (tippyInstanceState) {
           tippyInstanceState.destroy()
         }
-        StateLevelTooltip(event, d, data, tippyInstanceState)
+        tippyInstanceState = StateLevelTooltip(event, d, data)
       })
 
     // Append text elements on state paths
@@ -96,13 +90,11 @@ function MapViz({
       .style('fill', '#fff')
   }
 
-  let tippyInstanceCircle: any
-
+  let tippyInstanceCountyLevel: any
   // Draw circles for county level
   function drawCountyLevelCircles(circlesData: any, g: any) {
     if (!circlesData) return
     g.selectAll('.circle').remove()
-    console.log(circlesData)
 
     // Circle Radius Scale
     const radiusScale = d3
@@ -133,44 +125,10 @@ function MapViz({
           drawZipCodeLevelCircles(zipCodeLevelData, g)
         })
         .on('mouseover', (event: any, d: any) => {
-          const content = (
-            <>
-              <div style={{ fontSize: '20px', fontWeight: 'bold' }}>County</div>
-              <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-                <thead>
-                  <tr>
-                    <th>Records</th>
-                    <th>Delivered (%)</th>
-                    <th>In Transit (%)</th>
-                    <th>Avg. Speed</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>{d.aggreagteValue}</td>
-                    <td>{d.deliveryPrc}%</td>
-                    <td>{d.inTransitPrc}%</td>
-                    <td>{d.aggregateAvgSpeed}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </>
-          )
-          // Create a container to render the React element
-          const container = document.createElement('div')
-          createRoot(container).render(content)
-
-          if (tippyInstanceCircle) {
-            tippyInstanceCircle.destroy()
+          if (tippyInstanceCountyLevel) {
+            tippyInstanceCountyLevel.destroy()
           }
-
-          tippyInstanceCircle = tippy(event.target, {
-            allowHTML: true,
-            content: container,
-            arrow: false,
-            theme: 'light-border',
-            placement: 'bottom',
-          })
+          tippyInstanceCountyLevel = CountyLevelTooltip(event, d)
         })
     }
   }
@@ -189,7 +147,6 @@ function MapViz({
       ])
       .range([5, 10])
 
-    console.log(circlesData)
     if (circlesData.length) {
       g.selectAll('circle')
         .data(circlesData.filter((d: any) => d.x !== 0 && d.y !== 0))
@@ -208,9 +165,7 @@ function MapViz({
         .on('click', (event: any, d: any) => {
           event.stopPropagation()
         })
-        .on('mouseover', (event: any, d: any) => {
-          console.log(d)
-        })
+        .on('mouseover', (event: any, d: any) => {})
     }
   }
 

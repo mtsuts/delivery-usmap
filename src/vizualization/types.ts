@@ -1,3 +1,8 @@
+export interface Data {
+  data: []
+  setData: Function
+}
+
 export interface MapProps {
   container: string
   stateJson: any
@@ -13,11 +18,6 @@ export interface MapProps {
   mobileHeight: number
   desktopHeight: number
   color: string[]
-}
-
-export interface Data {
-  data: []
-  setData: Function
 }
 
 export interface MapVizProps {
@@ -41,4 +41,15 @@ export interface MapVizProps {
   desktopHeight: number
   color: string[]
   view: 'states' | 'counties'
+}
+
+export type SideBarProps = {
+  data: {
+    position: number
+    onClick: () => void
+    imageSrc: string
+    label: string
+    isActive: boolean
+  }[]
+  buttonClick: () => void
 }
