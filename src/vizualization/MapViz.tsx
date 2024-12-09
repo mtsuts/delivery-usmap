@@ -159,7 +159,8 @@ function MapViz({
         IdmapDataState,
         clicked,
         colorScale,
-        view
+        view, 
+        data
       )
       drawCountyLevelCircles([], g)
     } else if (view === 'counties') {
@@ -169,7 +170,8 @@ function MapViz({
         IdmapDataState,
         clicked,
         colorScale,
-        view
+        view, 
+        data
       )
       drawCountyLevelCircles(countyLevelData(null, data), g)
     }
@@ -184,7 +186,8 @@ function MapViz({
       IdmapDataState,
       clicked,
       colorScale,
-      view
+      view, 
+      data
     )
     if (view !== 'states') {
       drawCountyLevelCircles(data, g)

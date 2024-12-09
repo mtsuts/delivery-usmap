@@ -6,6 +6,7 @@ import 'tippy.js/dist/backdrop.css'
 import { createRoot } from 'react-dom/client'
 
 function StateLevelTooltip(event: any, d: any, data: any) {
+  console.log(data)
   // Generate Tooltip Data
   const stateName = d.properties.name
   const stateDeliveries = data.filter((x: any) => x.state === d.properties.name)
@@ -30,7 +31,6 @@ function StateLevelTooltip(event: any, d: any, data: any) {
       .reduce((acc: number, curr: any) => acc + curr, 0) /
     stateDeliveries.length
   ).toFixed(1)
-
   // Tooltip content
   const content = (
     <>
@@ -67,7 +67,7 @@ function StateLevelTooltip(event: any, d: any, data: any) {
       content: container,
       arrow: false,
       theme: 'light-border',
-      placement: 'left-start',
+      placement: 'bottom-start',
     })
   }
 }
@@ -76,7 +76,7 @@ function StateLevelTooltip(event: any, d: any, data: any) {
 function CountyLevelTooltip(event: any, d: any) {
   const content = (
     <>
-      <div style={{ fontSize: '16px', fontWeight: 'bold' }}>{d.county}</div>
+      <div style={{ fontSize: '16px', fontWeight: 'bold' }}>{d.county} County</div>
       <table style={{ width: '100%', borderCollapse: 'collapse' }}>
         <thead>
           <tr>

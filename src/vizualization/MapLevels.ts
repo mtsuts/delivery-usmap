@@ -9,16 +9,17 @@ let tippyInstanceState: any
 
 // Draw state level map
 function StateLevelMap(
-  data: any,
+  pathData: any,
   g: any,
   IdmapDataState: any,
   clicked: Function,
   colorScale: Function,
-  view: string
+  view: string,
+  data: any
 ) {
   // Draw state paths
   g.selectAll('path')
-    .data(data)
+    .data(pathData)
     .join('path')
     .attr('class', 'path')
     .attr('d', path)
@@ -40,7 +41,7 @@ function StateLevelMap(
 
   // Append text elements on state paths
   g.selectAll('text')
-    .data(data)
+    .data(pathData)
     .join('text')
     .attr('class', 'path-label')
     .attr('x', (d: any) => {
