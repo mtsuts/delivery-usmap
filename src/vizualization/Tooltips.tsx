@@ -9,7 +9,6 @@ import ProgressBar from './ProgressBar'
 
 // Generate tooltip instance
 function generateTooltipContent(event: any, data: any, title: string) {
-  console.log(data)
   const content = (
     <>
       <div style={{ fontSize: '20px', fontWeight: 'bold' }}>{title}</div>
@@ -60,12 +59,12 @@ function StateLevelTooltip(event: any, d: any, data: any) {
   if (!data) return
 
   // Tooltip content
-  generateTooltipContent(event, data, stateName)
+  return generateTooltipContent(event, data, stateName)
 }
 
 // County level tooltip generator
 function CountyLevelTooltip(event: any, d: any) {
-  generateTooltipContent(event, d, d.county)
+  return generateTooltipContent(event, d, d.county)
 }
 
 function ZipCodeLevelTooltip(event: any, data: any) {

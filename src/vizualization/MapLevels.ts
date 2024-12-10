@@ -31,7 +31,7 @@ function StateLevelMap(
     .on('click', clicked)
     .on('mouseover', (event: any, d: any) => {
       if (view === 'states') {
-        const stateData = stateLevelData(d, data)
+        const stateData = stateLevelData(d.properties.name, data)
         if (tippyInstanceState) {
           tippyInstanceState.destroy()
         }
