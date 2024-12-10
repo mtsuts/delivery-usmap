@@ -1,7 +1,7 @@
 import React from 'react'
 import * as d3 from 'd3'
-import { MapVizProps } from './types'
-import { CountyLevelTooltip, ZipCodeLevelTooltip } from './tooltips/Tooltips'
+import { MapVizProps } from '../types'
+import { CountyLevelTooltip, ZipCodeLevelTooltip } from '../components/Tooltips'
 import { MapView } from './MapView'
 import { countyLevelData } from '../data/data'
 

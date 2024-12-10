@@ -1,5 +1,5 @@
 import * as d3 from 'd3'
-import { StateLevelTooltip } from './tooltips/Tooltips'
+import { StateLevelTooltip } from '../components/Tooltips'
 import { stateLevelData } from '../data/data'
 
 // Path generator

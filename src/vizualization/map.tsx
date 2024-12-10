@@ -1,11 +1,11 @@
 import * as React from 'react'
 import { AppContext } from '../components/AppContext'
-import SideBar from './vizFilters/SideBar'
+import SideBar from '../components/SideBar'
 import countiesViewImage from '../images/countiesView.png'
 import stateView from '../images/stateView.png'
 import MapViz from './MapViz'
-import { MapProps, Data } from './types'
-import LegendBar from './vizFilters/Legend'
+import { MapProps, Data } from '../types'
+import LegendBar from '../components/Legend'
 
 function UsMap(params: MapProps) {
   const [view, setView] = React.useState<'states' | 'counties' | 'zipcodes'>(

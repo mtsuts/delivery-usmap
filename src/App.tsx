@@ -7,7 +7,7 @@ import UsMap from './vizualization/Map'
 import mapjson from './data/map.json'
 import dayjs from 'dayjs'
 import { AppContext } from './components/AppContext'
-import { geocode } from './vizualization/utils'
+import { geocode } from './utils'
 import csvData from './data/data.csv'
 
 interface Data {
