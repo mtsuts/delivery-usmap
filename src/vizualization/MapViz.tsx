@@ -190,7 +190,7 @@ function MapViz({
       drawCountyLevelCircles(countyLevelData(null, data), g)
     } else if (view === 'zipcodes') {
       StateLevelMap(
-        countiesJson.features,
+        stateJson.features,
         g,
         IdmapDataState,
         clicked,

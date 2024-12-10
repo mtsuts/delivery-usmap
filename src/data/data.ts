@@ -23,7 +23,7 @@ function countyLevelData(id: any, data: any) {
     (group) =>
       Math.floor(
         d3.sum(group, (d: any) => d.delivery_speed) / group.length
-      ).toFixed(1),
+      ),
     (x: any) => x.county
   )
 
@@ -88,7 +88,7 @@ function stateLevelData(state: any, data: any) {
     (group) =>
       Math.floor(
         d3.sum(group, (x: any) => x.delivery_speed) / group.length
-      ).toFixed(1),
+      ),
     (x: any) => x.state
   )
   const uniqueStateData = new Set()

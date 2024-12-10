@@ -14,9 +14,9 @@ function generateTooltipContent(event: any, data: any, title: string) {
       <table style={{ width: '100%', borderCollapse: 'collapse' }}>
         <thead>
           <tr>
-            <th>Records</th>
-            <th>Delivered (%)</th>
-            <th>In Transit (%)</th>
+            <th>Mailpieces</th>
+            <th>Delivered</th>
+            <th>In-Transit</th>
             <th>Avg. Speed</th>
           </tr>
         </thead>
@@ -25,7 +25,7 @@ function generateTooltipContent(event: any, data: any, title: string) {
             <td>{data?.aggregateValue || ''}</td>
             <td>{data?.deliveryPrc || ''}%</td>
             <td>{data?.inTransitPrc || ''}%</td>
-            <td>{data?.aggregateAvgSpeed || ''}</td>
+            <td>{data?.aggregateAvgSpeed || ''} days</td>
           </tr>
         </tbody>
       </table>

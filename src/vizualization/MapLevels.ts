@@ -71,12 +71,13 @@ function StateLevelMap(
       const centroid = path.centroid(d)
       return centroid[1]
     })
+
     .attr('text-anchor', 'middle')
     .attr('dx', '0.2em')
     .attr('dy', '0.35em')
     .text((d: any) => d.properties.code)
     .style('font-size', '15px')
-    .attr('fill', '#e1f5fe')
+    .attr('fill', '#fff')
     .style('font-weight', 'bold')
 }
 
