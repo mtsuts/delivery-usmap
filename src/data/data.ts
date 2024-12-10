@@ -21,9 +21,7 @@ function countyLevelData(id: any, data: any) {
   const rolledUpDataSpeed = d3.rollup(
     stateData,
     (group) =>
-      Math.floor(
-        d3.sum(group, (d: any) => d.delivery_speed) / group.length
-      ),
+      Math.floor(d3.sum(group, (d: any) => d.delivery_speed) / group.length),
     (x: any) => x.county
   )
 
@@ -41,11 +39,13 @@ function countyLevelData(id: any, data: any) {
             rolledUpDataValue.get(d.county)) *
             100
         ),
-        inTransitPrc: Math.floor(
-          (stateData.filter((d: any) => d.status === 'In Transit').length /
-            stateData.length) *
-            100
-        ),
+        inTransitPrc:
+          100 -
+          Math.floor(
+            (rolledUpDataDelivered.get(d.county) /
+              rolledUpDataValue.get(d.county)) *
+              100
+          ),
         x: d.x,
         y: d.y,
       }
@@ -86,9 +86,7 @@ function stateLevelData(state: any, data: any) {
   const rolledUpDataSpeed = d3.rollup(
     stateDeliveries,
     (group) =>
-      Math.floor(
-        d3.sum(group, (x: any) => x.delivery_speed) / group.length
-      ),
+      Math.floor(d3.sum(group, (x: any) => x.delivery_speed) / group.length),
     (x: any) => x.state
   )
   const uniqueStateData = new Set()
@@ -102,12 +100,13 @@ function stateLevelData(state: any, data: any) {
             rolledUpDataValue.get(x.state)) *
             100
         ),
-        inTransitPrc: Math.floor(
-          (stateDeliveries.filter((a: any) => a.status === 'In Transit')
-            .length /
-            stateDeliveries.length) *
-            100
-        ),
+        inTransitPrc:
+          100 -
+          Math.floor(
+            (rolledUpDataDelivered.get(x.state) /
+              rolledUpDataValue.get(x.state)) *
+              100
+          ),
         aggregateAvgSpeed: rolledUpDataSpeed.get(x.state),
       }
     })

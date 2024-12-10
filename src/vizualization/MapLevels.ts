@@ -44,7 +44,6 @@ function StateLevelMap(
     .style('cursor', 'pointer')
     .on('click', clicked)
     .on('mouseover', function (event: any, d: any) {
-      d3.select(this).attr('stroke', '#000').attr('stroke-width', 1)
       if (view === 'states') {
         const stateData = stateLevelData(d.properties.name, data)
         if (tippyInstanceState) {
@@ -55,7 +54,6 @@ function StateLevelMap(
         console.log('No Tooltip')
       }
     }).on('mouseout', function(event: any, d:any){
-      d3.select(this).attr('stroke', '#fff').attr('stroke-width', 0.5)
     })
 
   // Append text elements on state paths

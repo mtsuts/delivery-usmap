@@ -22,10 +22,10 @@ function generateTooltipContent(event: any, data: any, title: string) {
         </thead>
         <tbody>
           <tr>
-            <td>{data?.aggregateValue || ''}</td>
-            <td>{data?.deliveryPrc || ''}%</td>
-            <td>{data?.inTransitPrc || ''}%</td>
-            <td>{data?.aggregateAvgSpeed || ''} days</td>
+            <td>{data?.aggregateValue || 0}</td>
+            <td>{data?.deliveryPrc || 0}%</td>
+            <td>{data?.inTransitPrc || 0}%</td>
+            <td>{data?.aggregateAvgSpeed || 0} days</td>
           </tr>
         </tbody>
       </table>
@@ -63,7 +63,8 @@ function StateLevelTooltip(event: any, d: any, data: any) {
 
 // County level tooltip generator
 function CountyLevelTooltip(event: any, d: any) {
-  return generateTooltipContent(event, d, d.county)
+  const title = `${d.county} County`
+  return generateTooltipContent(event, d, title)
 }
 
 function ZipCodeLevelTooltip(event: any, data: any) {

@@ -122,7 +122,7 @@ function MapViz({
         d3.min(circlesData, (d: any) => Number(d.value)),
         d3.max(circlesData, (d: any) => Number(d.value)),
       ])
-      .range([5, 15])
+      .range([5, 25])
 
     if (circlesData.length) {
       g.selectAll('circle')
@@ -179,7 +179,7 @@ function MapViz({
       drawCountyLevelCircles([], g)
     } else if (view === 'counties') {
       StateLevelMap(
-        countiesJson.features,
+        stateJson.features,
         g,
         IdmapDataState,
         clicked,
