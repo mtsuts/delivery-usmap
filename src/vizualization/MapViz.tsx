@@ -134,7 +134,7 @@ function MapViz({
         .attr('cy', (d: any) => d.y)
         .attr('r', (d: any) => radiusScale(d.value) / transform.k)
         .attr('fill', (d: any) =>
-          d.status === 'In Transit' ? '#006CD0' : '#00D06C'
+          d.status === 'In Transit' ? '#00D06C' : '#00D06C'
         )
         .attr('stroke', '#fff')
         .attr('stroke-width', 0.5)

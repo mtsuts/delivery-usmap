@@ -23,9 +23,9 @@ function StateLevelMap(
     const foundState = aggregate.find((x: any) => x.state === state)
     if (foundState === undefined) return
     if (foundState.deliveryPrc > 50) {
-      return '#006CD0'
+      return '#00A356'
     } else if (foundState.deliveryPrc <= 50) {
-      return '#c93235'
+      return '#33E48E'
     }
   }
   getStateColor('California')

@@ -34,7 +34,7 @@ const LegendBar = () => {
         <div
           style={{
             width: `${redWidth}px`,
-            backgroundColor: '#c93235',
+            backgroundColor: '#33E48E',
             height: '100%',
           }}
         ></div>
@@ -42,7 +42,7 @@ const LegendBar = () => {
         <div
           style={{
             width: `${blueWidth}px`,
-            backgroundColor: '#006CD0',
+            backgroundColor: '#00D06C',
             height: '100%',
           }}
         ></div>

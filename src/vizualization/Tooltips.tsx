@@ -33,7 +33,7 @@ function generateTooltipContent(event: any, data: any, title: string) {
         <ProgressBar
           progress={data.deliveryPrc / 100}
           width={300}
-          color={data.deliveryPrc > 50 ? '#006CD0' : '#c93235'}
+          color={data.deliveryPrc > 50 ? '#00D06C' : '#33E48E'}
         />
       </div>
     </>

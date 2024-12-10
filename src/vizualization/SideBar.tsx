@@ -8,14 +8,14 @@ const SideBar = ({ data, buttonClick }: SideBarProps) => {
       <button
         onClick={buttonClick}
         style={{
-          backgroundColor: '#c93235',
-          borderRadius: '5px',
-          color: '#fff',
+          backgroundColor: '#fff',
+          borderRadius: '7px',
+          borderColor: '#000',
+          color: '#000',
           padding: '10px',
           fontWeight: '600',
           zIndex: 1000,
           cursor: 'pointer',
-          border: 'none',
           margin: '20px 40px',
         }}
       >
