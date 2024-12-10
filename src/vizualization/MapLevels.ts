@@ -74,8 +74,8 @@ function StateLevelMap(
     .attr('dy', '0.35em')
     .text((d: any) => d.properties.code)
     .style('font-size', '15px')
-    .attr('fill', '#fff')
-    .style('font-weight', 'bold')
+    .attr('fill', (view === 'states') ? '#fff' : "#000")
+    .style('font-weight', (view === 'states') ? 'bold' : '400')
 }
 
 export { StateLevelMap }
