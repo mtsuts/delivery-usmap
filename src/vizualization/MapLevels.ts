@@ -20,9 +20,9 @@ function StateLevelMap(
 ) {
   const aggregate = stateLevelData(null, data)
   const colorScales = d3
-    .scaleLog<string>()
-    .domain(d3.extent(aggregate, (d: any) => d.aggregateValue) as any)
-    .range(['#33E48E', '#004223'])
+    .scaleLinear<string>()
+    .domain(d3.extent(aggregate, (d: any) => d?.deliveryPrc) as any)
+    .range(['#33E48E', '#004223'] as [string, string])
   console.log(aggregate)
 
   // Draw state paths
@@ -35,7 +35,7 @@ function StateLevelMap(
       view === 'states'
         ? colorScales(
             aggregate.find((x: any) => x.state === d.properties.name)
-              ?.aggregateValue
+              ?.deliveryPrc
           ) || '#f3f3f3'
         : '#f3f3f3'
     )

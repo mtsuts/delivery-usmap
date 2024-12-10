@@ -28,7 +28,7 @@ const SideBar = ({ data, buttonClick }: SideBarProps) => {
             backgroundColor: 'white',
             width: 220,
             cursor: 'pointer',
-            borderRadius: '7px', 
+            borderRadius: '7px',
             borderColor: '#000',
             // textAlign: 'center',
             marginLeft: '40px',

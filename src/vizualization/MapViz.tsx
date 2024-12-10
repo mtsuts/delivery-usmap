@@ -58,11 +58,6 @@ function MapViz({
     if (!circlesData) return
     g.selectAll('.circle').remove()
 
-    const colorScale = d3
-      .scaleLog<string>()
-      .domain(d3.extent(data, (d: any) => d.value) as [number, number])
-      .range(color)
-
     // Circle Radius Scale
     const radiusScale = d3
       .scaleLog()

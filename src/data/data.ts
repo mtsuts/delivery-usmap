@@ -118,8 +118,8 @@ function stateLevelData(state: any, data: any) {
       uniqueStateData.add(item.state)
       return true
     })
-  if (state) return finalData[0]
-  return finalData
+  if (state) return finalData.filter((d: any) => d.deliveryPrc >= 0)[0]
+  return finalData.filter((d: any) => d.deliveryPrc >= 0)
 }
 
 export { countyLevelData, stateLevelData }
