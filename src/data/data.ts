@@ -30,7 +30,7 @@ function countyLevelData(id: any, data: any) {
         aggregateValue: rolledUpDataValue.get(d.county),
         aggregateAvgSpeed: rolledUpDataSpeed.get(d.county),
         deliveryPrc: Math.floor(
-          (stateData.filter((d:any) => d.status === 'Delivered').length /
+          (stateData.filter((d) => d.status === 'Delivered').length /
             stateData.length) *
             100
         ),

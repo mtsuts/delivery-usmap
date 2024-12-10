@@ -67,8 +67,8 @@ function MapViz({
     const radiusScale = d3
       .scaleLog()
       .domain([
-        d3.min(circlesData, (d: any) => Number(d.aggreagteValue)),
-        d3.max(circlesData, (d: any) => Number(d.aggreagteValue)),
+        d3.min(circlesData, (d: any) => Number(d.aggregateValue)),
+        d3.max(circlesData, (d: any) => Number(d.aggregateValue)),
       ])
       .range([5, 20])
 
@@ -79,7 +79,7 @@ function MapViz({
         .attr('class', 'circle')
         .attr('cx', (d: any) => d.x)
         .attr('cy', (d: any) => d.y)
-        .attr('r', (d: any) => radiusScale(d.aggreagteValue))
+        .attr('r', (d: any) => radiusScale(d.aggregateValue))
         .attr('fill', '#006CD0')
         .attr('stroke', '#fff')
         .attr('stroke-width', 0.5)
@@ -87,7 +87,7 @@ function MapViz({
         .style('cursor', 'pointer')
         .on('click', (event: any, d: any) => {
           const zipCodeLevelData = data.filter((x) => x.county === d.county)
-          if (d.aggreagteValue === 1) return
+          if (d.aggregateValue === 1) return
           drawZipCodeLevelCircles(zipCodeLevelData, g)
           const zipCodeData = countiesJson.features.filter(
             (x: any) => x.id === d.countyId
