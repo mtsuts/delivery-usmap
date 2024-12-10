@@ -1,12 +1,12 @@
 import * as React from 'react'
 import { AppContext } from '../components/AppContext'
 import * as d3 from 'd3'
-import SideBar from './SideBar'
+import SideBar from './viewButtons/SideBar'
 import countiesViewImage from '../images/countiesView.png'
 import stateView from '../images/stateView.png'
 import MapViz from './MapViz'
 import { MapProps, Data } from './types'
-import LegendBar from './Legend'
+import LegendBar from './viewButtons/Legend'
 import ZoomButtons from './ZoomButtons'
 
 function UsMap(params: MapProps) {

@@ -1,8 +1,8 @@
 import React from 'react'
 import * as d3 from 'd3'
 import { MapVizProps } from './types'
-import { CountyLevelTooltip, ZipCodeLevelTooltip } from './Tooltips'
-import { StateLevelMap } from './MapLevels'
+import { CountyLevelTooltip, ZipCodeLevelTooltip } from './tooltips/Tooltips'
+import { MapView } from './MapView'
 import { countyLevelData } from '../data/data'
 
 function MapViz({
@@ -46,12 +46,6 @@ function MapViz({
 
   // Path generator
   const path = d3.geoPath()
-
-  // State color scale of the map
-  const colorScale = d3
-    .scaleLog<string>()
-    .domain(d3.extent(data, (d) => d.value) as [number, number])
-    .range(color)
 
   // Tippy instance for county level
   let tippyInstanceCountyLevel: any
@@ -122,12 +116,6 @@ function MapViz({
     if (!circlesData) return
     g.selectAll('.circle').remove()
 
-    //Circle color Scale
-    const colorScales = d3
-      .scaleLinear<string>()
-      .domain(d3.extent(circlesData, (d: any) => d?.deliveryPrc) as any)
-      .range(['#33E48E', '#004223'] as [string, string])
-
     // Circle radius scale
     const radiusScale = d3
       .scaleLog()
@@ -183,7 +171,7 @@ function MapViz({
   // Draw map, based on view
   function updateView(view: 'states' | 'counties') {
     if (view === 'states') {
-      StateLevelMap(
+      MapView(
         stateJson.features,
         g,
         clicked,
@@ -192,7 +180,7 @@ function MapViz({
       )
       drawCountyLevelCircles([], g, false)
     } else if (view === 'counties') {
-      StateLevelMap(
+      MapView(
         stateJson.features,
         g,
         clicked,
@@ -201,7 +189,7 @@ function MapViz({
       )
       drawCountyLevelCircles(countyLevelData(null, data), g, true)
     } else if (view === 'zipcodes') {
-      StateLevelMap(
+      MapView(
         stateJson.features,
         g,
         clicked,
@@ -215,7 +203,7 @@ function MapViz({
   // Zoom reset
   function reset() {
     svg.transition().duration(1000).call(zoom.transform, d3.zoomIdentity)
-    StateLevelMap(
+    MapView(
       view === 'states' ? stateJson.features : countiesJson.features,
       g,
       clicked,

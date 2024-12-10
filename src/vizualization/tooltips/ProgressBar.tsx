@@ -1,6 +1,6 @@
 import React from 'react'
 import * as d3 from 'd3'
-import { ProgressBarProps } from './types'
+import { ProgressBarProps } from '../types'
 
 const ProgressBar = ({ progress, width, color }: ProgressBarProps) => {
   React.useEffect(() => {

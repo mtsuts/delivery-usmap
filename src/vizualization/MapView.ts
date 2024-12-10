@@ -1,5 +1,5 @@
 import * as d3 from 'd3'
-import { StateLevelTooltip } from './Tooltips'
+import { StateLevelTooltip } from './tooltips/Tooltips'
 import { stateLevelData } from '../data/data'
 
 // Path generator
@@ -9,7 +9,7 @@ const path = d3.geoPath()
 let tippyInstanceState: any
 
 // Draw state level map
-function StateLevelMap(
+function MapView(
   pathData: any,
   g: any,
   clicked: Function,
@@ -77,4 +77,4 @@ function StateLevelMap(
     .style('font-weight', view === 'states' ? 'bold' : '400')
 }
 
-export { StateLevelMap }
+export { MapView }

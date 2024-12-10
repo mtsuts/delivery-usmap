@@ -1,6 +1,5 @@
 import React from 'react'
-import { SideBarProps } from './types'
-import LegendBar from './Legend'
+import { SideBarProps } from '../types'
 
 const SideBar = ({ data, buttonClick }: SideBarProps) => {
   return (
