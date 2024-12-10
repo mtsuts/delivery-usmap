@@ -1,13 +1,11 @@
 import * as React from 'react'
 import { AppContext } from '../components/AppContext'
-import * as d3 from 'd3'
-import SideBar from './viewButtons/SideBar'
+import SideBar from './vizFilters/SideBar'
 import countiesViewImage from '../images/countiesView.png'
 import stateView from '../images/stateView.png'
 import MapViz from './MapViz'
 import { MapProps, Data } from './types'
-import LegendBar from './viewButtons/Legend'
-import ZoomButtons from './ZoomButtons'
+import LegendBar from './vizFilters/Legend'
 
 function UsMap(params: MapProps) {
   const [view, setView] = React.useState<'states' | 'counties' | 'zipcodes'>(
@@ -69,10 +67,8 @@ function UsMap(params: MapProps) {
   return (
     <div>
       <SideBar data={sideBarData} buttonClick={() => map.current.reset()} />
-      {/* <ZoomButtons /> */}
       <div id={params.container}></div>
       <div style={{ marginLeft: '40px', marginBottom: '120px' }}>
-        {/* <div style={{ fontWeight: 'bold'}}> Legend</div> */}
         <div>
           <LegendBar />
         </div>
