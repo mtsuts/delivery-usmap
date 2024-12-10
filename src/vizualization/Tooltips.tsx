@@ -6,126 +6,65 @@ import 'tippy.js/dist/backdrop.css'
 import { createRoot } from 'react-dom/client'
 import ProgressBar from './ProgressBar'
 
-function StateLevelTooltip(event: any, d: any, data: any) {
-  // Generate Tooltip Data
-  const stateName = d.properties.name
-  const stateDeliveries = data.filter((x: any) => x.state === d.properties.name)
-  const recordsCount = stateDeliveries.reduce(
-    (acc: number, curr: any) => acc + curr.value,
-    0
-  )
-  const inTransitPercentage = Math.floor(
-    (stateDeliveries.filter((d: any) => d.status === 'In Transit').length /
-      stateDeliveries.length) *
-      100
-  )
-  const deliverCountPercentage = Math.floor(
-    (stateDeliveries.filter((d: any) => d.status === 'Delivered').length /
-      stateDeliveries.length) *
-      100
-  )
-
-  const averageDeliverySpeed = (
-    stateDeliveries
-      .map((x: any) => x.delivery_speed)
-      .reduce((acc: number, curr: any) => acc + curr, 0) /
-    stateDeliveries.length
-  ).toFixed(1)
-  console.log(deliverCountPercentage)
-  // Tooltip content
+// Generate tooltip instance
+function generateTooltipContent(event: any, data: any, title: string) {
   const content = (
     <>
-      <div style={{ fontSize: '20px', fontWeight: 'bold' }}>{stateName}</div>
+      <div style={{ fontSize: '20px', fontWeight: 'bold' }}>{title}</div>
       <table style={{ width: '100%', borderCollapse: 'collapse' }}>
         <thead>
           <tr>
-            <th>Records</th>
-            <th>Delivered (%)</th>
-            <th>In Transit (%)</th>
+            <th>Mailpieces</th>
+            <th>Delivered</th>
+            <th>In-Transit</th>
             <th>Avg. Speed</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td>{recordsCount}</td>
-            <td>{deliverCountPercentage}%</td>
-            <td>{inTransitPercentage}%</td>
-            <td> {averageDeliverySpeed}</td>
+            <td>{data?.aggregateValue || 0}</td>
+            <td>{data?.deliveryPrc || 0}%</td>
+            <td>{data?.inTransitPrc || 0}%</td>
+            <td>{data?.aggregateAvgSpeed || 0} days</td>
           </tr>
         </tbody>
       </table>
       <div style={{ marginTop: '10px' }}>
         <ProgressBar
-          progress={deliverCountPercentage / 100}
+          progress={data.deliveryPrc / 100}
           width={300}
-          color={deliverCountPercentage > 50 ? '#006CD0' : '#c93235'}
+          color={data.deliveryPrc > 50 ? '#006CD0' : '#c93235'}
         />
       </div>
     </>
   )
-
-  // Create a container to render the React element for tippy
   const container = document.createElement('div')
   createRoot(container).render(content)
 
   // Tooltip instance
-  if (recordsCount) {
-    return tippy(event.target, {
-      allowHTML: true,
-      content: container,
-      arrow: false,
-      theme: 'light-border',
-      placement: 'bottom-start',
-    })
-  }
-}
-
-// County level tooltip generator
-function CountyLevelTooltip(event: any, d: any) {
-  const content = (
-    <>
-      <div style={{ fontSize: '16px', fontWeight: 'bold' }}>
-        {d.county} County
-      </div>
-      <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-        <thead>
-          <tr>
-            <th>Records</th>
-            <th>Delivered (%)</th>
-            <th>In Transit (%)</th>
-            <th>Avg. Speed</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>{d.aggreagteValue}</td>
-            <td>{d.deliveryPrc}%</td>
-            <td>{d.inTransitPrc}%</td>
-            <td>{d.aggregateAvgSpeed}</td>
-          </tr>
-        </tbody>
-      </table>
-      <div style={{ marginTop: '10px' }}>
-        <ProgressBar
-          progress={d.deliveryPrc / 100}
-          width={300}
-          color={d.deliveryPrc > 50 ? '#006CD0' : '#c93235'}
-        />
-      </div>
-    </>
-  )
-
-  // Create a container to render the React element
-  const container = document.createElement('div')
-  createRoot(container).render(content)
-
   return tippy(event.target, {
     allowHTML: true,
     content: container,
     arrow: false,
     theme: 'light-border',
-    placement: 'bottom-end',
+    placement: 'bottom-start',
   })
+}
+
+function StateLevelTooltip(event: any, d: any, data: any) {
+  // Generate Tooltip Data
+  const stateName = d.properties.name
+
+  if (!data) return
+
+  // Tooltip content
+  return generateTooltipContent(event, data, stateName)
+}
+
+// County level tooltip generator
+function CountyLevelTooltip(event: any, d: any) {
+  const title = `${d.county} County`
+  return generateTooltipContent(event, d, title)
 }
 
 function ZipCodeLevelTooltip(event: any, data: any) {

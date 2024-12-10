@@ -40,7 +40,7 @@ export interface MapVizProps {
   mobileHeight: number
   desktopHeight: number
   color: string[]
-  view: 'states' | 'counties'
+  view: 'states' | 'counties' | 'zipcodes'
 }
 
 export type SideBarProps = {

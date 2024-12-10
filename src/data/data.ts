@@ -11,12 +11,17 @@ function countyLevelData(id: any, data: any) {
     (x: any) => x.county
   )
 
+  const rolledUpDataDelivered = d3.rollup(
+    stateData,
+    (group) =>
+      d3.sum(group, (x: any) => (x.status === 'Delivered' ? x.value : 0)),
+    (x: any) => x.county
+  )
+
   const rolledUpDataSpeed = d3.rollup(
     stateData,
     (group) =>
-      Math.floor(
-        d3.sum(group, (d: any) => d.delivery_speed) / group.length
-      ).toFixed(1),
+      Math.floor(d3.sum(group, (d: any) => d.delivery_speed) / group.length),
     (x: any) => x.county
   )
 
@@ -27,18 +32,20 @@ function countyLevelData(id: any, data: any) {
       return {
         countyId: d.countyId,
         county: d.county,
-        aggreagteValue: rolledUpDataValue.get(d.county),
+        aggregateValue: rolledUpDataValue.get(d.county),
         aggregateAvgSpeed: rolledUpDataSpeed.get(d.county),
         deliveryPrc: Math.floor(
-          (stateData.filter((d) => d.status === 'Delivered').length /
-            stateData.length) *
+          (rolledUpDataDelivered.get(d.county) /
+            rolledUpDataValue.get(d.county)) *
             100
         ),
-        inTransitPrc: Math.floor(
-          (stateData.filter((d) => d.status === 'In Transit').length /
-            stateData.length) *
-            100
-        ),
+        inTransitPrc:
+          100 -
+          Math.floor(
+            (rolledUpDataDelivered.get(d.county) /
+              rolledUpDataValue.get(d.county)) *
+              100
+          ),
         x: d.x,
         y: d.y,
       }
@@ -52,4 +59,66 @@ function countyLevelData(id: any, data: any) {
     })
 }
 
-export { countyLevelData }
+function stateLevelData(state: any, data: any) {
+  const stateDeliveries = state
+    ? data.filter((x: any) => x.state === state)
+    : data
+
+  // Rollup data based on state name
+  const rolledUpDataValue = d3.rollup(
+    stateDeliveries,
+    (group) => d3.sum(group, (x: any) => x.value),
+    (x: any) => x.state
+  )
+
+  const rolledUpDataDelivered = d3.rollup(
+    stateDeliveries,
+    (group) =>
+      d3.sum(group, (x: any) => (x.status === 'Delivered' ? x.value : 0)),
+    (x: any) => x.state
+  )
+
+  rolledUpDataDelivered.delete(undefined)
+  rolledUpDataDelivered.delete('')
+  rolledUpDataValue.delete(undefined)
+  rolledUpDataValue.delete('')
+
+  const rolledUpDataSpeed = d3.rollup(
+    stateDeliveries,
+    (group) =>
+      Math.floor(d3.sum(group, (x: any) => x.delivery_speed) / group.length),
+    (x: any) => x.state
+  )
+  const uniqueStateData = new Set()
+  const finalData = stateDeliveries
+    .map((x: any) => {
+      return {
+        state: x.state,
+        aggregateValue: rolledUpDataValue.get(x.state),
+        deliveryPrc: Math.floor(
+          (rolledUpDataDelivered.get(x.state) /
+            rolledUpDataValue.get(x.state)) *
+            100
+        ),
+        inTransitPrc:
+          100 -
+          Math.floor(
+            (rolledUpDataDelivered.get(x.state) /
+              rolledUpDataValue.get(x.state)) *
+              100
+          ),
+        aggregateAvgSpeed: rolledUpDataSpeed.get(x.state),
+      }
+    })
+    .filter((item: any) => {
+      if (uniqueStateData.has(item.state)) {
+        return false
+      }
+      uniqueStateData.add(item.state)
+      return true
+    })
+  if (state) return finalData[0]
+  return finalData
+}
+
+export { countyLevelData, stateLevelData }
