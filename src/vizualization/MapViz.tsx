@@ -28,7 +28,7 @@ function MapViz({
 
   let transform = d3.zoomIdentity
   // Initial zoom
-  const zoom = d3.zoom().scaleExtent([1, 8]).on('zoom', zoomed)
+  const zoom = d3.zoom().scaleExtent([1, 6]).on('zoom', zoomed)
 
   // SVG container
   const svg = container
@@ -208,7 +208,7 @@ function MapViz({
 
   // Zoom reset
   function reset() {
-    svg.transition().duration(750).call(zoom.transform, d3.zoomIdentity)
+    svg.transition().duration(1000).call(zoom.transform, d3.zoomIdentity)
     StateLevelMap(
       view === 'states' ? stateJson.features : countiesJson.features,
       g,
@@ -228,14 +228,14 @@ function MapViz({
   // Handle click zoom
   function zoomToCounty(event: any, d: any) {
     const [[x0, y0], [x1, y1]] = path.bounds(d)
-    const scale = Math.min(12, 0.9 / Math.max((x1 - x0) / 975, (y1 - y0) / 710))
+    const scale = Math.min(6, 0.9 / Math.max((x1 - x0) / 975, (y1 - y0) / 710))
     const translateX = 975 / 2 - (scale * (x0 + x1)) / 2
     const translateY = 710 / 2 - (scale * (y0 + y1)) / 2
 
     // event.stopPropagation()
     svg
       .transition()
-      .duration(750)
+      .duration(1000)
       .call(
         zoom.transform,
         d3.zoomIdentity.translate(translateX, translateY).scale(scale)
