@@ -8,7 +8,9 @@ import MapViz from './MapViz'
 import { MapProps, Data } from './types'
 
 function UsMap(params: MapProps) {
-  const [view, setView] = React.useState<'states' | 'counties' | 'zipcodes'>('states')
+  const [view, setView] = React.useState<'states' | 'counties' | 'zipcodes'>(
+    'states'
+  )
   const { data, setData } = React.useContext(AppContext) as Data
 
   const map = React.useRef(null)
@@ -36,7 +38,6 @@ function UsMap(params: MapProps) {
       isActive: view === 'zipcodes',
     },
   ]
- 
 
   React.useEffect(() => {
     if (data.length) {
@@ -64,9 +65,9 @@ function UsMap(params: MapProps) {
   }, [view])
 
   return (
-    <div style={{ display: 'flex' }}>
+    <div>
       <SideBar data={sideBarData} buttonClick={() => map.current.reset()} />
-      <div style={{ flexGrow: 1 }} id={params.container}></div>
+      <div id={params.container}></div>
     </div>
   )
 }

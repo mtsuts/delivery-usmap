@@ -2,7 +2,6 @@ import React from 'react'
 
 const LegendBar = () => {
   const percentage = 100
-
   const redWidth = Math.min(percentage, 50) * 2
   const blueWidth = Math.max(percentage - 50, 0) * 2
 
