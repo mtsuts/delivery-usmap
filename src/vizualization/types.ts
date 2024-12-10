@@ -36,7 +36,6 @@ export interface MapVizProps {
     x: number
     y: number
   }[]
-  IdmapDataState: Map<string, number>
   mobileHeight: number
   desktopHeight: number
   color: string[]

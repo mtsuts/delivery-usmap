@@ -12,9 +12,7 @@ let tippyInstanceState: any
 function StateLevelMap(
   pathData: any,
   g: any,
-  IdmapDataState: any,
   clicked: Function,
-  colorScale: Function,
   view: string,
   data: any
 ) {
@@ -41,7 +39,10 @@ function StateLevelMap(
     .attr('stroke', '#fff')
     .attr('stroke-width', 0.5)
     .style('cursor', 'pointer')
-    .on('click', clicked)
+    .on('click', (event: any, d: any) => {
+      if (view === 'counties' || view === 'zipcodes') return
+      clicked(event, d)
+    })
     .on('mouseover', function (event: any, d: any) {
       if (view === 'states') {
         const stateData = stateLevelData(d.properties.name, data)
@@ -49,8 +50,6 @@ function StateLevelMap(
           tippyInstanceState.destroy()
         }
         tippyInstanceState = StateLevelTooltip(event, d, stateData)
-      } else {
-        console.log('No Tooltip')
       }
     })
     .on('mouseout', function (event: any, d: any) {})
@@ -74,8 +73,8 @@ function StateLevelMap(
     .attr('dy', '0.35em')
     .text((d: any) => d.properties.code)
     .style('font-size', '15px')
-    .attr('fill', (view === 'states') ? '#fff' : "#000")
-    .style('font-weight', (view === 'states') ? 'bold' : '400')
+    .attr('fill', view === 'states' ? '#fff' : '#000')
+    .style('font-weight', view === 'states' ? 'bold' : '400')
 }
 
 export { StateLevelMap }

@@ -7,6 +7,7 @@ import stateView from '../images/stateView.png'
 import MapViz from './MapViz'
 import { MapProps, Data } from './types'
 import LegendBar from './Legend'
+import ZoomButtons from './ZoomButtons'
 
 function UsMap(params: MapProps) {
   const [view, setView] = React.useState<'states' | 'counties' | 'zipcodes'>(
@@ -28,14 +29,18 @@ function UsMap(params: MapProps) {
       label: 'County View',
       imageSrc: countiesViewImage,
       position: 250,
-      onClick: () => setView('counties'),
+      onClick: () => {
+        setView('counties')
+      },
       isActive: view === 'counties',
     },
     {
       label: 'Zip Code View',
       imageSrc: countiesViewImage,
       position: 250,
-      onClick: () => setView('zipcodes'),
+      onClick: () => {
+        setView('zipcodes')
+      },
       isActive: view === 'zipcodes',
     },
   ]
@@ -50,15 +55,11 @@ function UsMap(params: MapProps) {
         mobileHeight: params.mobileHeight,
         desktopHeight: params.desktopHeight,
         color: params.color,
-        IdmapDataState: d3.rollup(
-          data,
-          (d) => d3.sum(d, (x: any) => x.value),
-          (d: any) => d.id
-        ),
         view: view,
       })
     }
   }, [data])
+
   React.useEffect(() => {
     if (map.current) {
       map.current.updateView(view)
@@ -68,6 +69,7 @@ function UsMap(params: MapProps) {
   return (
     <div>
       <SideBar data={sideBarData} buttonClick={() => map.current.reset()} />
+      {/* <ZoomButtons /> */}
       <div id={params.container}></div>
       <div style={{ marginLeft: '40px', marginBottom: '120px' }}>
         {/* <div style={{ fontWeight: 'bold'}}> Legend</div> */}

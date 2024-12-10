@@ -10,7 +10,6 @@ function MapViz({
   stateJson,
   countiesJson,
   data,
-  IdmapDataState,
   mobileHeight,
   desktopHeight,
   color,
@@ -18,6 +17,10 @@ function MapViz({
 }: MapVizProps) {
   const container = d3.select(`#${mainContainer}`)
   container.selectAll('*').remove()
+
+  const scaleExtent = [1, 15] as [number, number]
+  let currentZoom = 1
+  let zoomDiff = 0.5
 
   if (!stateJson || !data.length) return
 
@@ -28,7 +31,7 @@ function MapViz({
 
   let transform = d3.zoomIdentity
   // Initial zoom
-  const zoom = d3.zoom().scaleExtent([1, 6]).on('zoom', zoomed)
+  const zoom = d3.zoom().scaleExtent(scaleExtent).on('zoom', zoomed)
 
   // SVG container
   const svg = container
@@ -54,7 +57,11 @@ function MapViz({
   let tippyInstanceCountyLevel: any
 
   // Draw circles for county level
-  function drawCountyLevelCircles(circlesData: any, g: any) {
+  function drawCountyLevelCircles(
+    circlesData: any,
+    g: any,
+    levelUpdate: boolean = false
+  ) {
     if (!circlesData) return
     g.selectAll('.circle').remove()
 
@@ -71,7 +78,6 @@ function MapViz({
       .scaleLinear<string>()
       .domain(d3.extent(circlesData, (d: any) => d?.deliveryPrc) as any)
       .range(['#33E48E', '#004223'] as [string, string])
-
     if (circlesData.length) {
       g.selectAll('circle')
         .data(circlesData.filter((d: any) => d.x !== 0 && d.y !== 0))
@@ -86,13 +92,13 @@ function MapViz({
         .style('opacity', 0.5)
         .style('cursor', 'pointer')
         .on('click', (event: any, d: any) => {
+          if (levelUpdate) return
           const zipCodeLevelData = data.filter((x) => x.county === d.county)
           if (d.aggregateValue === 1) return
           drawZipCodeLevelCircles(zipCodeLevelData, g)
           const zipCodeData = countiesJson.features.filter(
             (x: any) => x.id === d.countyId
           )
-
           zoomToCounty(event.target, zipCodeData[0])
         })
         .on('mouseover', function (event: any, d: any) {
@@ -180,31 +186,25 @@ function MapViz({
       StateLevelMap(
         stateJson.features,
         g,
-        IdmapDataState,
         clicked,
-        colorScale,
         view,
         data
       )
-      drawCountyLevelCircles([], g)
+      drawCountyLevelCircles([], g, false)
     } else if (view === 'counties') {
       StateLevelMap(
         stateJson.features,
         g,
-        IdmapDataState,
         clicked,
-        colorScale,
         view,
         data
       )
-      drawCountyLevelCircles(countyLevelData(null, data), g)
+      drawCountyLevelCircles(countyLevelData(null, data), g, true)
     } else if (view === 'zipcodes') {
       StateLevelMap(
         stateJson.features,
         g,
-        IdmapDataState,
         clicked,
-        colorScale,
         view,
         data
       )
@@ -218,19 +218,29 @@ function MapViz({
     StateLevelMap(
       view === 'states' ? stateJson.features : countiesJson.features,
       g,
-      IdmapDataState,
       clicked,
-      colorScale,
       view,
       data
     )
     if (view !== 'states') {
-      drawCountyLevelCircles(data, g)
+      drawCountyLevelCircles(data, g, false)
     } else {
-      drawCountyLevelCircles([], g)
+      drawCountyLevelCircles([], g, true)
     }
   }
 
+  let zoomState = {
+    previous: {
+      translateX: 0,
+      translateY: 0,
+      scale: 1,
+    },
+    current: {
+      translateX: 0,
+      translateY: 0,
+      scale: 1,
+    },
+  }
   // Handle click zoom
   function zoomToCounty(event: any, d: any) {
     const [[x0, y0], [x1, y1]] = path.bounds(d)
@@ -238,7 +248,12 @@ function MapViz({
     const translateX = 975 / 2 - (scale * (x0 + x1)) / 2
     const translateY = 710 / 2 - (scale * (y0 + y1)) / 2
 
-    // event.stopPropagation()
+    // Save the current zoom state to previous
+    zoomState.previous = { ...zoomState.current }
+
+    // Update the current zoom state
+    zoomState.current = { translateX, translateY, scale }
+
     svg
       .transition()
       .duration(1000)
@@ -268,6 +283,26 @@ function MapViz({
   // SVG call zoom and disable it on wheel event
   svg.call(zoom).on('wheel.zoom', null)
 
+  // Zoom buttons
+  d3.select('#zoom_in').on('click', () => {
+    if (currentZoom + zoomDiff <= scaleExtent[1]) {
+      currentZoom = currentZoom + zoomDiff
+    }
+    svg.transition().duration(750).call(zoom.scaleTo, currentZoom)
+  })
+
+  d3.select('#zoom_out').on('click', () => {
+    if (currentZoom - zoomDiff >= scaleExtent[0]) {
+      currentZoom = currentZoom - zoomDiff
+    }
+    svg
+      .transition()
+      .duration(750)
+      .call(zoom.scaleTo, currentZoom)
+      .call(zoom.transform, d3.zoomIdentity)
+  })
+
+  // Draw initial map
   updateView('states')
 
   return {
