@@ -44,10 +44,6 @@ const SideBar = ({ data, buttonClick }: SideBarProps) => {
       ))}
       <div style={{ marginLeft: '40px', marginTop: '30px' }}>
         <div style={{ fontWeight: 'bold' }}> Legend</div>
-        <div style={{ marginTop: '20px', fontSize: '12px' }}>
-          {' '}
-          Delivery Percentage
-        </div>
         <div>
           <LegendBar />
         </div>

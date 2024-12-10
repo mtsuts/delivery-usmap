@@ -3,7 +3,6 @@ import tippy from 'tippy.js'
 import 'tippy.js/dist/tippy.css'
 import 'tippy.js/themes/light-border.css'
 import 'tippy.js/dist/backdrop.css'
-import { stateLevelData } from '../data/data'
 import { createRoot } from 'react-dom/client'
 import ProgressBar from './ProgressBar'
 

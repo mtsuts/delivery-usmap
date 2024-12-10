@@ -18,13 +18,25 @@ function StateLevelMap(
   view: string,
   data: any
 ) {
+  const aggregate = stateLevelData(null, data)
+  function getStateColor(state: any) {
+    const foundState = aggregate.find((x: any) => x.state === state)
+    if (foundState === undefined) return
+    if (foundState.deliveryPrc > 50) {
+      return '#006CD0'
+    } else if (foundState.deliveryPrc <= 50) {
+      return '#c93235'
+    }
+  }
+  getStateColor('California')
+
   // Draw state paths
   g.selectAll('path')
     .data(pathData)
     .join('path')
     .attr('class', 'path')
     .attr('d', path)
-    .attr('fill', '#c93235')
+    .attr('fill', (d: any) => view === 'states' ? getStateColor(d.properties.name) || '#ccc' : '#ccc')
     .attr('stroke', 'white')
     .attr('stroke-width', 0.5)
     .style('cursor', 'pointer')

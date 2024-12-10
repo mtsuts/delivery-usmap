@@ -11,6 +11,13 @@ function countyLevelData(id: any, data: any) {
     (x: any) => x.county
   )
 
+  const rolledUpDataDelivered = d3.rollup(
+    stateData,
+    (group) =>
+      d3.sum(group, (x: any) => (x.status === 'Delivered' ? x.value : 0)),
+    (x: any) => x.county
+  )
+
   const rolledUpDataSpeed = d3.rollup(
     stateData,
     (group) =>
@@ -30,8 +37,8 @@ function countyLevelData(id: any, data: any) {
         aggregateValue: rolledUpDataValue.get(d.county),
         aggregateAvgSpeed: rolledUpDataSpeed.get(d.county),
         deliveryPrc: Math.floor(
-          (stateData.filter((d: any) => d.status === 'Delivered').length /
-            stateData.length) *
+          (rolledUpDataDelivered.get(d.county) /
+            rolledUpDataValue.get(d.county)) *
             100
         ),
         inTransitPrc: Math.floor(
@@ -53,7 +60,6 @@ function countyLevelData(id: any, data: any) {
 }
 
 function stateLevelData(state: any, data: any) {
-
   const stateDeliveries = state
     ? data.filter((x: any) => x.state === state)
     : data
@@ -64,6 +70,16 @@ function stateLevelData(state: any, data: any) {
     (group) => d3.sum(group, (x: any) => x.value),
     (x: any) => x.state
   )
+
+  const rolledUpDataDelivered = d3.rollup(
+    stateDeliveries,
+    (group) =>
+      d3.sum(group, (x: any) => (x.status === 'Delivered' ? x.value : 0)),
+    (x: any) => x.state
+  )
+
+  rolledUpDataDelivered.delete(undefined)
+  rolledUpDataDelivered.delete('')
   rolledUpDataValue.delete(undefined)
   rolledUpDataValue.delete('')
 
@@ -75,20 +91,19 @@ function stateLevelData(state: any, data: any) {
       ).toFixed(1),
     (x: any) => x.state
   )
-
   const uniqueStateData = new Set()
-  return stateDeliveries
+  const finalData = stateDeliveries
     .map((x: any) => {
       return {
         state: x.state,
         aggregateValue: rolledUpDataValue.get(x.state),
         deliveryPrc: Math.floor(
-          (stateDeliveries.filter((x: any) => x.status === 'Delivered').length /
-            stateDeliveries.length) *
+          (rolledUpDataDelivered.get(x.state) /
+            rolledUpDataValue.get(x.state)) *
             100
         ),
         inTransitPrc: Math.floor(
-          (stateDeliveries.filter((x: any) => x.status === 'In Transit')
+          (stateDeliveries.filter((a: any) => a.status === 'In Transit')
             .length /
             stateDeliveries.length) *
             100
@@ -102,9 +117,9 @@ function stateLevelData(state: any, data: any) {
       }
       uniqueStateData.add(item.state)
       return true
-    })[0]
+    })
+  if (state) return finalData[0]
+  return finalData
 }
-
-
 
 export { countyLevelData, stateLevelData }
