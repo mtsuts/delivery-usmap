@@ -102,7 +102,8 @@ function MapViz({
             tippyInstanceCountyLevel.destroy()
           }
           tippyInstanceCountyLevel = CountyLevelTooltip(event, d)
-        }).on('mouseout', function(event:any, d:any){
+        })
+        .on('mouseout', function (event: any, d: any) {
           d3.select(this).attr('stroke', '#fff')
           d3.select(this).style('opacity', 0.5)
         })
@@ -187,6 +188,17 @@ function MapViz({
         data
       )
       drawCountyLevelCircles(countyLevelData(null, data), g)
+    } else if (view === 'zipcodes') {
+      StateLevelMap(
+        countiesJson.features,
+        g,
+        IdmapDataState,
+        clicked,
+        colorScale,
+        view,
+        data
+      )
+      drawZipCodeLevelCircles(data, g)
     }
   }
 

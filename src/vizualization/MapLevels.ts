@@ -37,7 +37,7 @@ function StateLevelMap(
     .attr('class', 'path')
     .attr('d', path)
     .attr('fill', (d: any) =>
-      view === 'states' ? getStateColor(d.properties.name) || '#ccc' : '#ccc'
+      view === 'states' ? getStateColor(d.properties.name) || '#f3f3f3' : '#f3f3f3'
     )
     .attr('stroke', '#fff')
     .attr('stroke-width', 0.5)

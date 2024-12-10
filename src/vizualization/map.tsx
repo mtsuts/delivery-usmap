@@ -8,7 +8,7 @@ import MapViz from './MapViz'
 import { MapProps, Data } from './types'
 
 function UsMap(params: MapProps) {
-  const [view, setView] = React.useState<'states' | 'counties'>('states')
+  const [view, setView] = React.useState<'states' | 'counties' | 'zipcodes'>('states')
   const { data, setData } = React.useContext(AppContext) as Data
 
   const map = React.useRef(null)
@@ -27,6 +27,13 @@ function UsMap(params: MapProps) {
       position: 250,
       onClick: () => setView('counties'),
       isActive: view === 'counties',
+    },
+    {
+      label: 'Zip Code View',
+      imageSrc: countiesViewImage,
+      position: 250,
+      onClick: () => setView('zipcodes'),
+      isActive: view === 'zipcodes',
     },
   ]
  

@@ -40,17 +40,6 @@
 
 .path {
   outline: none;
-  background: repeating-linear-gradient(45deg,
-      /* Angle of the lines */
-      rgba(0, 0, 255, 0.5),
-      /* Line color */
-      rgba(0, 0, 255, 0.5) 10px,
-      /* Line width */
-      rgba(255, 255, 255, 0) 10px,
-      /* Space color */
-      rgba(255, 255, 255, 0) 20px
-      /* Space width */
-    );
 }
 
 .path:focus {
@@ -62,7 +51,7 @@
 }
 
 .path-label {
-  text-shadow: 0px 0px 2px #000;
+  text-shadow: 0px 0px 4px #b33939;
 }
 
 .circle {
