@@ -6,9 +6,12 @@ import countiesViewImage from '../images/countiesView.png'
 import stateView from '../images/stateView.png'
 import MapViz from './MapViz'
 import { MapProps, Data } from './types'
+import LegendBar from './Legend'
 
 function UsMap(params: MapProps) {
-  const [view, setView] = React.useState<'states' | 'counties' | 'zipcodes'>('states')
+  const [view, setView] = React.useState<'states' | 'counties' | 'zipcodes'>(
+    'states'
+  )
   const { data, setData } = React.useContext(AppContext) as Data
 
   const map = React.useRef(null)
@@ -36,7 +39,6 @@ function UsMap(params: MapProps) {
       isActive: view === 'zipcodes',
     },
   ]
- 
 
   React.useEffect(() => {
     if (data.length) {
@@ -64,9 +66,15 @@ function UsMap(params: MapProps) {
   }, [view])
 
   return (
-    <div style={{ display: 'flex' }}>
+    <div>
       <SideBar data={sideBarData} buttonClick={() => map.current.reset()} />
-      <div style={{ flexGrow: 1 }} id={params.container}></div>
+      <div id={params.container}></div>
+      <div style={{ marginLeft: '40px', marginBottom: '120px' }}>
+        {/* <div style={{ fontWeight: 'bold'}}> Legend</div> */}
+        <div>
+          <LegendBar />
+        </div>
+      </div>
     </div>
   )
 }

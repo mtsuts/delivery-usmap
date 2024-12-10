@@ -28,7 +28,7 @@ function MapViz({
 
   let transform = d3.zoomIdentity
   // Initial zoom
-  const zoom = d3.zoom().scaleExtent([1, 8]).on('zoom', zoomed)
+  const zoom = d3.zoom().scaleExtent([1, 6]).on('zoom', zoomed)
 
   // SVG container
   const svg = container
@@ -58,11 +58,6 @@ function MapViz({
     if (!circlesData) return
     g.selectAll('.circle').remove()
 
-    const colorScale = d3
-      .scaleLog<string>()
-      .domain(d3.extent(data, (d: any) => d.value) as [number, number])
-      .range(color)
-
     // Circle Radius Scale
     const radiusScale = d3
       .scaleLog()
@@ -72,6 +67,11 @@ function MapViz({
       ])
       .range([5, 20])
 
+    const colorScales = d3
+      .scaleLinear<string>()
+      .domain(d3.extent(circlesData, (d: any) => d?.deliveryPrc) as any)
+      .range(['#33E48E', '#004223'] as [string, string])
+
     if (circlesData.length) {
       g.selectAll('circle')
         .data(circlesData.filter((d: any) => d.x !== 0 && d.y !== 0))
@@ -80,7 +80,7 @@ function MapViz({
         .attr('cx', (d: any) => d.x)
         .attr('cy', (d: any) => d.y)
         .attr('r', (d: any) => radiusScale(d.aggregateValue))
-        .attr('fill', '#006CD0')
+        .attr('fill', (d: any) => colorScales(d.deliveryPrc) || '#ccc')
         .attr('stroke', '#fff')
         .attr('stroke-width', 0.5)
         .style('opacity', 0.5)
@@ -116,7 +116,13 @@ function MapViz({
     if (!circlesData) return
     g.selectAll('.circle').remove()
 
-    // Circle Radius Scale
+    //Circle color Scale
+    const colorScales = d3
+      .scaleLinear<string>()
+      .domain(d3.extent(circlesData, (d: any) => d?.deliveryPrc) as any)
+      .range(['#33E48E', '#004223'] as [string, string])
+
+    // Circle radius scale
     const radiusScale = d3
       .scaleLog()
       .domain([
@@ -134,7 +140,7 @@ function MapViz({
         .attr('cy', (d: any) => d.y)
         .attr('r', (d: any) => radiusScale(d.value) / transform.k)
         .attr('fill', (d: any) =>
-          d.status === 'In Transit' ? '#00D06C' : '#00D06C'
+          d.status === 'In Transit' ? '#33E48E' : '#004223'
         )
         .attr('stroke', '#fff')
         .attr('stroke-width', 0.5)
@@ -208,7 +214,7 @@ function MapViz({
 
   // Zoom reset
   function reset() {
-    svg.transition().duration(750).call(zoom.transform, d3.zoomIdentity)
+    svg.transition().duration(1000).call(zoom.transform, d3.zoomIdentity)
     StateLevelMap(
       view === 'states' ? stateJson.features : countiesJson.features,
       g,
@@ -228,14 +234,14 @@ function MapViz({
   // Handle click zoom
   function zoomToCounty(event: any, d: any) {
     const [[x0, y0], [x1, y1]] = path.bounds(d)
-    const scale = Math.min(12, 0.9 / Math.max((x1 - x0) / 975, (y1 - y0) / 710))
+    const scale = Math.min(6, 0.9 / Math.max((x1 - x0) / 975, (y1 - y0) / 710))
     const translateX = 975 / 2 - (scale * (x0 + x1)) / 2
     const translateY = 710 / 2 - (scale * (y0 + y1)) / 2
 
     // event.stopPropagation()
     svg
       .transition()
-      .duration(750)
+      .duration(1000)
       .call(
         zoom.transform,
         d3.zoomIdentity.translate(translateX, translateY).scale(scale)

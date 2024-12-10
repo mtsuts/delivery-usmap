@@ -19,16 +19,10 @@ function StateLevelMap(
   data: any
 ) {
   const aggregate = stateLevelData(null, data)
-  function getStateColor(state: any) {
-    const foundState = aggregate.find((x: any) => x.state === state)
-    if (foundState === undefined) return
-    if (foundState.deliveryPrc > 50) {
-      return '#00A356'
-    } else if (foundState.deliveryPrc <= 50) {
-      return '#33E48E'
-    }
-  }
-  getStateColor('California')
+  const colorScales = d3
+    .scaleLinear<string>()
+    .domain(d3.extent(aggregate, (d: any) => d?.deliveryPrc) as any)
+    .range(['#33E48E', '#004223'] as [string, string])
 
   // Draw state paths
   g.selectAll('path')
@@ -37,7 +31,12 @@ function StateLevelMap(
     .attr('class', 'path')
     .attr('d', path)
     .attr('fill', (d: any) =>
-      view === 'states' ? getStateColor(d.properties.name) || '#f3f3f3' : '#f3f3f3'
+      view === 'states'
+        ? colorScales(
+            aggregate.find((x: any) => x.state === d.properties.name)
+              ?.deliveryPrc
+          ) || '#f3f3f3'
+        : '#f3f3f3'
     )
     .attr('stroke', '#fff')
     .attr('stroke-width', 0.5)
@@ -53,8 +52,8 @@ function StateLevelMap(
       } else {
         console.log('No Tooltip')
       }
-    }).on('mouseout', function(event: any, d:any){
     })
+    .on('mouseout', function (event: any, d: any) {})
 
   // Append text elements on state paths
   g.selectAll('text')
@@ -75,8 +74,8 @@ function StateLevelMap(
     .attr('dy', '0.35em')
     .text((d: any) => d.properties.code)
     .style('font-size', '15px')
-    .attr('fill', '#fff')
-    .style('font-weight', 'bold')
+    .attr('fill', (view === 'states') ? '#fff' : "#000")
+    .style('font-weight', (view === 'states') ? 'bold' : '400')
 }
 
 export { StateLevelMap }
