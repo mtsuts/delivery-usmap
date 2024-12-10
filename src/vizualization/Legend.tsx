@@ -1,53 +1,14 @@
-import React from 'react'
+import React from "react";
 
-const LegendBar = () => {
-  const percentage = 100
-  const redWidth = Math.min(percentage, 50) * 2
-  const blueWidth = Math.max(percentage - 50, 0) * 2
+const LegendBar = ({ startColor = "#33E48E", endColor = "#004223", height = "20px" }) => {
+  const gradientStyle = {
+    background: `linear-gradient(90deg, ${startColor} 0%, ${endColor} 100%)`,
+    height: height,
+    borderRadius: "10px",
+    width: '170px',
+  };
 
-  return (
-    <div style={{ width: '200px', margin: '5px auto', textAlign: 'center', fontSize: '12px' }}>
-      {/* Labels */}
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          marginBottom: '5px',
-        }}
-      >
-        <span>0%</span>
-        <span>50%</span>
-        <span>100%</span>
-      </div>
+  return <div style={gradientStyle}></div>;
+};
 
-      {/* Progress bar */}
-      <div
-        style={{
-          width: '100%',
-          height: '20px',
-          backgroundColor: '#e0e0e0',
-          display: 'flex',
-        }}
-      >
-        {/* Red section */}
-        <div
-          style={{
-            width: `${redWidth}px`,
-            backgroundColor: '#33E48E',
-            height: '100%',
-          }}
-        ></div>
-        {/* Blue section */}
-        <div
-          style={{
-            width: `${blueWidth}px`,
-            backgroundColor: '#00D06C',
-            height: '100%',
-          }}
-        ></div>
-      </div>
-    </div>
-  )
-}
-
-export default LegendBar
+export default LegendBar;

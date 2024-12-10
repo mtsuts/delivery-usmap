@@ -23,7 +23,6 @@ function StateLevelMap(
     .scaleLinear<string>()
     .domain(d3.extent(aggregate, (d: any) => d?.deliveryPrc) as any)
     .range(['#33E48E', '#004223'] as [string, string])
-  console.log(aggregate)
 
   // Draw state paths
   g.selectAll('path')

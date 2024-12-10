@@ -67,6 +67,11 @@ function MapViz({
       ])
       .range([5, 20])
 
+    const colorScales = d3
+      .scaleLinear<string>()
+      .domain(d3.extent(circlesData, (d: any) => d?.deliveryPrc) as any)
+      .range(['#33E48E', '#004223'] as [string, string])
+
     if (circlesData.length) {
       g.selectAll('circle')
         .data(circlesData.filter((d: any) => d.x !== 0 && d.y !== 0))
@@ -75,7 +80,7 @@ function MapViz({
         .attr('cx', (d: any) => d.x)
         .attr('cy', (d: any) => d.y)
         .attr('r', (d: any) => radiusScale(d.aggregateValue))
-        .attr('fill', '#006CD0')
+        .attr('fill', (d: any) => colorScales(d.deliveryPrc) || '#ccc')
         .attr('stroke', '#fff')
         .attr('stroke-width', 0.5)
         .style('opacity', 0.5)
@@ -111,7 +116,13 @@ function MapViz({
     if (!circlesData) return
     g.selectAll('.circle').remove()
 
-    // Circle Radius Scale
+    //Circle color Scale
+    const colorScales = d3
+      .scaleLinear<string>()
+      .domain(d3.extent(circlesData, (d: any) => d?.deliveryPrc) as any)
+      .range(['#33E48E', '#004223'] as [string, string])
+
+    // Circle radius scale
     const radiusScale = d3
       .scaleLog()
       .domain([
@@ -129,7 +140,7 @@ function MapViz({
         .attr('cy', (d: any) => d.y)
         .attr('r', (d: any) => radiusScale(d.value) / transform.k)
         .attr('fill', (d: any) =>
-          d.status === 'In Transit' ? '#00D06C' : '#00D06C'
+          d.status === 'In Transit' ? '#33E48E' : '#004223'
         )
         .attr('stroke', '#fff')
         .attr('stroke-width', 0.5)
