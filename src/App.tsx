@@ -43,7 +43,6 @@ function App() {
     }
   })
 
-
   // Projection
   const projection = d3.geoAlbersUsa().scale(1300).translate([487.5, 305])
   useEffect(() => {
@@ -65,11 +64,15 @@ function App() {
               )?.countyData.replace(' County', ''),
               x:
                 d.longitude && d.latitude
-                  ? projection([Number(d.longitude), Number(d.latitude)])[0]
+                  ? (projection([Number(d.longitude), Number(d.latitude)]) || [
+                      0, 0,
+                    ])[0]
                   : 0,
               y:
                 d.longitude && d.latitude
-                  ? projection([Number(d.longitude), Number(d.latitude)])[1]
+                  ? (projection([Number(d.longitude), Number(d.latitude)]) || [
+                      0, 0,
+                    ])[1]
                   : 0,
             }
           })
@@ -98,7 +101,7 @@ function App() {
         stateJson={stateJson}
         countiesJson={countiesJson}
         mobileHeight={400}
-        desktopHeight={900}
+        desktopHeight={700}
         color={['#3388E6', '#006CD0']}
       ></UsMap>
     </>

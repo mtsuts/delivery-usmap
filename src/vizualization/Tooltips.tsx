@@ -10,7 +10,7 @@ import ProgressBar from './ProgressBar'
 function generateTooltipContent(event: any, data: any, title: string) {
   const content = (
     <>
-      <div style={{ fontSize: '20px', fontWeight: 'bold' }}>{title}</div>
+      <div style={{ fontSize: '17px', fontWeight: 'bold' }}>{title}</div>
       <table style={{ width: '100%', borderCollapse: 'collapse' }}>
         <thead>
           <tr>
@@ -47,7 +47,7 @@ function generateTooltipContent(event: any, data: any, title: string) {
     content: container,
     arrow: false,
     theme: 'light-border',
-    placement: 'bottom-start',
+    placement: 'bottom-end',
   })
 }
 
@@ -100,7 +100,6 @@ function ZipCodeLevelTooltip(event: any, data: any) {
     content: container,
     arrow: false,
     theme: 'light-border',
-    placement: 'bottom-end',
   })
 }
 

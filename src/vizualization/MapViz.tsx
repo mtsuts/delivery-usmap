@@ -110,6 +110,7 @@ function MapViz({
     }
   }
 
+  let tippyInstanceZipCodeLevel: any
   // Draw zip code level circles
   function drawZipCodeLevelCircles(circlesData: any, g: any) {
     if (!circlesData) return
@@ -144,7 +145,10 @@ function MapViz({
         })
         .on('mouseover', function (event: any, d: any) {
           if (d.length === 0) return
-          ZipCodeLevelTooltip(event, d)
+          if (tippyInstanceZipCodeLevel) {
+            tippyInstanceZipCodeLevel.destroy()
+          }
+          tippyInstanceZipCodeLevel = ZipCodeLevelTooltip(event, d)
         })
     }
   }

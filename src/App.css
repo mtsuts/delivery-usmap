@@ -49,10 +49,10 @@
 .path:focus-visible {
   outline: none;
 }
-
+/* 
 .path-label {
   text-shadow: 2px 2px 2px #565353;
-}
+} */
 
 .circle {
   outline: none;
