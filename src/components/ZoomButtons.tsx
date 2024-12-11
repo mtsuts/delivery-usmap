@@ -2,10 +2,42 @@ import React from 'react'
 
 function ZoomButtons() {
   return (
-    <>
-      <button id='zoom_in'> +</button>
-      <button id='zoom_out'> -</button>
-    </>
+    <div
+      style={{
+        marginLeft: '240px',
+        marginTop: '7px',
+        display: 'flex',
+        flexDirection: 'column',
+      }}
+    >
+      <button
+        style={{
+          width: '30px',
+          padding: '5px',
+          backgroundColor: '#004223',
+          border: 'none',
+          color: '#fff',
+          cursor: 'pointer',
+        }}
+        id='zoom_in'
+      >
+        +
+      </button>
+      <button
+        style={{
+          width: '30px',
+          padding: '5px',
+          backgroundColor: '#004223',
+          border: 'none',
+          marginTop: '5px',
+          color: '#fff',
+          cursor: 'pointer',
+        }}
+        id='zoom_out'
+      >
+    -
+      </button>
+    </div>
   )
 }
 

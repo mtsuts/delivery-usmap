@@ -25,6 +25,7 @@ function drawCountyLevelCircles(
     ])
     .range([5, 20])
 
+
   const colorScales = d3
     .scaleLinear<string>()
     .domain(d3.extent(circlesData, (d: any) => d?.deliveryPrc) as any)
@@ -74,7 +75,7 @@ let tippyInstanceZipCodeLevel: any
 function drawZipCodeLevelCircles(circlesData: any, g: any, transform: any) {
   if (!circlesData) return
   g.selectAll('.circle').remove()
-
+  console.log(circlesData)
   // Circle radius scale
   const radiusScale = d3
     .scaleLog()
@@ -93,7 +94,7 @@ function drawZipCodeLevelCircles(circlesData: any, g: any, transform: any) {
       .attr('cy', (d: any) => d.y)
       .attr('r', (d: any) => radiusScale(d.value) / transform.k)
       .attr('fill', (d: any) =>
-        d.status === 'In Transit' ? '#33E48E' : '#004223'
+        d.status === 'in-Transit' ? '#33E48E' : '#004223'
       )
       .attr('stroke', '#fff')
       .attr('stroke-width', 0.5)

@@ -1,6 +1,7 @@
 import React from 'react'
 import { SideBarProps } from '../types'
 import LegendBar from './Legend'
+import ZoomButtons from './ZoomButtons'
 
 const SideBar = ({ data, buttonClick }: SideBarProps) => {
   return (
@@ -36,11 +37,6 @@ const SideBar = ({ data, buttonClick }: SideBarProps) => {
           }}
           onClick={d.onClick}
         >
-          {/* <img
-            src={d.imageSrc}
-            alt={d.label}
-            style={{ height: '100px', opacity: d.isActive ? 1 : 0.5 }}
-          /> */}
           <div
             style={{
               fontWeight: d.isActive ? 'bold' : 'normal',
@@ -53,6 +49,7 @@ const SideBar = ({ data, buttonClick }: SideBarProps) => {
       <div style={{ marginLeft: '40px' }}>
         <LegendBar />
       </div>
+      <ZoomButtons />
     </div>
   )
 }

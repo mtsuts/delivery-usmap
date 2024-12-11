@@ -4,10 +4,7 @@ import { MapVizProps } from '../types'
 import { CountyLevelTooltip, ZipCodeLevelTooltip } from '../components/Tooltips'
 import { MapView } from './MapView'
 import { countyLevelData } from '../data/data'
-import {
-  drawZipCodeLevelCircles,
-  drawCountyLevelCircles,
-} from './LevelCircles'
+import { drawZipCodeLevelCircles, drawCountyLevelCircles } from './LevelCircles'
 
 function MapViz({
   mainContainer,
@@ -22,9 +19,13 @@ function MapViz({
   const container = d3.select(`#${mainContainer}`)
   container.selectAll('*').remove()
 
-  const scaleExtent = [1, 15] as [number, number]
+  // Zoom scale variables
+  const scaleExtent = [1, 12] as [number, number]
   let currentZoom = 1
   let zoomDiff = 0.5
+
+  // County id
+  let stateId: string = ''
 
   if (!stateJson || !data.length) return
 
@@ -43,7 +44,6 @@ function MapViz({
     .attr('width', width)
     .attr('height', height)
     .attr('viewBox', '0 0 975 710')
-  // .on('click', reset)
 
   // Group element
   const g = svg.append('g')
@@ -98,7 +98,7 @@ function MapViz({
 
   // Zoom reset
   function reset() {
-    svg.transition().duration(1000).call(zoom.transform, d3.zoomIdentity)
+    svg.transition().duration(600).call(zoom.transform, d3.zoomIdentity)
     MapView(
       view === 'states' ? stateJson.features : countiesJson.features,
       g,
@@ -144,7 +144,7 @@ function MapViz({
   // Handle click zoom
   function zoomToCounty(event: any, d: any) {
     const [[x0, y0], [x1, y1]] = path.bounds(d)
-    const scale = Math.min(6, 0.9 / Math.max((x1 - x0) / 975, (y1 - y0) / 710))
+    const scale = Math.min(10, 0.9 / Math.max((x1 - x0) / 975, (y1 - y0) / 710))
     const translateX = 975 / 2 - (scale * (x0 + x1)) / 2
     const translateY = 710 / 2 - (scale * (y0 + y1)) / 2
 
@@ -156,7 +156,7 @@ function MapViz({
 
     svg
       .transition()
-      .duration(1000)
+      .duration(600)
       .call(
         zoom.transform,
         d3.zoomIdentity.translate(translateX, translateY).scale(scale)
@@ -165,6 +165,7 @@ function MapViz({
 
   // Handle click event on state path
   function clicked(event: any, d: any) {
+    stateId = d.id
     zoomToCounty(event, d)
     // Filter counties based on state id
     const filteredCounties = countiesJson.features.filter(
@@ -186,6 +187,7 @@ function MapViz({
   function zoomed(event: any) {
     g.attr('transform', event.transform).on('wheel', null)
     transform = event.transform
+    currentZoom = transform.k
   }
 
   // SVG call zoom and disable it on wheel event
@@ -193,21 +195,63 @@ function MapViz({
 
   // Zoom buttons
   d3.select('#zoom_in').on('click', () => {
-    if (currentZoom + zoomDiff <= scaleExtent[1]) {
-      currentZoom = currentZoom + zoomDiff
+    const currentTransform = d3.zoomIdentity
+      .translate(zoomState.previous.translateX, zoomState.previous.translateY)
+      .scale(zoomState.previous.scale)
+    if (currentZoom < 2) {
+      if (currentZoom + zoomDiff <= scaleExtent[1]) {
+        currentZoom = currentZoom + zoomDiff
+      }
+      svg.transition().duration(600).call(zoom.scaleTo, currentZoom)
+    } else if (currentZoom > 2 && currentZoom < 10) {
+      svg.transition().duration(600).call(zoom.scaleTo, 10)
+      console.log(stateId)
+      console.log(data.filter((d: any) => d.id === stateId))
+      drawZipCodeLevelCircles(
+        data.filter((d: any) => d.id === stateId),
+        g,
+        currentTransform
+      )
     }
-    svg.transition().duration(750).call(zoom.scaleTo, currentZoom)
   })
-
+  // Zoom out
   d3.select('#zoom_out').on('click', () => {
-    if (currentZoom - zoomDiff >= scaleExtent[0]) {
-      currentZoom = currentZoom - zoomDiff
+    if (currentZoom === 1) return
+    const currentTransform = d3.zoomIdentity
+      .translate(zoomState.previous.translateX, zoomState.previous.translateY)
+      .scale(zoomState.previous.scale)
+
+    if (currentZoom < 2) {
+      if (currentZoom + zoomDiff >= scaleExtent[0]) {
+        currentZoom = currentZoom - zoomDiff
+      }
+      svg.transition().duration(600).call(zoom.scaleTo, currentZoom)
     }
-    svg
-      .transition()
-      .duration(750)
-      .call(zoom.scaleTo, currentZoom)
-      .call(zoom.transform, d3.zoomIdentity)
+    if (currentZoom < 12 && currentZoom >= 10) {
+      svg.transition().duration(600).call(zoom.transform, currentTransform)
+      drawCountyLevelCircles(
+        countyLevelData(stateId, data),
+        g,
+        false,
+        data,
+        transform,
+        zoomToCounty,
+        countiesJson
+      )
+    }
+    if (currentZoom > 2 && currentZoom < 10) {
+      svg.transition().duration(600).call(zoom.transform, d3.zoomIdentity)
+      MapView(stateJson.features, g, clicked, view, data)
+      drawCountyLevelCircles(
+        [],
+        g,
+        true,
+        data,
+        transform,
+        zoomToCounty,
+        countiesJson
+      )
+    }
   })
 
   // Draw initial map

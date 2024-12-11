@@ -58,7 +58,7 @@ function App() {
               status:
                 new Date(d.delivery_date.replace(/\[|\]/g, '')) < new Date()
                   ? 'Delivered'
-                  : 'In Transit',
+                  : 'in-Transit',
               state: (await geocode(d.longitude, d.latitude))?.stateData,
               county: (
                 await geocode(d.longitude, d.latitude)
