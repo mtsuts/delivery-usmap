@@ -205,8 +205,6 @@ function MapViz({
       svg.transition().duration(600).call(zoom.scaleTo, currentZoom)
     } else if (currentZoom > 2 && currentZoom < 10) {
       svg.transition().duration(600).call(zoom.scaleTo, 10)
-      console.log(stateId)
-      console.log(data.filter((d: any) => d.id === stateId))
       drawZipCodeLevelCircles(
         data.filter((d: any) => d.id === stateId),
         g,
@@ -216,11 +214,13 @@ function MapViz({
   })
   // Zoom out
   d3.select('#zoom_out').on('click', () => {
+    console.log(currentZoom)
+
     if (currentZoom === 1) return
     const currentTransform = d3.zoomIdentity
       .translate(zoomState.previous.translateX, zoomState.previous.translateY)
       .scale(zoomState.previous.scale)
-
+    console.log(currentTransform)
     if (currentZoom < 2) {
       if (currentZoom + zoomDiff >= scaleExtent[0]) {
         currentZoom = currentZoom - zoomDiff

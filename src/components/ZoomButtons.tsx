@@ -5,7 +5,7 @@ function ZoomButtons() {
     <div
       style={{
         marginLeft: '240px',
-        marginTop: '7px',
+        marginTop: '0px',
         display: 'flex',
         flexDirection: 'column',
       }}

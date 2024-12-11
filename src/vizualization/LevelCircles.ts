@@ -75,7 +75,6 @@ let tippyInstanceZipCodeLevel: any
 function drawZipCodeLevelCircles(circlesData: any, g: any, transform: any) {
   if (!circlesData) return
   g.selectAll('.circle').remove()
-  console.log(circlesData)
   // Circle radius scale
   const radiusScale = d3
     .scaleLog()
