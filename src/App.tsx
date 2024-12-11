@@ -43,7 +43,6 @@ function App() {
       state: ids.find((x: any) => x.id === d.id.slice(0, 2))?.state,
     }
   })
-  console.log(countiesIds)
 
   // Projection
   const projection = d3.geoAlbersUsa().scale(1300).translate([487.5, 305])
