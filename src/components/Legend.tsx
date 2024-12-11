@@ -1,8 +1,8 @@
 import React from 'react'
 
 const LegendBar = ({
-  startColor = '#33E48E',
-  endColor = '#004223',
+  startColor = '#FF0000',
+  endColor = '#00D06C',
   height = '20px',
 }) => {
   const gradientStyle = {

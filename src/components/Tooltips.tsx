@@ -17,7 +17,7 @@ function generateTooltipContent(event: any, data: any, title: string) {
             <th>Mailpieces</th>
             <th>Delivered</th>
             <th>In-Transit</th>
-            <th>Avg. Speed</th>
+            <th>Avg.Delivery Speed</th>
           </tr>
         </thead>
         <tbody>
@@ -31,9 +31,10 @@ function generateTooltipContent(event: any, data: any, title: string) {
       </table>
       <div style={{ marginTop: '10px' }}>
         <ProgressBar
+          data={data}
           progress={data.deliveryPrc / 100}
           width={300}
-          color={data.deliveryPrc > 50 ? '#004223' : '#33E48E'}
+          color={data.deliveryPrc > 50 ? '#00D06C' : '#FF0000'}
         />
       </div>
     </>

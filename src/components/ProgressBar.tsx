@@ -51,7 +51,12 @@ const ProgressBar = ({ progress, width, color }: ProgressBarProps) => {
       .text(`${Math.round(progress * 100)}%`)
   }, [progress])
 
-  return <div id='progress-bar-container'></div>
+  return (
+    <>
+      <div> Delivery %</div>
+      <div id='progress-bar-container'></div>
+    </>
+  )
 }
 
 export default ProgressBar

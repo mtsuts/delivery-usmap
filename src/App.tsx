@@ -55,6 +55,7 @@ function App() {
               ...d,
               delivery_date: d.delivery_date.replace(/\[|\]/g, ''),
               mailing_date: d.mailing_date,
+              scanned: Number(d.scanned),
               status:
                 new Date(d.delivery_date.replace(/\[|\]/g, '')) < new Date()
                   ? 'Delivered'
@@ -78,10 +79,10 @@ function App() {
             }
           })
         )
-
         const finalData = updatedData.map((d) => ({
           ...d,
-          value: Number(d['distinct_job_imb_count']),
+          value: d.scanned,
+          allPieces: Number(d['distinct_job_imb_count']),
           delivery_speed:
             dayjs(d.delivery_date).diff(dayjs(d.mailing_date), 'day') || 0,
           id: ids.find((id: any) => id.state === d.state)?.id || '0',
@@ -95,6 +96,9 @@ function App() {
         console.log(err)
       })
   }, [])
+  if (data) {
+    console.log(data)
+  }
 
   return (
     <>

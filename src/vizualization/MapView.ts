@@ -14,13 +14,32 @@ function MapView(
   g: any,
   clicked: Function,
   view: string,
-  data: any
+  data: any,
+  svg: any
 ) {
   const aggregate = stateLevelData(null, data)
+
   const colorScales = d3
     .scaleLinear<string>()
     .domain(d3.extent(aggregate, (d: any) => d?.deliveryPrc) as any)
-    .range(['#33E48E', '#004223'] as [string, string])
+    .range(['#FF0000', '#00D06C'] as [string, string])
+
+  // Define the diagonal line pattern
+  const defs = svg.append('defs') // Assuming svg is your main SVG container
+
+  defs
+    .append('pattern')
+    .attr('id', 'diagonal-lines')
+    .attr('patternUnits', 'userSpaceOnUse')
+    .attr('width', 10)
+    .attr('height', 10)
+    .append('line')
+    .attr('x1', 0)
+    .attr('y1', 0)
+    .attr('x2', 10)
+    .attr('y2', 10)
+    .attr('stroke', 'red') // Color of the lines
+    .attr('stroke-width', 2) // Thickness of the lines
 
   // Draw state paths
   g.selectAll('path')
@@ -28,14 +47,19 @@ function MapView(
     .join('path')
     .attr('class', 'path')
     .attr('d', path)
-    .attr('fill', (d: any) =>
-      view === 'states'
-        ? colorScales(
-            aggregate.find((x: any) => x.state === d.properties.name)
-              ?.deliveryPrc
+    .attr('fill', (d: any) => {
+      if (view === 'states') {
+        // Use the color scale for normal fill
+        return (
+          colorScales(
+            aggregate.find((x:any) => x.state === d.properties.name)?.deliveryPrc
           ) || '#f3f3f3'
-        : '#f3f3f3'
-    )
+        )
+      } else {
+        // Use diagonal line pattern for other views
+        return 'url(#diagonal-lines)'
+      }
+    })
     .attr('stroke', '#fff')
     .attr('stroke-width', 0.5)
     .style('cursor', 'pointer')
@@ -74,7 +98,6 @@ function MapView(
     .text((d: any) => d.properties.code)
     .style('font-size', '17px')
     .attr('fill', view === 'states' ? '#fff' : '#000')
-    .attr('stroke', view === 'states' ? '#004223' : '#fff')
     .attr('stroke-width', 0.2)
 }
 

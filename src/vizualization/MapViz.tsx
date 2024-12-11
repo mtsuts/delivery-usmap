@@ -69,7 +69,7 @@ function MapViz({
   // Draw map, based on view
   function updateView(view: 'states' | 'counties') {
     if (view === 'states') {
-      MapView(stateJson.features, g, clicked, view, data)
+      MapView(stateJson.features, g, clicked, view, data, svg)
       drawCountyLevelCircles(
         [],
         g,
@@ -80,7 +80,7 @@ function MapViz({
         countiesJson
       )
     } else if (view === 'counties') {
-      MapView(stateJson.features, g, clicked, view, data)
+      MapView(stateJson.features, g, clicked, view, data, svg)
       drawCountyLevelCircles(
         countyLevelData(null, data),
         g,
@@ -91,7 +91,7 @@ function MapViz({
         countiesJson
       )
     } else if (view === 'zipcodes') {
-      MapView(stateJson.features, g, clicked, view, data)
+      MapView(stateJson.features, g, clicked, view, data, svg)
       drawZipCodeLevelCircles(data, g, transform)
     }
   }
@@ -104,7 +104,8 @@ function MapViz({
       g,
       clicked,
       view,
-      data
+      data,
+      svg
     )
     if (view !== 'states') {
       drawCountyLevelCircles(
@@ -241,7 +242,7 @@ function MapViz({
     }
     if (currentZoom > 2 && currentZoom < 10) {
       svg.transition().duration(600).call(zoom.transform, d3.zoomIdentity)
-      MapView(stateJson.features, g, clicked, view, data)
+      MapView(stateJson.features, g, clicked, view, data, svg)
       drawCountyLevelCircles(
         [],
         g,
