@@ -102,10 +102,16 @@ function drawZipCodeLevelCircles(circlesData: any, g: any, transform: any) {
       })
       .on('mouseover', function (event: any, d: any) {
         if (d.length === 0) return
+        d3.select(this).attr('stroke', '#000')
+        d3.select(this).style('opacity', 1)
         if (tippyInstanceZipCodeLevel) {
           tippyInstanceZipCodeLevel.destroy()
         }
         tippyInstanceZipCodeLevel = ZipCodeLevelTooltip(event, d)
+      })
+      .on('mouseout', function (event: any, d: any) {
+        d3.select(this).attr('stroke', '#fff')
+        d3.select(this).style('opacity', 0.5)
       })
   }
 }

@@ -7,7 +7,7 @@ import { countyLevelData } from '../data/data'
 import {
   drawZipCodeLevelCircles,
   drawCountyLevelCircles,
-} from './ZipCodeLevelCircles'
+} from './LevelCircles'
 
 function MapViz({
   mainContainer,
