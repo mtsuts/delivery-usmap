@@ -42,13 +42,15 @@ function drawCountyLevelCircles(
       .attr('stroke-width', 0.5)
       .style('opacity', 0.5)
       .style('cursor', 'pointer')
-      .on('click', (event: any, d: any) => {
+      .on('click', (event: any, county: any) => {
         if (levelUpdate) return
-        const zipCodeLevelData = data.filter((x) => x.county === d.county)
-        if (d.aggregateValue === 1) return
+        if (county.aggregateValue === 1) return
+        const zipCodeLevelData = data.filter(
+          (x: any) => x.county === county.county
+        )
         drawZipCodeLevelCircles(zipCodeLevelData, g, transform)
         const zipCodeData = countiesJson.features.filter(
-          (x: any) => x.id === d.countyId
+          (x: any) => x.id === county.countyId
         )
         zoomToCounty(event.target, zipCodeData[0])
       })

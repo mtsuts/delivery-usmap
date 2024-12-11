@@ -40,8 +40,10 @@ function App() {
     return {
       id: d.id,
       county: d.properties.name,
+      state: ids.find((x: any) => x.id === d.id.slice(0, 2))?.state,
     }
   })
+  console.log(countiesIds)
 
   // Projection
   const projection = d3.geoAlbersUsa().scale(1300).translate([487.5, 305])
@@ -84,7 +86,9 @@ function App() {
           delivery_speed:
             dayjs(d.delivery_date).diff(dayjs(d.mailing_date), 'day') || 0,
           id: ids.find((id: any) => id.state === d.state)?.id || '0',
-          countyId: countiesIds.find((x: any) => x.county === d.county)?.id,
+          countyId: countiesIds
+            .filter((x: any) => x.state === d.state)
+            .find((x: any) => x.county === d.county)?.id,
         }))
         setData(finalData)
       })
