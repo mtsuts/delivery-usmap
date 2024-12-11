@@ -1,5 +1,5 @@
 import * as d3 from 'd3'
-import { StateLevelTooltip } from './Tooltips'
+import { StateLevelTooltip } from '../components/Tooltips'
 import { stateLevelData } from '../data/data'
 
 // Path generator
@@ -9,12 +9,10 @@ const path = d3.geoPath()
 let tippyInstanceState: any
 
 // Draw state level map
-function StateLevelMap(
+function MapView(
   pathData: any,
   g: any,
-  IdmapDataState: any,
   clicked: Function,
-  colorScale: Function,
   view: string,
   data: any
 ) {
@@ -41,7 +39,10 @@ function StateLevelMap(
     .attr('stroke', '#fff')
     .attr('stroke-width', 0.5)
     .style('cursor', 'pointer')
-    .on('click', clicked)
+    .on('click', (event: any, d: any) => {
+      if (view === 'counties' || view === 'zipcodes') return
+      clicked(event, d)
+    })
     .on('mouseover', function (event: any, d: any) {
       if (view === 'states') {
         const stateData = stateLevelData(d.properties.name, data)
@@ -49,8 +50,6 @@ function StateLevelMap(
           tippyInstanceState.destroy()
         }
         tippyInstanceState = StateLevelTooltip(event, d, stateData)
-      } else {
-        console.log('No Tooltip')
       }
     })
     .on('mouseout', function (event: any, d: any) {})
@@ -73,9 +72,10 @@ function StateLevelMap(
     .attr('dx', '0.2em')
     .attr('dy', '0.35em')
     .text((d: any) => d.properties.code)
-    .style('font-size', '15px')
-    .attr('fill', (view === 'states') ? '#fff' : "#000")
-    .style('font-weight', (view === 'states') ? 'bold' : '400')
+    .style('font-size', '17px')
+    .attr('fill', view === 'states' ? '#fff' : '#000')
+    .attr('stroke', view === 'states' ? '#004223' : '#fff')
+    .attr('stroke-width', 0.2)
 }
 
-export { StateLevelMap }
+export { MapView }

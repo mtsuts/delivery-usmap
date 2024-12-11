@@ -49,10 +49,6 @@
 .path:focus-visible {
   outline: none;
 }
-/* 
-.path-label {
-  text-shadow: 2px 2px 2px #565353;
-} */
 
 .circle {
   outline: none;
@@ -75,9 +71,7 @@
 }
 
 /* Table */
-
 table {
-  border: 1px solid #ccc;
   margin-top: 5px;
 }
 
@@ -92,7 +86,6 @@ thead th {
   border: 1px solid #ccc;
   padding: 4px;
   color: #000;
-  /* background-color: #00A356 */
 }
 
 tbody td {

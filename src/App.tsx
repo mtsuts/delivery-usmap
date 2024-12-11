@@ -7,7 +7,7 @@ import UsMap from './vizualization/Map'
 import mapjson from './data/map.json'
 import dayjs from 'dayjs'
 import { AppContext } from './components/AppContext'
-import { geocode } from './vizualization/Utils'
+import { geocode } from './utils'
 import csvData from './data/data.csv'
 
 interface Data {
@@ -40,6 +40,7 @@ function App() {
     return {
       id: d.id,
       county: d.properties.name,
+      state: ids.find((x: any) => x.id === d.id.slice(0, 2))?.state,
     }
   })
 
@@ -57,7 +58,7 @@ function App() {
               status:
                 new Date(d.delivery_date.replace(/\[|\]/g, '')) < new Date()
                   ? 'Delivered'
-                  : 'In Transit',
+                  : 'in-Transit',
               state: (await geocode(d.longitude, d.latitude))?.stateData,
               county: (
                 await geocode(d.longitude, d.latitude)
@@ -84,7 +85,9 @@ function App() {
           delivery_speed:
             dayjs(d.delivery_date).diff(dayjs(d.mailing_date), 'day') || 0,
           id: ids.find((id: any) => id.state === d.state)?.id || '0',
-          countyId: countiesIds.find((x: any) => x.county === d.county)?.id,
+          countyId: countiesIds
+            .filter((x: any) => x.state === d.state)
+            .find((x: any) => x.county === d.county)?.id,
         }))
         setData(finalData)
       })
@@ -101,7 +104,7 @@ function App() {
         stateJson={stateJson}
         countiesJson={countiesJson}
         mobileHeight={400}
-        desktopHeight={650}
+        desktopHeight={700}
         color={['#33E48E', '#00A356']}
       ></UsMap>
     </>

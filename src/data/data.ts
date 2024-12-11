@@ -24,8 +24,7 @@ function countyLevelData(id: any, data: any) {
       Math.floor(d3.sum(group, (d: any) => d.delivery_speed) / group.length),
     (x: any) => x.county
   )
-  console.log(stateData)
-  console.log(rolledUpDataSpeed)
+
   //  Generate county level data
   const uniqueCountyData = new Set()
   return stateData

@@ -47,7 +47,7 @@ function generateTooltipContent(event: any, data: any, title: string) {
     content: container,
     arrow: false,
     theme: 'light-border',
-    placement: 'bottom-end',
+    placement: 'top-end',
   })
 }
 
@@ -76,7 +76,7 @@ function ZipCodeLevelTooltip(event: any, data: any) {
             <th>Zip Code</th>
             <th>Records</th>
             <th>Delivery Status</th>
-            {data.status === 'In Transit' && <th>Delivery Time</th>}
+            {data.status === 'in-Transit' && <th>Delivery Time</th>}
           </tr>
         </thead>
         <tbody>
@@ -84,7 +84,7 @@ function ZipCodeLevelTooltip(event: any, data: any) {
             <td>{data.location.split(',')[0]}</td>
             <td>{data.value}</td>
             <td>{data.status}</td>
-            {data.status === 'In Transit' && <td>{data.delivery_date}</td>}
+            {data.status === 'in-Transit' && <td>{data.delivery_date}</td>}
           </tr>
         </tbody>
       </table>
