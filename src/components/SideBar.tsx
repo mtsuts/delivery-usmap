@@ -26,7 +26,8 @@ const SideBar = ({ data, buttonClick }: SideBarProps) => {
           key={index}
           style={{
             backgroundColor: 'white',
-            width: 220,
+            width: 100,
+            padding: '10px 0px',
             cursor: 'pointer',
             borderRadius: '7px',
             borderColor: '#000',

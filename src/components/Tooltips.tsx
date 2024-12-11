@@ -47,7 +47,7 @@ function generateTooltipContent(event: any, data: any, title: string) {
     content: container,
     arrow: false,
     theme: 'light-border',
-    placement: 'bottom-end',
+    placement: 'top-end',
   })
 }
 
