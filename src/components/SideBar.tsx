@@ -42,9 +42,9 @@ const SideBar = ({ data, buttonClick }: SideBarProps) => {
           </div>
         </div>
       ))}
-      <div style={{ marginLeft: '40px', marginTop: '30px' }}>
+      <div style={{ marginLeft: '40px', marginTop: '50px' }}>
         <div style={{ fontWeight: 'bold' }}> Legend</div>
-        <div>
+        <div style={{ marginTop: '7px' }}>
           <LegendBar />
         </div>
       </div>

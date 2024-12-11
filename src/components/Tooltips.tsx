@@ -32,9 +32,9 @@ function generateTooltipContent(event: any, data: any, title: string) {
       <div style={{ marginTop: '10px' }}>
         <ProgressBar
           data={data}
-          progress={data.deliveryPrc / 100}
+          progress={data.scannedPrc / 100}
           width={300}
-          color={data.deliveryPrc > 50 ? '#00D06C' : '#FF0000'}
+          color={data.scannedPrc > 50 ? '#00D06C' : '#FF0000'}
         />
       </div>
     </>
@@ -48,7 +48,7 @@ function generateTooltipContent(event: any, data: any, title: string) {
     content: container,
     arrow: false,
     theme: 'light-border',
-    placement: 'top-end',
+    placement: 'bottom-end',
   })
 }
 

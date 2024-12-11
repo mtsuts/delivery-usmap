@@ -9,11 +9,7 @@ import dayjs from 'dayjs'
 import { AppContext } from './components/AppContext'
 import { geocode } from './utils'
 import csvData from './data/data.csv'
-
-interface Data {
-  data: []
-  setData: Function
-}
+import { Data } from './types'
 
 function App() {
   const { data, setData } = React.useContext(AppContext) as Data
@@ -56,6 +52,7 @@ function App() {
               delivery_date: d.delivery_date.replace(/\[|\]/g, ''),
               mailing_date: d.mailing_date,
               scanned: Number(d.scanned),
+              allPieces: Number(d['distinct_job_imb_count']),
               status:
                 new Date(d.delivery_date.replace(/\[|\]/g, '')) < new Date()
                   ? 'Delivered'
@@ -82,7 +79,10 @@ function App() {
         const finalData = updatedData.map((d) => ({
           ...d,
           value: d.scanned,
-          allPieces: Number(d['distinct_job_imb_count']),
+          notScannedPrc: ((d.allPieces - d.scanned) / d.allPieces) * 100,
+          scannedPrc: Math.floor((d.scanned / d.allPieces) * 100),
+          delivered: d.status === 'Delivered' ? d.scanned : 0,
+          inTransit: d.status === 'in-Transit' ? d.scanned : 0,
           delivery_speed:
             dayjs(d.delivery_date).diff(dayjs(d.mailing_date), 'day') || 0,
           id: ids.find((id: any) => id.state === d.state)?.id || '0',
@@ -96,9 +96,8 @@ function App() {
         console.log(err)
       })
   }, [])
-  if (data) {
-    console.log(data)
-  }
+
+  console.log(data)
 
   return (
     <>

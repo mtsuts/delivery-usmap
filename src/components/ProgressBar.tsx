@@ -53,7 +53,7 @@ const ProgressBar = ({ progress, width, color }: ProgressBarProps) => {
 
   return (
     <>
-      <div> Delivery %</div>
+      <div> Scanned %</div>
       <div id='progress-bar-container'></div>
     </>
   )

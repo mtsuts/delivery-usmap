@@ -85,7 +85,8 @@ thead th {
   font-family: DM sans;
   border: 1px solid #ccc;
   padding: 4px;
-  color: #000;
+  color: #fff;
+  background-color: #c93235;
 }
 
 tbody td {

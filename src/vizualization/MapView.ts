@@ -56,8 +56,7 @@ function MapView(
           ) || '#f3f3f3'
         )
       } else {
-        // Use diagonal line pattern for other views
-        return 'url(#diagonal-lines)'
+        return '#f3f3f3'
       }
     })
     .attr('stroke', '#fff')
