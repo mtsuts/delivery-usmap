@@ -72,9 +72,10 @@ function MapView(
     .attr('dx', '0.2em')
     .attr('dy', '0.35em')
     .text((d: any) => d.properties.code)
-    .style('font-size', '15px')
+    .style('font-size', '17px')
     .attr('fill', view === 'states' ? '#fff' : '#000')
-    .style('font-weight', view === 'states' ? 'bold' : '400')
+    .attr('stroke', view === 'states' ? '#004223' : '#fff')
+    .attr('stroke-width', 0.2)
 }
 
 export { MapView }

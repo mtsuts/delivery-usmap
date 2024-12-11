@@ -69,9 +69,6 @@ function UsMap(params: MapProps) {
       <SideBar data={sideBarData} buttonClick={() => map.current.reset()} />
       <div id={params.container}></div>
       <div style={{ marginLeft: '40px', marginBottom: '120px' }}>
-        <div>
-          <LegendBar />
-        </div>
       </div>
     </div>
   )

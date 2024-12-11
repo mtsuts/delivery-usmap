@@ -1,14 +1,35 @@
-import React from "react";
+import React from 'react'
 
-const LegendBar = ({ startColor = "#33E48E", endColor = "#004223", height = "20px" }) => {
+const LegendBar = ({
+  startColor = '#33E48E',
+  endColor = '#004223',
+  height = '20px',
+}) => {
   const gradientStyle = {
     background: `linear-gradient(90deg, ${startColor} 0%, ${endColor} 100%)`,
     height: height,
-    borderRadius: "10px",
+    borderRadius: '10px',
     width: '170px',
-  };
+    position: 'relative' as 'relative',
+  }
 
-  return <div style={gradientStyle}></div>;
-};
+  const labelStyle: React.CSSProperties = {
+    position: 'absolute',
+    top: '50%',
+    transform: 'translateY(-50%)',
+    fontSize: '12px',
+    color: '#fff',
+  }
 
-export default LegendBar;
+  return (
+    <div style={{ width: '100%', position: 'relative' }}>
+      <div> Delivery %</div>
+      <div style={gradientStyle}>
+        <div style={{ ...labelStyle, left: '2%' }}>0%</div>
+        <div style={{ ...labelStyle, right: '2%' }}>100%</div>
+      </div>
+    </div>
+  )
+}
+
+export default LegendBar
