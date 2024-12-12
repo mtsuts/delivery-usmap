@@ -1,4 +1,5 @@
 import React from 'react'
+import scanned from '../images/scanned.png'
 
 const LegendBar = ({
   startColor = '#FF0000',
@@ -24,20 +25,10 @@ const LegendBar = ({
   return (
     <div style={{ width: '100%', position: 'relative' }}>
       <div> Delivery %</div>
-      <div style={gradientStyle}>
-        {/* <div style={{ ...labelStyle, left: '2%' }}>0%</div>
-        <div style={{ ...labelStyle, right: '2%' }}>100%</div> */}
-      </div>
-      <div
-        style={{
-          marginTop: '3px',
-          display: 'flex',
-          justifyContent: 'space-between',
-          fontSize: '10px'
-        }}
-      >
-        <div> Not Scanned</div>
-        <div> Scanned</div>
+      <div style={gradientStyle}></div>
+      <div>
+        <div style={{ marginTop: '20px' }}> Not Scanned 100% </div>
+        <img src={scanned} style={{ height: '20px',  marginTop: '5px' }} />
       </div>
     </div>
   )

@@ -72,10 +72,10 @@ function MapView(
           colorScales(
             aggregate.find((x: any) => x.state === d.properties.name)
               ?.deliveryPrc
-          ) || '#f3f3f3'
+          ) || '#fff'
         )
       } else {
-        return '#f3f3f3'
+        return '#fff'
       }
     })
 
@@ -112,7 +112,8 @@ function MapView(
         } else {
           d3.select(this).attr('fill', colorScales(stateData?.deliveryPrc))
         }
-      } else {
+      } 
+      else {
         d3.select(this).attr('fill', '#f3f3f3')
       }
     })
