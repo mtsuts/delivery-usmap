@@ -13,8 +13,15 @@ function UsMap(params: MapProps) {
     'states'
   )
   const { data, setData } = React.useContext(AppContext) as Data
+  const [isMobile, setIsMobile] = React.useState(false)
 
   const map = React.useRef(null)
+
+  React.useEffect(() => {
+    if (window.innerWidth < 768) {
+      setIsMobile(true)
+    }
+  })
 
   const sideBarData = [
     {
@@ -65,18 +72,35 @@ function UsMap(params: MapProps) {
     }
   }, [view])
 
-  return (
+  return !isMobile ? (
     <div
       style={{
         display: 'flex',
       }}
     >
       <SideBar data={sideBarData} buttonClick={() => map.current.reset()} />
-      <ZoomButtons />
-      <div
-        style={{ flexGrow: 1, marginTop: '40px' }}
-        id={params.container}
-      ></div>
+      <div style={{ flexGrow: 1, marginTop: '40px', position: 'relative' }}>
+        <div id={params.container}></div>
+        <div style={{ position: 'absolute', right: 100, bottom: 120 }}>
+          <ZoomButtons />
+        </div>
+      </div>
+    </div>
+  ) : (
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+      }}
+    >
+      <div style={{ flexGrow: 1, marginTop: '40px', position: 'relative' }}>
+        <div id={params.container}></div>
+        <div style={{ position: 'absolute', right: 10, bottom: 20 }}>
+          <ZoomButtons />
+        </div>
+      </div>
+
+      <SideBar data={sideBarData} buttonClick={() => map.current.reset()} />
     </div>
   )
 }

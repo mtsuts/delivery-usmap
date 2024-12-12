@@ -32,7 +32,11 @@ function MapViz({
   const isMobile = window.innerWidth < 768
   const width =
     (container.node() as HTMLElement)?.getBoundingClientRect().width || 800
-  const height = isMobile ? mobileHeight : desktopHeight
+  const height = isMobile
+    ? mobileHeight
+    : window.innerWidth < 1500
+    ? desktopHeight
+    : 1500
 
   let transform = d3.zoomIdentity
   // Initial zoom
@@ -228,7 +232,6 @@ function MapViz({
       }
       svg.transition().duration(600).call(zoom.scaleTo, currentZoom)
     }
-
 
     if (currentZoom < 12 && currentZoom >= 10) {
       svg.transition().duration(600).call(zoom.transform, currentTransform)
