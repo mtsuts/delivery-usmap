@@ -23,7 +23,7 @@ function drawCountyLevelCircles(
       d3.min(circlesData, (d: any) => Number(d.aggregateValue)),
       d3.max(circlesData, (d: any) => Number(d.aggregateValue)),
     ])
-    .range([5, 20])
+    .range([10, 30])
 
   const colorScales = d3
     .scaleLinear<string>()
@@ -82,7 +82,7 @@ function drawZipCodeLevelCircles(circlesData: any, g: any, transform: any) {
       d3.min(circlesData, (d: any) => Number(d.allPieces)),
       d3.max(circlesData, (d: any) => Number(d.allPieces)),
     ])
-    .range([5, 15])
+    .range([10, 35])
 
   if (circlesData.length) {
     g.selectAll('circle')
