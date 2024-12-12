@@ -90,7 +90,7 @@ function ZipCodeLevelTooltip(event: any, data: any) {
         <tbody>
           <tr>
             <td>{data.location.split(',')[0]}</td>
-            <td>{data.value}</td>
+            <td>{data.allPieces}</td>
             <td>{data.status}</td>
             {data.status === 'in-Transit' && <td>{data.delivery_date}</td>}
           </tr>

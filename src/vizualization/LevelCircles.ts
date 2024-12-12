@@ -79,8 +79,8 @@ function drawZipCodeLevelCircles(circlesData: any, g: any, transform: any) {
   const radiusScale = d3
     .scaleLog()
     .domain([
-      d3.min(circlesData, (d: any) => Number(d.value)),
-      d3.max(circlesData, (d: any) => Number(d.value)),
+      d3.min(circlesData, (d: any) => Number(d.allPieces)),
+      d3.max(circlesData, (d: any) => Number(d.allPieces)),
     ])
     .range([5, 15])
 
@@ -91,7 +91,7 @@ function drawZipCodeLevelCircles(circlesData: any, g: any, transform: any) {
       .attr('class', 'circle')
       .attr('cx', (d: any) => d.x)
       .attr('cy', (d: any) => d.y)
-      .attr('r', (d: any) => radiusScale(d.value))
+      .attr('r', (d: any) => radiusScale(d.allPieces))
       .attr('fill', (d: any) =>
         d.status === 'in-Transit' ? '#FF0000' : '#00D06C'
       )
