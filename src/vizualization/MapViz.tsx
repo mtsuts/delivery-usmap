@@ -1,9 +1,9 @@
 import React from 'react'
 import * as d3 from 'd3'
 import { MapVizProps } from '../types'
-import { CountyLevelTooltip, ZipCodeLevelTooltip } from '../components/Tooltips'
 import { MapView } from './MapView'
 import { countyLevelData } from '../data/data'
+import drawTransitArrows from './TransitArrows'
 import { drawZipCodeLevelCircles, drawCountyLevelCircles } from './LevelCircles'
 
 function MapViz({
@@ -96,6 +96,9 @@ function MapViz({
     } else if (view === 'zipcodes') {
       MapView(stateJson.features, g, clicked, view, data)
       drawZipCodeLevelCircles(data, g, transform)
+    } else if (view === 'transit') {
+      MapView(stateJson.features, g, clicked, view, data)
+      drawTransitArrows(data.filter((d) => d.status === 'in-Transit'), g)
     }
   }
 

@@ -9,7 +9,7 @@ import { MapProps, Data } from '../types'
 import ZoomButtons from '../components/ZoomButtons'
 
 function UsMap(params: MapProps) {
-  const [view, setView] = React.useState<'states' | 'counties' | 'zipcodes'>(
+  const [view, setView] = React.useState<'states' | 'counties' | 'zipcodes' | 'transit'>(
     'states'
   )
   const { data, setData } = React.useContext(AppContext) as Data
@@ -43,6 +43,15 @@ function UsMap(params: MapProps) {
         setView('zipcodes')
       },
       isActive: view === 'zipcodes',
+    },
+    {
+      label: 'Transit View',
+      imageSrc: zipCodeViewImage,
+      position: 250,
+      onClick: () => {
+        setView('transit')
+      },
+      isActive: view === 'transit',
     },
   ]
 
