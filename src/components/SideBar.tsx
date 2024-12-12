@@ -20,6 +20,7 @@ const SideBar = ({ data, buttonClick }: SideBarProps) => {
           color: '#fff',
           padding: '10px',
           fontWeight: '600',
+          width: '80px',
           zIndex: 1000,
           cursor: 'pointer',
           border: 'none',
