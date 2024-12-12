@@ -24,41 +24,66 @@ function MapView(
     .domain(d3.extent(aggregate, (d: any) => d?.deliveryPrc) as any)
     .range(['#FF0000', '#00D06C'] as [string, string])
 
-  // Define the diagonal line pattern
-  const defs = svg.append('defs') // Assuming svg is your main SVG container
+  // Draw Shading pattern
+  function drawPattern(deliveryPrc: number) {
+    console.log(deliveryPrc)
+    let strokeColor: string = ''
+    if (deliveryPrc > 50) {
+      strokeColor = '#004d40'
+    } else {
+      strokeColor = '#d50000'
+    }
 
-  defs
-    .append('pattern')
-    .attr('id', 'diagonal-lines')
-    .attr('patternUnits', 'userSpaceOnUse')
-    .attr('width', 10)
-    .attr('height', 10)
-    .append('line')
-    .attr('x1', 0)
-    .attr('y1', 0)
-    .attr('x2', 10)
-    .attr('y2', 10)
-    .attr('stroke', 'red') // Color of the lines
-    .attr('stroke-width', 2) // Thickness of the lines
+    const defs = svg.append('defs')
+
+    // Define the pattern for diagonal lines
+    defs
+      .append('pattern')
+      .attr('id', 'diagonal-lines')
+      .attr('patternUnits', 'userSpaceOnUse')
+      .attr('width', 10)
+      .attr('height', 10)
+      .attr('patternTransform', 'rotate(45)')
+      .append('line')
+      .attr('x1', 0)
+      .attr('y1', 0)
+      .attr('x2', 0)
+      .attr('y2', 10)
+      .attr('stroke', strokeColor)
+      .attr('stroke-width', 8)
+
+    return 'url(#diagonal-lines)'
+  }
+
+  const pathGroup = g
+    .selectAll('g')
+    .data(pathData)
+    .join('g')
+    .attr('class', 'path-group')
 
   // Draw state paths
-  g.selectAll('path')
-    .data(pathData)
-    .join('path')
-    .attr('class', 'path')
+  pathGroup
+    .append('path')
     .attr('d', path)
+    .attr('class', 'path')
     .attr('fill', (d: any) => {
       if (view === 'states') {
-        // Use the color scale for normal fill
         return (
           colorScales(
-            aggregate.find((x:any) => x.state === d.properties.name)?.deliveryPrc
+            aggregate.find((x: any) => x.state === d.properties.name)
+              ?.deliveryPrc
           ) || '#f3f3f3'
         )
       } else {
         return '#f3f3f3'
       }
     })
+
+  // Draw pattern for states
+  pathGroup
+    .append('path')
+    .attr('d', path)
+    .attr('class', 'path-pattern')
     .attr('stroke', '#fff')
     .attr('stroke-width', 0.5)
     .style('cursor', 'pointer')
@@ -68,17 +93,32 @@ function MapView(
     })
     .on('mouseover', function (event: any, d: any) {
       if (view === 'states') {
-        const stateData = stateLevelData(d.properties.name, data)
+        const stateData = aggregate.find(
+          (x: any) => x.state === d.properties.name
+        )
         if (tippyInstanceState) {
           tippyInstanceState.destroy()
         }
         tippyInstanceState = StateLevelTooltip(event, d, stateData)
       }
     })
-    .on('mouseout', function (event: any, d: any) {})
+    .each(function (d: any) {
+      const stateData = aggregate.find(
+        (x: any) => x.state === d.properties.name
+      )
+      if (stateData && view === 'states') {
+        if (stateData?.scannedPrc !== 100) {
+          d3.select(this).attr('fill', drawPattern(stateData?.deliveryPrc))
+        } else {
+          d3.select(this).attr('fill', colorScales(stateData?.deliveryPrc))
+        }
+      } else {
+        d3.select(this).attr('fill', '#f3f3f3')
+      }
+    })
 
-  // Append text elements on state paths
-  g.selectAll('text')
+  pathGroup
+    .selectAll('text')
     .data(pathData)
     .join('text')
     .attr('class', 'path-label')

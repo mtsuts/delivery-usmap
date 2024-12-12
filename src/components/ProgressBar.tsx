@@ -5,7 +5,7 @@ import { ProgressBarProps } from '../types'
 const ProgressBar = ({ progress, width, color }: ProgressBarProps) => {
   React.useEffect(() => {
     // Set dimensions for the progress bar
-    const height = 17
+    const height = 14
     let borderRadius = 5
 
     // Select the container element and clear previous progress bar if any

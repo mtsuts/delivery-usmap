@@ -16,7 +16,7 @@ const SideBar = ({ data, buttonClick }: SideBarProps) => {
           zIndex: 1000,
           cursor: 'pointer',
           border: 'none',
-          margin: '20px 40px',
+          margin: '40px 40px',
         }}
       >
         Reset

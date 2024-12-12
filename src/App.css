@@ -50,6 +50,18 @@
   outline: none;
 }
 
+.path-pattern {
+  outline: none;
+}
+
+.path-pattern:focus {
+  outline: none;
+}
+
+.path-pattern:focus-visible {
+  outline: none;
+}
+
 .circle {
   outline: none;
 }
@@ -81,7 +93,7 @@ th {
 
 thead th {
   font-weight: 600;
-  font-size: 14px;
+  font-size: 12px;
   font-family: DM sans;
   border: 1px solid #ccc;
   padding: 4px;
@@ -90,7 +102,7 @@ thead th {
 }
 
 tbody td {
-  font-size: 13px;
+  font-size: 14px;
   border: 1px solid #ccc;
   padding: 4px;
   font-weight: 600;

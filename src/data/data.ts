@@ -28,7 +28,6 @@ function countyLevelData(id: any, data: any) {
     (x: any) => x.county
   )
 
-  console.log(rolledUpDataScanned)
   const rolledUpDataSpeed = d3.rollup(
     stateData,
     (group) =>
@@ -143,7 +142,6 @@ function stateLevelData(state: any, data: any) {
       uniqueStateData.add(item.state)
       return true
     })
-  console.log(finalData)
   if (state) return finalData.filter((d: any) => d.deliveryPrc >= 0)[0]
   return finalData.filter((d: any) => d.deliveryPrc >= 0)
 }

@@ -65,9 +65,13 @@ function UsMap(params: MapProps) {
   }, [view])
 
   return (
-    <div style={{ display: 'flex' }}>
+    <div
+      style={{
+        display: 'flex',
+      }}
+    >
       <SideBar data={sideBarData} buttonClick={() => map.current.reset()} />
-      <div style={{ flexGrow: 1 }} id={params.container}></div>
+      <div style={{ flexGrow: 1, marginTop: '40px' }} id={params.container}></div>
     </div>
   )
 }
