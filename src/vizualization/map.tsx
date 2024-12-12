@@ -13,16 +13,11 @@ function UsMap(params: MapProps) {
     'states'
   )
   const { data, setData } = React.useContext(AppContext) as Data
-  const [isMobile, setIsMobile] = React.useState(false)
+  const isMobile = window.innerWidth < 768
 
   const map = React.useRef(null)
 
-  React.useEffect(() => {
-    if (window.innerWidth < 768) {
-      setIsMobile(true)
-    }
-  })
-
+  // Side bar buttons data
   const sideBarData = [
     {
       label: 'State View',
@@ -81,7 +76,7 @@ function UsMap(params: MapProps) {
       <SideBar data={sideBarData} buttonClick={() => map.current.reset()} />
       <div style={{ flexGrow: 1, marginTop: '40px', position: 'relative' }}>
         <div id={params.container}></div>
-        <div style={{ position: 'absolute', right: 100, bottom: 120 }}>
+        <div style={{ position: 'absolute', left: 20, top: -20 }}>
           <ZoomButtons />
         </div>
       </div>
@@ -94,10 +89,10 @@ function UsMap(params: MapProps) {
       }}
     >
       <div style={{ flexGrow: 1, marginTop: '40px', position: 'relative' }}>
-        <div id={params.container}></div>
-        <div style={{ position: 'absolute', right: 10, bottom: 20 }}>
+        <div style={{ position: 'absolute', right: 20, bottom: 20 }}>
           <ZoomButtons />
         </div>
+        <div id={params.container}></div>
       </div>
 
       <SideBar data={sideBarData} buttonClick={() => map.current.reset()} />

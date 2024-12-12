@@ -2,13 +2,11 @@ import React from 'react'
 import * as d3 from 'd3'
 import * as topojson from 'topojson-client'
 import './App.css'
-import { useEffect } from 'react'
 import UsMap from './vizualization/Map'
-import mapjson from './data/map.json'
-import dayjs from 'dayjs'
 import { AppContext } from './components/AppContext'
-import { geocode } from './utils'
 import csvData from './data/data.csv'
+import mapjson from './data/map.json'
+import { geocode, dayDiff, getProjection } from './utils'
 import { Data } from './types'
 
 function App() {
@@ -24,14 +22,14 @@ function App() {
     (mapjson as any).objects.counties
   )
 
-  // Ids
+  // State ids
   const ids = (stateJson as any).features.map((d: any) => {
     return {
       id: d.id,
       state: d.properties.name,
     }
   })
-
+  //County ids
   const countiesIds = (countiesJson as any).features.map((d: any) => {
     return {
       id: d.id,
@@ -40,9 +38,7 @@ function App() {
     }
   })
 
-  // Projection
-  const projection = d3.geoAlbersUsa().scale(1300).translate([487.5, 305])
-  useEffect(() => {
+  React.useEffect(() => {
     d3.csv(csvData)
       .then(async (data) => {
         const updatedData = await Promise.all(
@@ -61,36 +57,24 @@ function App() {
               county: (
                 await geocode(d.longitude, d.latitude)
               )?.countyData.replace(' County', ''),
-              x:
-                d.longitude && d.latitude
-                  ? (projection([Number(d.longitude), Number(d.latitude)]) || [
-                      0, 0,
-                    ])[0]
-                  : 0,
-              y:
-                d.longitude && d.latitude
-                  ? (projection([Number(d.longitude), Number(d.latitude)]) || [
-                      0, 0,
-                    ])[1]
-                  : 0,
+              x: getProjection(d.longitude, d.latitude).x,
+              y: getProjection(d.longitude, d.latitude).y,
             }
           })
         )
-        const finalData = updatedData.map((d) => ({
+        const vizData = updatedData.map((d) => ({
           ...d,
-          value: d.scanned,
           notScannedPrc: ((d.allPieces - d.scanned) / d.allPieces) * 100,
           scannedPrc: Math.floor((d.scanned / d.allPieces) * 100),
           delivered: d.status === 'Delivered' ? d.scanned : 0,
           inTransit: d.status === 'in-Transit' ? d.scanned : 0,
-          delivery_speed:
-            dayjs(d.delivery_date).diff(dayjs(d.mailing_date), 'day') || 0,
+          delivery_speed: dayDiff(d.delivery_date, d.mailing_date),
           id: ids.find((id: any) => id.state === d.state)?.id || '0',
           countyId: countiesIds
             .filter((x: any) => x.state === d.state)
             .find((x: any) => x.county === d.county)?.id,
         }))
-        setData(finalData)
+        setData(vizData)
       })
       .catch((err) => {
         console.log(err)
