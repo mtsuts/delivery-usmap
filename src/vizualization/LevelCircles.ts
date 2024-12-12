@@ -13,6 +13,7 @@ function drawCountyLevelCircles(
   zoomToCounty: any,
   countiesJson: any
 ) {
+
   if (!circlesData) return
   g.selectAll('.circle').remove()
 
@@ -25,11 +26,10 @@ function drawCountyLevelCircles(
     ])
     .range([5, 20])
 
-
   const colorScales = d3
     .scaleLinear<string>()
     .domain(d3.extent(circlesData, (d: any) => d?.deliveryPrc) as any)
-    .range(['#33E48E', '#004223'] as [string, string])
+    .range(['#FF0000', '#00D06C'] as [string, string])
   if (circlesData.length) {
     g.selectAll('circle')
       .data(circlesData.filter((d: any) => d.x !== 0 && d.y !== 0))
@@ -91,9 +91,9 @@ function drawZipCodeLevelCircles(circlesData: any, g: any, transform: any) {
       .attr('class', 'circle')
       .attr('cx', (d: any) => d.x)
       .attr('cy', (d: any) => d.y)
-      .attr('r', (d: any) => radiusScale(d.value) / transform.k)
+      .attr('r', (d: any) => radiusScale(d.value))
       .attr('fill', (d: any) =>
-        d.status === 'in-Transit' ? '#33E48E' : '#004223'
+        d.status === 'in-Transit' ? '#FF0000' : '#00D06C'
       )
       .attr('stroke', '#fff')
       .attr('stroke-width', 0.5)

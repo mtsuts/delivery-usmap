@@ -47,7 +47,6 @@ function MapViz({
 
   // Group element
   const g = svg.append('g')
-
   // Path generator
   const path = d3.geoPath()
 
@@ -141,6 +140,7 @@ function MapViz({
       scale: 1,
     },
   }
+
   // Handle click zoom
   function zoomToCounty(event: any, d: any) {
     const [[x0, y0], [x1, y1]] = path.bounds(d)
@@ -150,6 +150,7 @@ function MapViz({
 
     // Save the current zoom state to previous
     zoomState.previous = { ...zoomState.current }
+    console.log(zoomState.previous)
 
     // Update the current zoom state
     zoomState.current = { translateX, translateY, scale }
@@ -215,18 +216,20 @@ function MapViz({
   // Zoom out
   d3.select('#zoom_out').on('click', () => {
     console.log(currentZoom)
-
     if (currentZoom === 1) return
+    zoomState.current = { ...zoomState.previous }
     const currentTransform = d3.zoomIdentity
       .translate(zoomState.previous.translateX, zoomState.previous.translateY)
       .scale(zoomState.previous.scale)
-    console.log(currentTransform)
-    if (currentZoom < 2) {
+
+    if (currentZoom <= 2) {
       if (currentZoom + zoomDiff >= scaleExtent[0]) {
         currentZoom = currentZoom - zoomDiff
       }
       svg.transition().duration(600).call(zoom.scaleTo, currentZoom)
     }
+
+
     if (currentZoom < 12 && currentZoom >= 10) {
       svg.transition().duration(600).call(zoom.transform, currentTransform)
       drawCountyLevelCircles(

@@ -5,51 +5,50 @@ import ZoomButtons from './ZoomButtons'
 
 const SideBar = ({ data, buttonClick }: SideBarProps) => {
   return (
-    <div>
+    <div className='sidebar'>
       <button
         onClick={buttonClick}
         style={{
-          backgroundColor: '#fff',
-          borderRadius: '7px',
-          borderColor: '#000',
-          color: '#000',
+          backgroundColor: '#c93235',
+          borderRadius: '5px',
+          color: '#fff',
           padding: '10px',
           fontWeight: '600',
           zIndex: 1000,
           cursor: 'pointer',
-          margin: '20px 40px',
+          border: 'none',
+          margin: '40px 40px',
         }}
       >
         Reset
       </button>
       {data.map((d, index) => (
-        <button
+        <div
           key={index}
           style={{
-            width: 100,
-            padding: '10px 0px',
+            backgroundColor: 'white',
+            width: 220,
             cursor: 'pointer',
-            borderRadius: '7px',
-            marginLeft: '40px',
-            border: 'none',
-            backgroundColor: d.isActive ? '#004223' : 'transparent',
-            color: d.isActive ? '#fff' : '#000',
+            textAlign: 'center',
           }}
           onClick={d.onClick}
         >
-          <div
-            style={{
-              fontWeight: d.isActive ? 'bold' : 'normal',
-            }}
-          >
+          <img
+            src={d.imageSrc}
+            alt={d.label}
+            style={{ height: '100px', opacity: d.isActive ? 1 : 0.5 }}
+          />
+          <div style={{ fontWeight: d.isActive ? 'bold' : 'normal' }}>
             {d.label}
           </div>
-        </button>
+        </div>
       ))}
-      <div style={{ marginLeft: '40px' }}>
-        <LegendBar />
+      <div style={{ marginLeft: '40px', marginTop: '50px' }}>
+        <div style={{ fontWeight: 'bold' }}> Legend</div>
+        <div style={{ marginTop: '7px' }}>
+          <LegendBar />
+        </div>
       </div>
-      <ZoomButtons />
     </div>
   )
 }

@@ -4,8 +4,8 @@ function ZoomButtons() {
   return (
     <div
       style={{
-        marginLeft: '240px',
-        marginTop: '0px',
+        marginLeft: '80px',
+        marginTop: '40px',
         display: 'flex',
         flexDirection: 'column',
       }}
@@ -14,7 +14,7 @@ function ZoomButtons() {
         style={{
           width: '30px',
           padding: '5px',
-          backgroundColor: '#004223',
+          backgroundColor: '#c93235',
           border: 'none',
           color: '#fff',
           cursor: 'pointer',
@@ -27,7 +27,7 @@ function ZoomButtons() {
         style={{
           width: '30px',
           padding: '5px',
-          backgroundColor: '#004223',
+          backgroundColor: '#c93235',
           border: 'none',
           marginTop: '5px',
           color: '#fff',
@@ -35,7 +35,7 @@ function ZoomButtons() {
         }}
         id='zoom_out'
       >
-    -
+        -
       </button>
     </div>
   )

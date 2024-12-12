@@ -1,11 +1,12 @@
 import * as React from 'react'
 import { AppContext } from '../components/AppContext'
 import SideBar from '../components/SideBar'
-import countiesViewImage from '../images/countiesView.png'
 import stateView from '../images/stateView.png'
+import countiesViewImage from '../images/countiesView.png'
+import zipCodeViewImage from '../images/zipCodeViews.png'
 import MapViz from './MapViz'
 import { MapProps, Data } from '../types'
-import LegendBar from '../components/Legend'
+import ZoomButtons from '../components/ZoomButtons'
 
 function UsMap(params: MapProps) {
   const [view, setView] = React.useState<'states' | 'counties' | 'zipcodes'>(
@@ -34,7 +35,7 @@ function UsMap(params: MapProps) {
     },
     {
       label: 'Zip Code View',
-      imageSrc: countiesViewImage,
+      imageSrc: zipCodeViewImage,
       position: 250,
       onClick: () => {
         setView('zipcodes')
@@ -65,11 +66,17 @@ function UsMap(params: MapProps) {
   }, [view])
 
   return (
-    <div>
+    <div
+      style={{
+        display: 'flex',
+      }}
+    >
       <SideBar data={sideBarData} buttonClick={() => map.current.reset()} />
-      <div id={params.container}></div>
-      <div style={{ marginLeft: '40px', marginBottom: '120px' }}>
-      </div>
+      <ZoomButtons />
+      <div
+        style={{ flexGrow: 1, marginTop: '40px' }}
+        id={params.container}
+      ></div>
     </div>
   )
 }

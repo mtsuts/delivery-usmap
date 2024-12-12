@@ -57,4 +57,10 @@ export type ProgressBarProps = {
   progress: number
   width: number
   color: string
+  data: any
+}
+
+export interface Data {
+  data: []
+  setData: Function
 }

@@ -1,8 +1,9 @@
 import React from 'react'
+import scanned from '../images/scanned.png'
 
 const LegendBar = ({
-  startColor = '#33E48E',
-  endColor = '#004223',
+  startColor = '#FF0000',
+  endColor = '#00D06C',
   height = '20px',
 }) => {
   const gradientStyle = {
@@ -17,16 +18,17 @@ const LegendBar = ({
     position: 'absolute',
     top: '50%',
     transform: 'translateY(-50%)',
-    fontSize: '12px',
+    fontSize: '10px',
     color: '#fff',
   }
 
   return (
     <div style={{ width: '100%', position: 'relative' }}>
       <div> Delivery %</div>
-      <div style={gradientStyle}>
-        <div style={{ ...labelStyle, left: '2%' }}>0%</div>
-        <div style={{ ...labelStyle, right: '2%' }}>100%</div>
+      <div style={gradientStyle}></div>
+      <div>
+        <div style={{ marginTop: '20px' }}> Not Scanned 100% </div>
+        <img src={scanned} style={{ height: '20px',  marginTop: '5px' }} />
       </div>
     </div>
   )
