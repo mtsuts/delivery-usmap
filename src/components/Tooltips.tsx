@@ -53,7 +53,6 @@ function generateTooltipContent(event: any, data: any, title: string) {
 }
 
 function StateLevelTooltip(event: any, d: any, data: any) {
-  console.log(data)
   // Generate Tooltip Data
   const stateName = d.properties.name
 

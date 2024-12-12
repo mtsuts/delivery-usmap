@@ -13,6 +13,7 @@ function drawCountyLevelCircles(
   zoomToCounty: any,
   countiesJson: any
 ) {
+
   if (!circlesData) return
   g.selectAll('.circle').remove()
 
@@ -90,7 +91,7 @@ function drawZipCodeLevelCircles(circlesData: any, g: any, transform: any) {
       .attr('class', 'circle')
       .attr('cx', (d: any) => d.x)
       .attr('cy', (d: any) => d.y)
-      .attr('r', (d: any) => radiusScale(d.value) / transform.k)
+      .attr('r', (d: any) => radiusScale(d.value))
       .attr('fill', (d: any) =>
         d.status === 'in-Transit' ? '#FF0000' : '#00D06C'
       )
