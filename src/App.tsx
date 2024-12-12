@@ -104,7 +104,7 @@ function App() {
         container='us-map'
         stateJson={stateJson}
         countiesJson={countiesJson}
-        mobileHeight={400}
+        mobileHeight={300}
         desktopHeight={700}
         color={['#33E48E', '#00A356']}
       ></UsMap>
