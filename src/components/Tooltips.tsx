@@ -39,7 +39,7 @@ function generateTooltipContent(event: any, data: any, title: string) {
           data={data}
           progress={data.scannedPrc / 100}
           width={250}
-          color={data.scannedPrc === 100 ? '#00D06C' : '#FF0000'}
+          color={data.scannedPrc === 100 ? '#00D06C' : '#004d40'}
         />
       </div>
     </>

@@ -25,17 +25,10 @@ function MapView(
     .range(['#FF0000', '#00D06C'] as [string, string])
 
   // Draw Shading pattern
-  function drawPattern(deliveryPrc: number) {
-    let strokeColor: string = ''
-    if (deliveryPrc > 50) {
-      strokeColor = '#004d40'
-    } else {
-      strokeColor = '#d50000'
-    }
-
-    const defs = g.append('defs')
-
+  function drawPattern() {
+    const strokeColor: string = '#004d40'
     // Define the pattern for diagonal lines
+    const defs = g.append('defs')
     defs
       .append('pattern')
       .attr('id', 'diagonal-lines')
@@ -98,7 +91,7 @@ function MapView(
       const stateData = aggregate.find(
         (x: any) => x.state === d.properties.name
       )
-      if(!stateData) return
+      if (!stateData) return
       if (view === 'counties' || view === 'zipcodes') return
       clicked(event, d)
     })
@@ -119,7 +112,7 @@ function MapView(
       )
       if (stateData && view === 'states') {
         if (stateData?.scannedPrc !== 100) {
-          return drawPattern(stateData?.deliveryPrc)
+          return drawPattern()
         } else {
           return colorScales(stateData?.deliveryPrc)
         }
