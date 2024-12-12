@@ -145,6 +145,9 @@ function MapView(
     .style('font-size', '17px')
     .attr('fill', view === 'states' ? '#fff' : '#000')
     .attr('stroke-width', 0.2)
+    .on('click', (event: any) => {
+      event.stopPropagation()
+    })
 }
 
 export { MapView }
