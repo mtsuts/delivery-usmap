@@ -13,7 +13,6 @@ function drawCountyLevelCircles(
   zoomToCounty: any,
   countiesJson: any
 ) {
-
   if (!circlesData) return
   g.selectAll('.circle').remove()
 
@@ -43,6 +42,7 @@ function drawCountyLevelCircles(
       .attr('stroke-width', 0.5)
       .style('opacity', 0.5)
       .style('cursor', 'pointer')
+      .attr('xCoordinate', (d: any) => d.x)
       .on('click', (event: any, county: any) => {
         if (levelUpdate) return
         if (county.aggregateValue === 1) return
@@ -99,6 +99,7 @@ function drawZipCodeLevelCircles(circlesData: any, g: any, transform: any) {
       .attr('stroke-width', 0.5)
       .style('opacity', 0.5)
       .style('cursor', 'pointer')
+      .attr('xCoordinate', (d: any) => d.x)
       .on('click', (event: any, d: any) => {
         event.stopPropagation()
       })

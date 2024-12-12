@@ -78,7 +78,7 @@ function CountyLevelTooltip(event: any, d: any) {
 function ZipCodeLevelTooltip(event: any, data: any) {
   const content = (
     <>
-      <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+      <table style={{  width: '190px', borderCollapse: 'collapse' }}>
         <thead>
           <tr>
             <th>Zip Code</th>
@@ -102,12 +102,13 @@ function ZipCodeLevelTooltip(event: any, data: any) {
   // Create a container to render the React element
   const container = document.createElement('div')
   createRoot(container).render(content)
-
+  const xCoordinate = event.target.getAttribute('xCoordinate')
   return tippy(event.target, {
     allowHTML: true,
     content: container,
     arrow: false,
     theme: 'light-border',
+    placement: xCoordinate > 450 ? 'bottom-end' : 'bottom-start',
   })
 }
 
