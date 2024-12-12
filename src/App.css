@@ -62,6 +62,19 @@
   outline: none;
 }
 
+.arrow {
+  outline: none
+}
+
+.arrow:focus {
+  outline: none;
+}
+
+.arrow:focus-visible {
+  outline: none;
+}
+
+
 .circle {
   outline: none;
 }

@@ -98,43 +98,28 @@ function MapViz({
       drawZipCodeLevelCircles(data, g, transform)
     } else if (view === 'transit') {
       MapView(stateJson.features, g, clicked, view, data)
-      drawTransitArrows(data.filter((d) => d.status === 'in-Transit'), g)
+      drawTransitArrows(
+        data.filter((d) => d.status === 'in-Transit'),
+        g
+      )
     }
   }
 
   // Zoom reset
   function reset() {
     svg.transition().duration(600).call(zoom.transform, d3.zoomIdentity)
-    MapView(
-      view === 'states' ? stateJson.features : countiesJson.features,
-      g,
-      clicked,
-      view,
-      data
-    )
-    if (view !== 'states') {
-      drawCountyLevelCircles(
-        data,
+    if (view === 'states') {
+      MapView(
+       stateJson.features,
         g,
-        false,
-        data,
-        transform,
-        zoomToCounty,
-        countiesJson
-      )
-    } else {
-      drawCountyLevelCircles(
-        [],
-        g,
-        true,
-        data,
-        transform,
-        zoomToCounty,
-        countiesJson
+        clicked,
+        view,
+        data
       )
     }
   }
 
+  // Zoom states for current transform
   let zoomState = {
     previous: {
       translateX: 0,
