@@ -23,8 +23,6 @@ function ZoomButtons() {
         id='zoom_in'
       >
         <svg
-          // width='px'
-          // height='64px'
           viewBox='0 0 24 24'
           fill='none'
           xmlns='http://www.w3.org/2000/svg'
@@ -84,6 +82,21 @@ function ZoomButtons() {
             ></path>{' '}
           </g>
         </svg>
+      </button>
+      <button
+        style={{
+          width: '30px',
+          height: '30px',
+          padding: '5px',
+          marginTop: '5px',
+          backgroundColor: '#c93235',
+          border: 'none',
+          color: '#fff',
+          cursor: 'pointer',
+        }}
+        id='zoom_reset'
+      >
+       X
       </button>
     </div>
   )

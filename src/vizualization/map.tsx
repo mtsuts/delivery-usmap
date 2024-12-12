@@ -71,12 +71,13 @@ function UsMap(params: MapProps) {
     <div
       style={{
         display: 'flex',
+        padding: '0 80px',
       }}
     >
       <SideBar data={sideBarData} buttonClick={() => map.current.reset()} />
       <div style={{ flexGrow: 1, marginTop: '40px', position: 'relative' }}>
         <div id={params.container}></div>
-        <div style={{ position: 'absolute', left: 20, top: -20 }}>
+        <div style={{ position: 'absolute', left: -20, top: -20 }}>
           <ZoomButtons />
         </div>
       </div>

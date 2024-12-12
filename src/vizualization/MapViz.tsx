@@ -260,6 +260,9 @@ function MapViz({
     }
   })
 
+  // Zoom reset
+  d3.select('#zoom_reset').on('click', reset)
+
   // Draw initial map
   updateView('states')
 

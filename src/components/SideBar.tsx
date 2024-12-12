@@ -11,24 +11,7 @@ const SideBar = ({ data, buttonClick }: SideBarProps) => {
     }
   })
   return !isMobile ? (
-    <div style={{ display: 'flex', flexDirection: 'column' }}>
-      <button
-        onClick={buttonClick}
-        style={{
-          backgroundColor: '#c93235',
-          borderRadius: '5px',
-          color: '#fff',
-          padding: '10px',
-          fontWeight: '600',
-          width: '80px',
-          zIndex: 1000,
-          cursor: 'pointer',
-          border: 'none',
-          margin: '40px 40px',
-        }}
-      >
-        Reset
-      </button>
+    <div style={{ display: 'flex', flexDirection: 'column', marginTop: '40px' }}>
       {data.map((d, index) => (
         <div
           key={index}
@@ -59,24 +42,7 @@ const SideBar = ({ data, buttonClick }: SideBarProps) => {
   ) : (
     <>
       <div style={{ display: 'flex', alignItems: 'start', marginBottom: '20px' }}>
-        <button
-          onClick={buttonClick}
-          style={{
-            backgroundColor: '#c93235',
-            borderRadius: '5px',
-            color: '#fff',
-            padding: '10px',
-            width: '80px',
-            fontWeight: '600',
-            zIndex: 1000,
-            cursor: 'pointer',
-            border: 'none',
-            margin: '0px 40px 40px 40px',
-          }}
-        >
-          Reset
-        </button>
-        <div style={{ marginLeft: '40px'}}>
+        <div style={{ marginLeft: '20px'}}>
           <div >
             <LegendBar />
           </div>
