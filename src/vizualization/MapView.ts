@@ -19,7 +19,6 @@ function MapView(
   g.selectAll('g').remove()
   const aggregate = stateLevelData(null, data)
 
-
   const colorScales = d3
     .scaleLinear<string>()
     .domain(d3.extent(aggregate, (d: any) => d?.deliveryPrc) as any)
@@ -87,6 +86,12 @@ function MapView(
     .attr('stroke', '#fff')
     .attr('stroke-width', 0.5)
     .style('cursor', 'pointer')
+    .attr('xCoordinate', (d: any) => {
+      const coordinateXonMap =
+        data.find((x: any) => x.state === d.properties.name)?.x || 0
+
+      return Math.floor(coordinateXonMap)
+    })
 
   pathGroup
     .on('click', (event: any, d: any) => {

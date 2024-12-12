@@ -10,8 +10,13 @@ import ProgressBar from './ProgressBar'
 function generateTooltipContent(event: any, data: any, title: string) {
   const content = (
     <>
-      <div style={{ fontSize: '17px', fontWeight: 'bold' }}>{title}</div>
-      <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+      <div style={{ fontSize: '15px', fontWeight: 'bold' }}>{title}</div>
+      <table
+        style={{
+          width: '190px',
+          borderCollapse: 'collapse',
+        }}
+      >
         <thead>
           <tr>
             <th>Mailpieces</th>
@@ -33,22 +38,24 @@ function generateTooltipContent(event: any, data: any, title: string) {
         <ProgressBar
           data={data}
           progress={data.scannedPrc / 100}
-          width={300}
+          width={250}
           color={data.scannedPrc === 100 ? '#00D06C' : '#FF0000'}
         />
       </div>
     </>
   )
+
   const container = document.createElement('div')
   createRoot(container).render(content)
-
+  const xCoordinate = event.target.getAttribute('xCoordinate')
+  console.log(xCoordinate)
   // Tooltip instance
   return tippy(event.target, {
     allowHTML: true,
     content: container,
     arrow: false,
     theme: 'light-border',
-    placement: 'bottom-end',
+    placement: xCoordinate > 450 ? 'bottom-end' : 'bottom-start',
   })
 }
 
