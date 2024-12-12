@@ -46,7 +46,7 @@ function MapViz({
     .attr('viewBox', '0 0 975 710')
 
   // Group element
-  const g = svg.append('g').attr('transform', 'translate(40px, 0px)')
+  const g = svg.append('g').attr('transform', 'translate(-50, 0)')
 
   // Path generator
   const path = d3.geoPath()
@@ -69,7 +69,7 @@ function MapViz({
   // Draw map, based on view
   function updateView(view: 'states' | 'counties') {
     if (view === 'states') {
-      MapView(stateJson.features, g, clicked, view, data, svg)
+      MapView(stateJson.features, g, clicked, view, data)
       drawCountyLevelCircles(
         [],
         g,
@@ -80,7 +80,7 @@ function MapViz({
         countiesJson
       )
     } else if (view === 'counties') {
-      MapView(stateJson.features, g, clicked, view, data, svg)
+      MapView(stateJson.features, g, clicked, view, data)
       drawCountyLevelCircles(
         countyLevelData(null, data),
         g,
@@ -91,7 +91,7 @@ function MapViz({
         countiesJson
       )
     } else if (view === 'zipcodes') {
-      MapView(stateJson.features, g, clicked, view, data, svg)
+      MapView(stateJson.features, g, clicked, view, data)
       drawZipCodeLevelCircles(data, g, transform)
     }
   }
@@ -105,7 +105,6 @@ function MapViz({
       clicked,
       view,
       data,
-      svg
     )
     if (view !== 'states') {
       drawCountyLevelCircles(
@@ -242,7 +241,7 @@ function MapViz({
     }
     if (currentZoom > 2 && currentZoom < 10) {
       svg.transition().duration(600).call(zoom.transform, d3.zoomIdentity)
-      MapView(stateJson.features, g, clicked, view, data, svg)
+      MapView(stateJson.features, g, clicked, view, data)
       drawCountyLevelCircles(
         [],
         g,

@@ -97,8 +97,6 @@ function App() {
       })
   }, [])
 
-  console.log(data)
-
   return (
     <>
       <UsMap

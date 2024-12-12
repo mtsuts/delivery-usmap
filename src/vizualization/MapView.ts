@@ -14,10 +14,11 @@ function MapView(
   g: any,
   clicked: Function,
   view: string,
-  data: any,
-  svg: any
+  data: any
 ) {
+  g.selectAll('g').remove()
   const aggregate = stateLevelData(null, data)
+
 
   const colorScales = d3
     .scaleLinear<string>()
@@ -26,7 +27,6 @@ function MapView(
 
   // Draw Shading pattern
   function drawPattern(deliveryPrc: number) {
-    console.log(deliveryPrc)
     let strokeColor: string = ''
     if (deliveryPrc > 50) {
       strokeColor = '#004d40'
@@ -34,7 +34,7 @@ function MapView(
       strokeColor = '#d50000'
     }
 
-    const defs = svg.append('defs')
+    const defs = g.append('defs')
 
     // Define the pattern for diagonal lines
     defs
@@ -87,6 +87,8 @@ function MapView(
     .attr('stroke', '#fff')
     .attr('stroke-width', 0.5)
     .style('cursor', 'pointer')
+
+  pathGroup
     .on('click', (event: any, d: any) => {
       if (view === 'counties' || view === 'zipcodes') return
       clicked(event, d)
@@ -102,19 +104,18 @@ function MapView(
         tippyInstanceState = StateLevelTooltip(event, d, stateData)
       }
     })
-    .each(function (d: any) {
+    .attr('fill', (d: any) => {
       const stateData = aggregate.find(
         (x: any) => x.state === d.properties.name
       )
       if (stateData && view === 'states') {
         if (stateData?.scannedPrc !== 100) {
-          d3.select(this).attr('fill', drawPattern(stateData?.deliveryPrc))
+          return drawPattern(stateData?.deliveryPrc)
         } else {
-          d3.select(this).attr('fill', colorScales(stateData?.deliveryPrc))
+          return colorScales(stateData?.deliveryPrc)
         }
-      } 
-      else {
-        d3.select(this).attr('fill', '#f3f3f3')
+      } else {
+        return '#f3f3f3'
       }
     })
 

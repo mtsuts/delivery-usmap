@@ -5,7 +5,7 @@ import ZoomButtons from './ZoomButtons'
 
 const SideBar = ({ data, buttonClick }: SideBarProps) => {
   return (
-    <div>
+    <div className='sidebar'>
       <button
         onClick={buttonClick}
         style={{

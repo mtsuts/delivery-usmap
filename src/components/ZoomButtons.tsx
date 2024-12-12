@@ -14,7 +14,7 @@ function ZoomButtons() {
         style={{
           width: '30px',
           padding: '5px',
-          backgroundColor: '#004223',
+          backgroundColor: '#c93235',
           border: 'none',
           color: '#fff',
           cursor: 'pointer',
@@ -27,7 +27,7 @@ function ZoomButtons() {
         style={{
           width: '30px',
           padding: '5px',
-          backgroundColor: '#004223',
+          backgroundColor: '#c93235',
           border: 'none',
           marginTop: '5px',
           color: '#fff',
