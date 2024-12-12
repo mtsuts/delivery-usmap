@@ -7,6 +7,7 @@ function drawTransitArrows(transitData: any, g: any) {
 
   // Remove existing arrows
   g.selectAll('.arrow').remove()
+  g.selectAll('.circle').remove()
 
   // Append new arrows if there is transit data
   if (transitData.length) {

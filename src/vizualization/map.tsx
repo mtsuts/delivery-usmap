@@ -4,6 +4,7 @@ import SideBar from '../components/SideBar'
 import stateView from '../images/stateView.png'
 import countiesViewImage from '../images/countiesView.png'
 import zipCodeViewImage from '../images/zipCodeViews.png'
+import transitViewImage from '../images/TransitView.png'
 import MapViz from './MapViz'
 import { MapProps, Data } from '../types'
 import ZoomButtons from '../components/ZoomButtons'
@@ -46,7 +47,7 @@ function UsMap(params: MapProps) {
     },
     {
       label: 'Transit View',
-      imageSrc: zipCodeViewImage,
+      imageSrc: transitViewImage,
       position: 250,
       onClick: () => {
         setView('transit')
