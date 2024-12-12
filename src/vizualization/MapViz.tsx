@@ -147,10 +147,10 @@ function MapViz({
     const scale = Math.min(10, 0.9 / Math.max((x1 - x0) / 975, (y1 - y0) / 710))
     const translateX = 975 / 2 - (scale * (x0 + x1)) / 2
     const translateY = 710 / 2 - (scale * (y0 + y1)) / 2
-    console.log(zoomState.current)
-    console.log(zoomState.previous)
+
     // Save the current zoom state to previous
     zoomState.previous = { ...zoomState.current }
+    console.log(zoomState.previous)
 
     // Update the current zoom state
     zoomState.current = { translateX, translateY, scale }
@@ -216,9 +216,12 @@ function MapViz({
   // Zoom out
   d3.select('#zoom_out').on('click', () => {
     if (currentZoom === 1) return
+    zoomState.current = { ...zoomState.previous }
     const currentTransform = d3.zoomIdentity
       .translate(zoomState.previous.translateX, zoomState.previous.translateY)
       .scale(zoomState.previous.scale)
+
+    console.log(zoomState.previous)
     if (currentZoom < 2) {
       if (currentZoom + zoomDiff >= scaleExtent[0]) {
         currentZoom = currentZoom - zoomDiff
