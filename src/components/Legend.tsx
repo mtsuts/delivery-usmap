@@ -17,7 +17,7 @@ const LegendBar = ({
     position: 'absolute',
     top: '50%',
     transform: 'translateY(-50%)',
-    fontSize: '12px',
+    fontSize: '10px',
     color: '#fff',
   }
 
@@ -25,8 +25,19 @@ const LegendBar = ({
     <div style={{ width: '100%', position: 'relative' }}>
       <div> Delivery %</div>
       <div style={gradientStyle}>
-        <div style={{ ...labelStyle, left: '2%' }}>0%</div>
-        <div style={{ ...labelStyle, right: '2%' }}>100%</div>
+        {/* <div style={{ ...labelStyle, left: '2%' }}>0%</div>
+        <div style={{ ...labelStyle, right: '2%' }}>100%</div> */}
+      </div>
+      <div
+        style={{
+          marginTop: '3px',
+          display: 'flex',
+          justifyContent: 'space-between',
+          fontSize: '10px'
+        }}
+      >
+        <div> Not Scanned</div>
+        <div> Scanned</div>
       </div>
     </div>
   )

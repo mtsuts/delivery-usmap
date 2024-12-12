@@ -46,7 +46,7 @@ function MapViz({
     .attr('viewBox', '0 0 975 710')
 
   // Group element
-  const g = svg.append('g')
+  const g = svg.append('g').attr('transform', 'translate(40px, 0px)')
 
   // Path generator
   const path = d3.geoPath()

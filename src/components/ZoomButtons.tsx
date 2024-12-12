@@ -4,8 +4,8 @@ function ZoomButtons() {
   return (
     <div
       style={{
-        marginLeft: '240px',
-        marginTop: '0px',
+        marginLeft: '80px',
+        marginTop: '40px',
         display: 'flex',
         flexDirection: 'column',
       }}
@@ -35,7 +35,7 @@ function ZoomButtons() {
         }}
         id='zoom_out'
       >
-    -
+        -
       </button>
     </div>
   )

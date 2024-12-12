@@ -6,6 +6,7 @@ import stateView from '../images/stateView.png'
 import MapViz from './MapViz'
 import { MapProps, Data } from '../types'
 import LegendBar from '../components/Legend'
+import ZoomButtons from '../components/ZoomButtons'
 
 function UsMap(params: MapProps) {
   const [view, setView] = React.useState<'states' | 'counties' | 'zipcodes'>(
@@ -71,6 +72,7 @@ function UsMap(params: MapProps) {
       }}
     >
       <SideBar data={sideBarData} buttonClick={() => map.current.reset()} />
+      <ZoomButtons />
       <div style={{ flexGrow: 1, marginTop: '40px' }} id={params.container}></div>
     </div>
   )

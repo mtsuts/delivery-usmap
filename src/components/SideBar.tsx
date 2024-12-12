@@ -1,6 +1,7 @@
 import React from 'react'
 import { SideBarProps } from '../types'
 import LegendBar from './Legend'
+import ZoomButtons from './ZoomButtons'
 
 const SideBar = ({ data, buttonClick }: SideBarProps) => {
   return (
