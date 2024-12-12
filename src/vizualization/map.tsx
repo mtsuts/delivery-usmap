@@ -79,11 +79,12 @@ function UsMap(params: MapProps) {
       }}
     >
       <SideBar data={sideBarData} buttonClick={() => map.current.reset()} />
-      <ZoomButtons />
-      <div
-        style={{ flexGrow: 1, marginTop: '40px' }}
-        id={params.container}
-      ></div>
+      <div style={{ flexGrow: 1, marginTop: '40px', position: 'relative' }}>
+        <div id={params.container}></div>
+        <div style={{ position: 'absolute', right: 100, bottom: 120 }}>
+          <ZoomButtons />
+        </div>
+      </div>
     </div>
   ) : (
     <div
@@ -92,10 +93,13 @@ function UsMap(params: MapProps) {
         flexDirection: 'column',
       }}
     >
-      <div
-        style={{ flexGrow: 1, marginTop: '40px' }}
-        id={params.container}
-      ></div>
+      <div style={{ flexGrow: 1, marginTop: '40px', position: 'relative' }}>
+        <div id={params.container}></div>
+        <div style={{ position: 'absolute', right: 10, bottom: 20 }}>
+          <ZoomButtons />
+        </div>
+      </div>
+
       <SideBar data={sideBarData} buttonClick={() => map.current.reset()} />
     </div>
   )
