@@ -78,7 +78,7 @@ function CountyLevelTooltip(event: any, d: any) {
 function ZipCodeLevelTooltip(event: any, data: any) {
   const content = (
     <>
-      <table style={{  width: '190px', borderCollapse: 'collapse' }}>
+      <table style={{ width: '190px', borderCollapse: 'collapse' }}>
         <thead>
           <tr>
             <th>Zip Code</th>

@@ -95,6 +95,10 @@ function MapView(
 
   pathGroup
     .on('click', (event: any, d: any) => {
+      const stateData = aggregate.find(
+        (x: any) => x.state === d.properties.name
+      )
+      if(!stateData) return
       if (view === 'counties' || view === 'zipcodes') return
       clicked(event, d)
     })
