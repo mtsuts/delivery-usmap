@@ -215,19 +215,21 @@ function MapViz({
   })
   // Zoom out
   d3.select('#zoom_out').on('click', () => {
+    console.log(currentZoom)
     if (currentZoom === 1) return
     zoomState.current = { ...zoomState.previous }
     const currentTransform = d3.zoomIdentity
       .translate(zoomState.previous.translateX, zoomState.previous.translateY)
       .scale(zoomState.previous.scale)
 
-    console.log(zoomState.previous)
-    if (currentZoom < 2) {
+    if (currentZoom <= 2) {
       if (currentZoom + zoomDiff >= scaleExtent[0]) {
         currentZoom = currentZoom - zoomDiff
       }
       svg.transition().duration(600).call(zoom.scaleTo, currentZoom)
     }
+
+
     if (currentZoom < 12 && currentZoom >= 10) {
       svg.transition().duration(600).call(zoom.transform, currentTransform)
       drawCountyLevelCircles(
