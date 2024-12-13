@@ -55,7 +55,7 @@ function UsMap(params: MapProps) {
       isActive: view === 'transit',
     },
   ]
-
+console.log(view)
   React.useEffect(() => {
     if (data.length) {
       map.current = MapViz({
@@ -88,7 +88,7 @@ function UsMap(params: MapProps) {
       <div style={{ flexGrow: 1, marginTop: '40px', position: 'relative' }}>
         <div id={params.container}></div>
         <div style={{ position: 'absolute', left: -20, top: -20 }}>
-          <ZoomButtons />
+          <ZoomButtons view={view} />
         </div>
       </div>
     </div>
@@ -101,7 +101,7 @@ function UsMap(params: MapProps) {
     >
       <div style={{ flexGrow: 1, marginTop: '40px', position: 'relative' }}>
         <div style={{ position: 'absolute', right: 20, bottom: 20 }}>
-          <ZoomButtons />
+          <ZoomButtons view={view} />
         </div>
         <div id={params.container}></div>
       </div>
