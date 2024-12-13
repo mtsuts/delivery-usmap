@@ -84,7 +84,7 @@ function UsMap(params: MapProps) {
         padding: '0 80px',
       }}
     >
-      <SideBar data={sideBarData} buttonClick={() => map.current.reset()} />
+      <SideBar data={sideBarData}/>
       <div style={{ flexGrow: 1, marginTop: '40px', position: 'relative' }}>
         <div id={params.container}></div>
         <div style={{ position: 'absolute', left: -20, top: -20 }}>
@@ -106,7 +106,7 @@ function UsMap(params: MapProps) {
         <div id={params.container}></div>
       </div>
 
-      <SideBar data={sideBarData} buttonClick={() => map.current.reset()} />
+      <SideBar data={sideBarData} />
     </div>
   )
 }

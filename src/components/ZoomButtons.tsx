@@ -1,6 +1,5 @@
 import React from 'react'
 
-
 function ZoomButtons(view: any) {
   return (
     <div
@@ -84,23 +83,23 @@ function ZoomButtons(view: any) {
           </g>
         </svg>
       </button>
-      {view.view === 'states' && (
-        <button
-          style={{
-            width: '30px',
-            height: '30px',
-            padding: '5px',
-            marginTop: '5px',
-            backgroundColor: '#c93235',
-            border: 'none',
-            color: '#fff',
-            cursor: 'pointer',
-          }}
-          id='zoom_reset'
-        >
-          X
-        </button>
-      )}
+
+      <button
+        style={{
+          width: '30px',
+          height: '30px',
+          padding: '5px',
+          marginTop: '5px',
+          backgroundColor: '#c93235',
+          border: 'none',
+          color: '#fff',
+          cursor: 'pointer',
+          opacity: view.view === 'states' ? 1 : 0.5,
+        }}
+        id='zoom_reset'
+      >
+        X
+      </button>
     </div>
   )
 }

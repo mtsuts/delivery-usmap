@@ -57,7 +57,6 @@ function generateTooltipContent(event: any, data: any, title: string) {
   })
 }
 
-
 // State level tooltip generator
 function StateLevelTooltip(event: any, d: any, data: any) {
   const stateName = d.properties.name
@@ -70,7 +69,6 @@ function CountyLevelTooltip(event: any, d: any) {
   const title = `${d.county} County`
   return generateTooltipContent(event, d, title)
 }
-
 
 // Zio code level tooltip generator
 function ZipCodeLevelTooltip(event: any, data: any) {

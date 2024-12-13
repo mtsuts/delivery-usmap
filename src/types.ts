@@ -50,7 +50,6 @@ export type SideBarProps = {
     label: string
     isActive: boolean
   }[]
-  buttonClick: () => void
 }
 
 export type ProgressBarProps = {

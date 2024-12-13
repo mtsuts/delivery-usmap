@@ -2,7 +2,7 @@ import React from 'react'
 import { SideBarProps } from '../types'
 import LegendBar from './Legend'
 
-const SideBar = ({ data, buttonClick }: SideBarProps) => {
+const SideBar = ({ data }: SideBarProps) => {
   const [isMobile, setIsMobile] = React.useState(false)
 
   React.useEffect(() => {
