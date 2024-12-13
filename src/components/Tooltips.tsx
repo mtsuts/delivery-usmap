@@ -48,7 +48,6 @@ function generateTooltipContent(event: any, data: any, title: string) {
   const container = document.createElement('div')
   createRoot(container).render(content)
   const xCoordinate = event.target.getAttribute('xCoordinate')
-  console.log(xCoordinate)
   // Tooltip instance
   return tippy(event.target, {
     allowHTML: true,
