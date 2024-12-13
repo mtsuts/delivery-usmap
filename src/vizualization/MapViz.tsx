@@ -122,7 +122,7 @@ function MapViz({
 
   // Zoom reset handle
   function reset() {
-    if(view !== 'states') return
+    if (d3.select('#zoom_reset').style('opacity') === '0.5') return
     svg.transition().duration(600).call(zoom.transform, d3.zoomIdentity)
     if (view === 'states') {
       MapView(stateJson.features, g, clicked, view, data)
@@ -211,7 +211,6 @@ function MapViz({
 
   // Zoom out
   d3.select('#zoom_out').on('click', () => {
-
     if (currentZoom === 1) return
     zoomState.current = { ...zoomState.previous }
     const previousTransform = d3.zoomIdentity
