@@ -94,7 +94,7 @@ function MapView(
         (x: any) => x.state === d.properties.name
       )
       if (!stateData) return
-      if (view === 'counties' || view === 'zipcodes') return
+      if (view !== 'states') return
       clicked(event, d)
     })
     .on('mouseover', function (event: any, d: any) {
