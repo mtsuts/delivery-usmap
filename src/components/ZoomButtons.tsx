@@ -1,5 +1,6 @@
 import React from 'react'
 
+
 function ZoomButtons(view: any) {
   return (
     <div

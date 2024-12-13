@@ -19,16 +19,12 @@ function MapViz({
   const container = d3.select(`#${mainContainer}`)
   container.selectAll('*').remove()
 
-  // Zoom scale variables
-  const scaleExtent = [1, 12] as [number, number]
-  let currentZoom = 1
-  let zoomDiff = 0.5
-
-  // County id
+  // State id
   let stateId: string = ''
 
   if (!stateJson || !data.length) return
 
+  // Map dimensions for devices
   const isMobile = window.innerWidth < 768
   const width =
     (container.node() as HTMLElement)?.getBoundingClientRect().width || 800
@@ -38,8 +34,27 @@ function MapViz({
     ? desktopHeight
     : 1500
 
-  let transform = d3.zoomIdentity
+  // Zoom scale and transform variables
+  const scaleExtent = [1, 12] as [number, number]
+  let currentZoom = 1
+  let zoomDiff = 0.5
+  let eventAction: any
+  let dm: any
+  let zoomState = {
+    previous: {
+      translateX: 0,
+      translateY: 0,
+      scale: 1,
+    },
+    current: {
+      translateX: 0,
+      translateY: 0,
+      scale: 1,
+    },
+  }
+
   // Initial zoom
+  let transform = d3.zoomIdentity
   const zoom = d3.zoom().scaleExtent(scaleExtent).on('zoom', zoomed)
 
   // SVG container
@@ -113,8 +128,6 @@ function MapViz({
     }
   }
 
-  let eventAction: any
-  let dm: any
   // Handle click event on state path
   function clicked(event: any, d: any) {
     stateId = d.id
@@ -136,18 +149,6 @@ function MapViz({
       countiesJson
     )
   }
-  let zoomState = {
-    previous: {
-      translateX: 0,
-      translateY: 0,
-      scale: 1,
-    },
-    current: {
-      translateX: 0,
-      translateY: 0,
-      scale: 1,
-    },
-  }
 
   // Handle click zoom
   function zoomToCounty(event: any, d: any) {
@@ -161,7 +162,6 @@ function MapViz({
 
     // Update the current zoom state
     zoomState.current = { translateX, translateY, scale }
-    // Zoom states for current transform
 
     svg
       .transition()
@@ -182,12 +182,11 @@ function MapViz({
   // SVG call zoom and disable it on wheel event
   svg.call(zoom).on('wheel.zoom', null)
 
-  // Zoom buttons
+  // Zoom buttons actions
   d3.select('#zoom_in').on('click', () => {
     if (eventAction && dm) {
       zoomToCounty(eventAction, dm)
     }
-
     const currentTransform = d3.zoomIdentity
       .translate(zoomState.previous.translateX, zoomState.previous.translateY)
       .scale(zoomState.previous.scale)
