@@ -82,7 +82,7 @@ function drawZipCodeLevelCircles(circlesData: any, g: any, transform: any) {
       d3.min(circlesData, (d: any) => Number(d.allPieces)),
       d3.max(circlesData, (d: any) => Number(d.allPieces)),
     ])
-    .range([10, 35])
+    .range([10, 20])
 
   if (circlesData.length) {
     g.selectAll('circle')
