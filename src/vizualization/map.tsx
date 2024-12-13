@@ -100,7 +100,7 @@ function UsMap(params: MapProps) {
       }}
     >
       <div style={{ flexGrow: 1, marginTop: '40px', position: 'relative' }}>
-        <div style={{ position: 'absolute', right: 20, bottom: 20 }}>
+        <div style={{ position: 'absolute', width: 40, right: 80, bottom: 20 }}>
           <ZoomButtons view={view} />
         </div>
         <div id={params.container}></div>
