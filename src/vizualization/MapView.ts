@@ -17,6 +17,8 @@ function MapView(
   data: any
 ) {
   g.selectAll('g').remove()
+  g.selectAll('.circle').remove()
+  g.selectAll('.arrow').remove()
   const aggregate = stateLevelData(null, data)
 
   const colorScales = d3
