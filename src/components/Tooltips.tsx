@@ -44,11 +44,9 @@ function generateTooltipContent(event: any, data: any, title: string) {
       </div>
     </>
   )
-
   const container = document.createElement('div')
   createRoot(container).render(content)
   const xCoordinate = event.target.getAttribute('xCoordinate')
-  console.log(xCoordinate)
   // Tooltip instance
   return tippy(event.target, {
     allowHTML: true,
@@ -59,13 +57,11 @@ function generateTooltipContent(event: any, data: any, title: string) {
   })
 }
 
+
+// State level tooltip generator
 function StateLevelTooltip(event: any, d: any, data: any) {
-  // Generate Tooltip Data
   const stateName = d.properties.name
-
   if (!data) return
-
-  // Tooltip content
   return generateTooltipContent(event, data, stateName)
 }
 
@@ -75,6 +71,8 @@ function CountyLevelTooltip(event: any, d: any) {
   return generateTooltipContent(event, d, title)
 }
 
+
+// Zio code level tooltip generator
 function ZipCodeLevelTooltip(event: any, data: any) {
   const content = (
     <>
