@@ -55,7 +55,7 @@ function UsMap(params: MapProps) {
       isActive: view === 'transit',
     },
   ]
-console.log(view)
+
   React.useEffect(() => {
     if (data.length) {
       map.current = MapViz({
