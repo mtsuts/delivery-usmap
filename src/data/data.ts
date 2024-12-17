@@ -99,7 +99,6 @@ function stateLevelData(state: any, data: any) {
     (x: any) => x.state
   )
 
-  console.log('transit', rolledUpDataTransit)
   const rolledUpDataScanned = d3.rollup(
     stateDeliveries,
     (group) => d3.sum(group, (x: any) => x.scanned),
@@ -148,8 +147,11 @@ function stateLevelData(state: any, data: any) {
       return true
     })
   if (state) return finalData.filter((d: any) => d.deliveryPrc >= 0)[0]
-  console.log(finalData)
   return finalData.filter((d: any) => d.deliveryPrc >= 0)
+}
+
+function zipcodeLevelData(data:any){
+
 }
 
 export { countyLevelData, stateLevelData }

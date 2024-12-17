@@ -7,8 +7,8 @@ const ProgressBar = ({ progress, width, color }: ProgressBarProps) => {
     const height = 14
     let borderRadius = 5
 
-    const container = d3.select('#progress-bar-container')
-    container.selectAll('*').remove()
+    const container = d3.select('.progress-bar-container')
+    container.selectAll('.progress-bar-container').remove()
 
     const svg = container
       .append('svg')
@@ -48,7 +48,7 @@ const ProgressBar = ({ progress, width, color }: ProgressBarProps) => {
   return (
     <>
       <div> Scanned %</div>
-      <div id='progress-bar-container'></div>
+      <div className='progress-bar-container'></div>
     </>
   )
 }

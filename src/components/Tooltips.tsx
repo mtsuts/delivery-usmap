@@ -78,7 +78,7 @@ function ZipCodeLevelTooltip(event: any, data: any) {
         <thead>
           <tr>
             <th>Zip Code</th>
-            <th>Records</th>
+            <th>Mailpieces</th>
             <th>Delivery Status</th>
             {data.status === 'in-Transit' && <th>Delivery Time</th>}
           </tr>
@@ -92,6 +92,14 @@ function ZipCodeLevelTooltip(event: any, data: any) {
           </tr>
         </tbody>
       </table>
+      <div style={{ marginTop: '10px' }}>
+        <ProgressBar
+          data={data}
+          progress={data.scannedPrc / 100}
+          width={190}
+          color={data.scannedPrc === 100 ? '#00D06C' : '#004d40'}
+        />
+      </div>
     </>
   )
 

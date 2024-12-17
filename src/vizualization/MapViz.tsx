@@ -95,7 +95,8 @@ function MapViz({
         data,
         transform,
         zoomToCounty,
-        countiesJson
+        countiesJson, 
+        true
       )
     } else if (view === 'counties') {
       MapView(stateJson.features, g, clicked, view, data)
@@ -106,11 +107,12 @@ function MapViz({
         data,
         transform,
         zoomToCounty,
-        countiesJson
+        countiesJson, 
+        false
       )
     } else if (view === 'zipcodes') {
       MapView(stateJson.features, g, clicked, view, data)
-      drawZipCodeLevelCircles(data, g, transform)
+      drawZipCodeLevelCircles(data, g, false)
     } else if (view === 'transit') {
       MapView(stateJson.features, g, clicked, view, data)
       drawTransitArrows(
@@ -147,7 +149,8 @@ function MapViz({
       data,
       transform,
       zoomToCounty,
-      countiesJson
+      countiesJson, 
+      true
     )
   }
 
@@ -204,7 +207,7 @@ function MapViz({
       drawZipCodeLevelCircles(
         data.filter((d: any) => d.id === stateId),
         g,
-        currentTransform
+        true
       )
     }
   })
@@ -233,7 +236,8 @@ function MapViz({
         data,
         transform,
         zoomToCounty,
-        countiesJson
+        countiesJson, 
+        true
       )
     }
     if (currentZoom > 2 && currentZoom < 10) {
@@ -246,7 +250,8 @@ function MapViz({
         data,
         transform,
         zoomToCounty,
-        countiesJson
+        countiesJson, 
+        true
       )
     }
   })
