@@ -13,7 +13,7 @@ function generateTooltipContent(event: any, data: any, title: string) {
       <div style={{ fontSize: '15px', fontWeight: 'bold' }}>{title}</div>
       <table
         style={{
-          width: '190px',
+          width: '320px',
           borderCollapse: 'collapse',
         }}
       >
@@ -38,7 +38,7 @@ function generateTooltipContent(event: any, data: any, title: string) {
         <ProgressBar
           data={data}
           progress={data.scannedPrc / 100}
-          width={250}
+          width={320}
           color={data.scannedPrc === 100 ? '#00D06C' : '#004d40'}
         />
       </div>

@@ -1,19 +1,38 @@
 import dayjs from 'dayjs'
 import * as d3 from 'd3'
 
-// Geocoding
-async function geocode(longitude: string, latitude: string) {
-  const accessToken =
-    'pk.eyJ1IjoibXRzdXRzIiwiYSI6ImNtNDA2MnV5bjBkbWwya3E5MmMzazdudXUifQ.Vca4GqSLclPh_YCoohKEVA'
-  const url = `https://api.mapbox.com/search/geocode/v6/reverse?longitude=${longitude}&latitude=${latitude}&access_token=${accessToken}`
+const apiKey = process.env.REACT_APP_GOOGLE_API_KEY;
 
-  if (!longitude || !latitude) return
+// Mapbox api geocoding
+// async function geocode(longitude: string, latitude: string) {
+//   const url = `https://api.mapbox.com/search/geocode/v6/reverse?longitude=${longitude}&latitude=${latitude}&access_token=${process.env.REACT_APP_MAPBOX_TOKEN}`
+
+//   if (!longitude || !latitude) return
+//   const response = await fetch(url)
+//   const data = await response.json()
+//   const state = data?.features[0]?.properties?.context?.region?.name || ''
+//   const county = data?.features[0]?.properties?.context?.district?.name || ''
+//   return { state, county }
+// }
+
+// Google api geocoding
+async function geocoding(long: string, lat: string) {
+  const url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${long}&key=${apiKey}`
+  if (!lat || !long) return
   const response = await fetch(url)
   const data = await response.json()
-  const stateData = data?.features[0]?.properties?.context?.region?.name || ''
-  const countyData =
-    data?.features[0]?.properties?.context?.district?.name || ''
-  return { stateData, countyData }
+  const addressComponent = data.results[0]?.address_components || []
+  let state = null
+  let county = null
+  addressComponent.forEach((component: any) => {
+    if (component.types.includes('administrative_area_level_1')) {
+      state = component.long_name
+    } else if (component.types.includes('administrative_area_level_2')) {
+      county = component.long_name.split(' ')[0]
+    }
+  })
+
+  return { state, county }
 }
 
 // Day difference
@@ -27,10 +46,10 @@ function dayDiff(date1: string, date2: string) {
 function getProjection(long: string, lat: string) {
   const projection = d3.geoAlbersUsa().scale(1300).translate([487.5, 305])
   const x =
-    long && lat ? ((projection([Number(long), Number(lat)]) || [0, 0])[0]) : 0
+    long && lat ? (projection([Number(long), Number(lat)]) || [0, 0])[0] : 0
   const y =
-    long && lat ? ((projection([Number(long), Number(lat)]) || [0, 0])[1]) : 0
+    long && lat ? (projection([Number(long), Number(lat)]) || [0, 0])[1] : 0
   return { x, y }
 }
 
-export { geocode, dayDiff, getProjection }
+export { dayDiff, getProjection, geocoding }

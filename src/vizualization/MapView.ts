@@ -136,15 +136,19 @@ function MapView(
       const centroid = path.centroid(d)
       return centroid[1]
     })
-
     .attr('text-anchor', 'middle')
     .attr('dx', '0.2em')
     .attr('dy', '0.35em')
     .text((d: any) => d.properties.code)
     .style('font-size', '17px')
-    .attr('fill', view === 'states' ? '#fff' : '#000')
+    .attr('fill', (d: any) => {
+      const stateData = aggregate.find(
+        (x: any) => x.state === d.properties.name
+      )
+      return view === 'states' && stateData ? '#fff' : '#000'
+    })
     .attr('stroke-width', 0.2)
-    .on('click', (event: any) => {
+    .on('click', (event: any, d: any) => {
       event.stopPropagation()
     })
 }

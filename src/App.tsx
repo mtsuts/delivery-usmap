@@ -6,7 +6,7 @@ import UsMap from './vizualization/Map'
 import { AppContext } from './components/AppContext'
 import csvData from './data/data.csv'
 import mapjson from './data/map.json'
-import { geocode, dayDiff, getProjection } from './utils'
+import { geocoding, dayDiff, getProjection } from './utils'
 import { Data } from './types'
 
 function App() {
@@ -53,10 +53,8 @@ function App() {
                 new Date(d.delivery_date.replace(/\[|\]/g, '')) < new Date()
                   ? 'Delivered'
                   : 'in-Transit',
-              state: (await geocode(d.longitude, d.latitude))?.stateData,
-              county: (
-                await geocode(d.longitude, d.latitude)
-              )?.countyData.replace(' County', ''),
+              state: (await geocoding(d.longitude, d.latitude))?.state,
+              county: (await geocoding(d.longitude, d.latitude))?.county,
               x: getProjection(d.longitude, d.latitude).x,
               y: getProjection(d.longitude, d.latitude).y,
             }
