@@ -44,6 +44,7 @@ function drawCountyLevelCircles(
       .style('cursor', 'pointer')
       .attr('xCoordinate', (d: any) => d.x)
       .on('click', (event: any, county: any) => {
+        console.log(county)
         if (levelUpdate) return
         if (county.aggregateValue === 1) return
         const zipCodeLevelData = data.filter(

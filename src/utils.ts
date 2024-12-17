@@ -1,19 +1,7 @@
 import dayjs from 'dayjs'
 import * as d3 from 'd3'
 
-const apiKey = process.env.REACT_APP_GOOGLE_API_KEY;
-
-// Mapbox api geocoding
-// async function geocode(longitude: string, latitude: string) {
-//   const url = `https://api.mapbox.com/search/geocode/v6/reverse?longitude=${longitude}&latitude=${latitude}&access_token=${process.env.REACT_APP_MAPBOX_TOKEN}`
-
-//   if (!longitude || !latitude) return
-//   const response = await fetch(url)
-//   const data = await response.json()
-//   const state = data?.features[0]?.properties?.context?.region?.name || ''
-//   const county = data?.features[0]?.properties?.context?.district?.name || ''
-//   return { state, county }
-// }
+const apiKey = process.env.REACT_APP_GOOGLE_API_KEY
 
 // Google api geocoding
 async function geocoding(long: string, lat: string) {
@@ -28,10 +16,9 @@ async function geocoding(long: string, lat: string) {
     if (component.types.includes('administrative_area_level_1')) {
       state = component.long_name
     } else if (component.types.includes('administrative_area_level_2')) {
-      county = component.long_name.split(' ')[0]
+      county = component.long_name.replace(' County', '')
     }
   })
-
   return { state, county }
 }
 
@@ -52,4 +39,5 @@ function getProjection(long: string, lat: string) {
   return { x, y }
 }
 
-export { dayDiff, getProjection, geocoding }
+
+export { dayDiff, getProjection, geocoding,  }

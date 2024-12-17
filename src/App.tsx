@@ -48,7 +48,7 @@ function App() {
               delivery_date: d.delivery_date.replace(/\[|\]/g, ''),
               mailing_date: d.mailing_date,
               scanned: Number(d.scanned),
-              allPieces: Number(d['distinct_job_imb_count']),
+              allPieces: Number(d.all_pieces),
               status:
                 new Date(d.delivery_date.replace(/\[|\]/g, '')) < new Date()
                   ? 'Delivered'
@@ -78,6 +78,7 @@ function App() {
         console.log(err)
       })
   }, [])
+  console.log(data)
 
   return (
     <>
@@ -87,7 +88,7 @@ function App() {
         stateJson={stateJson}
         countiesJson={countiesJson}
         mobileHeight={300}
-        desktopHeight={700}
+        desktopHeight={650}
         color={['#33E48E', '#00A356']}
       ></UsMap>
     </>
