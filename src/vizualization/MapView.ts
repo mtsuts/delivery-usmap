@@ -151,6 +151,9 @@ function MapView(
     .on('click', (event: any, d: any) => {
       event.stopPropagation()
     })
+    .on('mouseover', (event: any, d:any) => {
+      event.stopPropagation()
+    })
 }
 
 export { MapView }
