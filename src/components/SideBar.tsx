@@ -64,6 +64,7 @@ const SideBar = ({ data }: SideBarProps) => {
               width: 200,
               cursor: 'pointer',
               textAlign: 'center',
+              marginBottom: '40px'
             }}
             onClick={d.onClick}
           >
