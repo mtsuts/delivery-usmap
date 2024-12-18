@@ -47,7 +47,7 @@ function drawCountyLevelCircles(
       .attr('stroke-width', 0.5)
       .style('opacity', 0.5)
       .style('cursor', 'pointer')
-      .attr('xCoordinate', (d: any) => d.x)
+      .attr('xcoordinate', (d: any) => d.x)
       .on('click', (event: any, county: any) => {
         console.log(county)
         if (levelUpdate) return
@@ -114,7 +114,7 @@ function drawZipCodeLevelCircles(
       .attr('stroke-width', 0.5)
       .style('opacity', 0.5)
       .style('cursor', 'pointer')
-      .attr('xCoordinate', (d: any) => d.x)
+      .attr('xcoordinate', (d: any) => d.x)
       .on('click', (event: any, d: any) => {
         event.stopPropagation()
       })
