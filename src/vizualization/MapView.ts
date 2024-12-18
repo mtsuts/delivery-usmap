@@ -80,7 +80,7 @@ function MapView(
     .attr('stroke', '#fff')
     .attr('stroke-width', 0.5)
     .style('cursor', 'pointer')
-    .attr('xCoordinate', (d: any) => {
+    .attr('xcoordinate', (d: any) => {
       const coordinateXonMap =
         data.find((x: any) => x.state === d.properties.name)?.x || 0
 

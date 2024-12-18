@@ -30,8 +30,7 @@ function drawTransitArrows(transitData: any, g: any) {
       .attr('transform', (d: any) => `translate(${d.x}, ${d.y})`) // Position the arrow based on x and y
       .each(function () {
         // Append the SVG arrow
-        d3
-          .select(this)
+        d3.select(this)
           .append('svg')
           .attr('width', '25px')
           .attr('height', '40px')
@@ -39,7 +38,9 @@ function drawTransitArrows(transitData: any, g: any) {
           .attr('class', 'arrow')
           .attr('fill', 'none')
           .style('cursor', 'pointer')
-          .attr('xmlns', 'http://www.w3.org/2000/svg').html(`
+          .attr('xmlns', 'http://www.w3.org/2000/svg')
+          .html(
+            (d: any) => `
             <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
             <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
             <g id="SVGRepo_iconCarrier">
@@ -47,9 +48,12 @@ function drawTransitArrows(transitData: any, g: any) {
                     stroke="#c93235" 
                     stroke-width="3" 
                     stroke-linecap="round" 
-                    stroke-linejoin="round"></path>
+                    stroke-linejoin="round"
+                    xcoordinate="${d.x}"
+                    ></path>
             </g>
-          `)
+          `
+          )
       })
   }
 }

@@ -46,14 +46,14 @@ function generateTooltipContent(event: any, data: any, title: string) {
   )
   const container = document.createElement('div')
   createRoot(container).render(content)
-  const xCoordinate = event.target.getAttribute('xCoordinate')
+  const xcoordinate = event.target.getAttribute('xcoordinate')
   // Tooltip instance
   return tippy(event.target, {
     allowHTML: true,
     content: container,
     arrow: false,
     theme: 'light-border',
-    placement: xCoordinate > 450 ? 'bottom-end' : 'bottom-start',
+    placement: xcoordinate > 450 ? 'bottom-end' : 'bottom-start',
   })
 }
 
@@ -108,13 +108,13 @@ function ZipCodeLevelTooltip(event: any, data: any) {
   // Create a container to render the React element
   const container = document.createElement('div')
   createRoot(container).render(content)
-  const xCoordinate = event.target.getAttribute('xCoordinate')
+  const xcoordinate = event.target.getAttribute('xcoordinate')
   return tippy(event.target, {
     allowHTML: true,
     content: container,
     arrow: false,
     theme: 'light-border',
-    placement: xCoordinate > 450 ? 'bottom-end' : 'bottom-start',
+    placement: xcoordinate > 450 ? 'bottom-end' : 'bottom-start',
   })
 }
 
