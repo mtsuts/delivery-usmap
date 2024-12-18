@@ -39,7 +39,7 @@ function generateTooltipContent(event: any, data: any, title: string) {
           data={data}
           progress={data.scannedPrc / 100}
           width={320}
-          color={data.scannedPrc === 100 ? '#00D06C' : '#004d40'}
+          color={'#004d40' }
         />
       </div>
     </>
@@ -80,6 +80,7 @@ function ZipCodeLevelTooltip(event: any, data: any) {
             <th>Zip Code</th>
             <th>Mailpieces</th>
             <th>Delivery Status</th>
+            {data.status === 'Delivered' && <th> Delivered</th>}
             {data.status === 'in-Transit' && <th>Delivery Time</th>}
           </tr>
         </thead>
@@ -88,6 +89,7 @@ function ZipCodeLevelTooltip(event: any, data: any) {
             <td>{data.location.split(',')[0]}</td>
             <td>{data.allPieces}</td>
             <td>{data.status}</td>
+            {data.status === 'Delivered' && <td> {data.delivered} </td>}
             {data.status === 'in-Transit' && <td>{data.delivery_date}</td>}
           </tr>
         </tbody>

@@ -39,5 +39,7 @@ function getProjection(long: string, lat: string) {
   return { x, y }
 }
 
+// Format number to 2 decimal places
+const formatNumber = d3.format('.1f')
 
-export { dayDiff, getProjection, geocoding,  }
+export { dayDiff, getProjection, geocoding, formatNumber }

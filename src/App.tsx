@@ -9,10 +9,10 @@ import jsonData from './data/data.json'
 import mapjson from './data/map.json'
 import { geocoding, dayDiff, getProjection } from './utils'
 import { Data } from './types'
+import { formatNumber } from './utils'
 
 function App() {
   const { data, setData } = React.useContext(AppContext) as Data
-  const formater = d3.format('.1f')
 
   // Topojson to geojson
   const stateJson = topojson.feature(
@@ -41,8 +41,8 @@ function App() {
   })
 
   React.useEffect(() => {
-    // With jsondata, already assigned state and county. No need to geocode.  
-    (async () => {
+    // With jsondata, already assigned state and county. No need to geocode.
+    ;(async () => {
       const data = jsonData
       const updatedData = await Promise.all(
         data.map(async (d: any) => {
@@ -68,16 +68,16 @@ function App() {
       const vizData = updatedData.map((d) => ({
         ...d,
         notScannedPrc: ((d.allPieces - d.scanned) / d.allPieces) * 100,
-        scannedPrc: Number(formater((d.scanned / d.allPieces) * 100)),
+        scannedPrc: Number(formatNumber((d.scanned / d.allPieces) * 100)),
         delivered: d.status === 'Delivered' ? Number(d.scanned) : 0,
         inTransit: d.status === 'in-Transit' ? Number(d.scanned) : 0,
         deliveryPrc:
           d.status === 'Delivered'
-            ? Number(formater((d.scanned / d.allPieces) * 100))
+            ? Number(formatNumber((d.scanned / d.allPieces) * 100))
             : 0,
         transitPrc:
           d.status === 'in-Transit'
-            ? Number(formater((d.scanned / d.allPieces) * 100))
+            ? Number(formatNumber((d.scanned / d.allPieces) * 100))
             : 0,
         delivery_speed: dayDiff(d.delivery_date, d.mailing_date),
         id: ids.find((id: any) => id.state === d.state)?.id || '0',

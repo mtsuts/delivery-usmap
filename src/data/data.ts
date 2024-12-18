@@ -1,6 +1,5 @@
 import * as d3 from 'd3'
-
-const formatNumber = d3.format('.1f')
+import { formatNumber } from '../utils'
 
 function countyLevelData(id: any, data: any) {
   // Filter data based on state id
@@ -122,19 +121,27 @@ function stateLevelData(state: any, data: any) {
       return {
         state: x.state,
         aggregateValue: rolledupDataPieces.get(x.state),
-        deliveryPrc: Number(formatNumber(
-          (rolledUpDataDelivered.get(x.state) /
-            rolledupDataPieces.get(x.state)) *
-            100
-        )),
-        inTransitPrc: Number(formatNumber(
-          (rolledUpDataTransit.get(x.state) / rolledupDataPieces.get(x.state)) *
-            100
-        )),
-        scannedPrc: Number(formatNumber(
-          (rolledUpDataScanned.get(x.state) / rolledupDataPieces.get(x.state)) *
-            100
-        )),
+        deliveryPrc: Number(
+          formatNumber(
+            (rolledUpDataDelivered.get(x.state) /
+              rolledupDataPieces.get(x.state)) *
+              100
+          )
+        ),
+        inTransitPrc: Number(
+          formatNumber(
+            (rolledUpDataTransit.get(x.state) /
+              rolledupDataPieces.get(x.state)) *
+              100
+          )
+        ),
+        scannedPrc: Number(
+          formatNumber(
+            (rolledUpDataScanned.get(x.state) /
+              rolledupDataPieces.get(x.state)) *
+              100
+          )
+        ),
         aggregateAvgSpeed: rolledUpDataSpeed.get(x.state),
       }
     })
