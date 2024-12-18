@@ -1,20 +1,19 @@
 {
   "files": {
-    "main.css": "/delivery-usmap/static/css/main.42817a9c.css",
-    "main.js": "/delivery-usmap/static/js/main.c5458c3c.js",
+    "main.css": "/delivery-usmap/static/css/main.25e2af1d.css",
+    "main.js": "/delivery-usmap/static/js/main.17101612.js",
     "static/js/453.569bc00b.chunk.js": "/delivery-usmap/static/js/453.569bc00b.chunk.js",
     "static/media/countiesView.png": "/delivery-usmap/static/media/countiesView.188945a9d38d2581ee2b.png",
     "static/media/stateView.png": "/delivery-usmap/static/media/stateView.02c7f7601117c38af86b.png",
     "static/media/zipCodeViews.png": "/delivery-usmap/static/media/zipCodeViews.02566a3f868ae260d44d.png",
-    "static/media/data.csv": "/delivery-usmap/static/media/data.209a858c3eb386105045.csv",
     "static/media/TransitView.png": "/delivery-usmap/static/media/TransitView.4925d0f548516e890220.png",
     "index.html": "/delivery-usmap/index.html",
-    "main.42817a9c.css.map": "/delivery-usmap/static/css/main.42817a9c.css.map",
-    "main.c5458c3c.js.map": "/delivery-usmap/static/js/main.c5458c3c.js.map",
+    "main.25e2af1d.css.map": "/delivery-usmap/static/css/main.25e2af1d.css.map",
+    "main.17101612.js.map": "/delivery-usmap/static/js/main.17101612.js.map",
     "453.569bc00b.chunk.js.map": "/delivery-usmap/static/js/453.569bc00b.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.42817a9c.css",
-    "static/js/main.c5458c3c.js"
+    "static/css/main.25e2af1d.css",
+    "static/js/main.17101612.js"
   ]
 }
