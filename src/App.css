@@ -108,10 +108,11 @@ thead th {
   font-weight: 600;
   font-size: 12px;
   font-family: DM sans;
-  border: 1px solid #ccc;
+  /* border: 1px solid #ccc; */
   padding: 4px;
-  color: #fff;
-  background-color: #c93235;
+  color: #6c6a6a;
+  text-align: left;
+  /* background-color: #c93235; */
 }
 
 tbody td {
@@ -119,5 +120,5 @@ tbody td {
   border: 1px solid #ccc;
   padding: 4px;
   font-weight: 600;
-  text-align: center;
+  text-align: left;
 }

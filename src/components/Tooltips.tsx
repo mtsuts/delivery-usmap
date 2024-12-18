@@ -13,7 +13,7 @@ function generateTooltipContent(event: any, data: any, title: string) {
       <div style={{ fontSize: '15px', fontWeight: 'bold' }}>{title}</div>
       <table
         style={{
-          width: '190px',
+          width: '320px',
           borderCollapse: 'collapse',
         }}
       >
@@ -38,8 +38,8 @@ function generateTooltipContent(event: any, data: any, title: string) {
         <ProgressBar
           data={data}
           progress={data.scannedPrc / 100}
-          width={250}
-          color={data.scannedPrc === 100 ? '#00D06C' : '#004d40'}
+          width={320}
+          color={'#e0e0e0'}
         />
       </div>
     </>
@@ -74,12 +74,13 @@ function CountyLevelTooltip(event: any, d: any) {
 function ZipCodeLevelTooltip(event: any, data: any) {
   const content = (
     <>
-      <table style={{ width: '190px', borderCollapse: 'collapse' }}>
+      <table style={{ width: '320px', borderCollapse: 'collapse' }}>
         <thead>
           <tr>
             <th>Zip Code</th>
-            <th>Records</th>
+            <th>Mailpieces</th>
             <th>Delivery Status</th>
+            {data.status === 'Delivered' && <th> Delivered</th>}
             {data.status === 'in-Transit' && <th>Delivery Time</th>}
           </tr>
         </thead>
@@ -88,10 +89,19 @@ function ZipCodeLevelTooltip(event: any, data: any) {
             <td>{data.location.split(',')[0]}</td>
             <td>{data.allPieces}</td>
             <td>{data.status}</td>
+            {data.status === 'Delivered' && <td> {data.delivered} </td>}
             {data.status === 'in-Transit' && <td>{data.delivery_date}</td>}
           </tr>
         </tbody>
       </table>
+      <div style={{ marginTop: '10px' }}>
+        <ProgressBar
+          data={data}
+          progress={data.scannedPrc / 100}
+          width={320}
+          color={'#e0e0e0'}
+        />
+      </div>
     </>
   )
 

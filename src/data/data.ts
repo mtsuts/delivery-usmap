@@ -1,4 +1,5 @@
 import * as d3 from 'd3'
+import { formatNumber } from '../utils'
 
 function countyLevelData(id: any, data: any) {
   // Filter data based on state id
@@ -44,17 +45,17 @@ function countyLevelData(id: any, data: any) {
         county: d.county,
         aggregateValue: rolledupDataPieces.get(d.county),
         aggregateAvgSpeed: rolledUpDataSpeed.get(d.county),
-        deliveryPrc: Math.floor(
+        deliveryPrc: formatNumber(
           (rolledUpDataDelivered.get(d.county) /
             rolledupDataPieces.get(d.county)) *
             100
         ),
-        inTransitPrc: Math.floor(
+        inTransitPrc: formatNumber(
           (rolledUpDataTransit.get(d.county) /
             rolledupDataPieces.get(d.county)) *
             100
         ),
-        scannedPrc: Math.floor(
+        scannedPrc: formatNumber(
           (rolledUpDataScanned.get(d.county) /
             rolledupDataPieces.get(d.county)) *
             100
@@ -95,6 +96,7 @@ function stateLevelData(state: any, data: any) {
     (group) => d3.sum(group, (x: any) => x.inTransit),
     (x: any) => x.state
   )
+
   const rolledUpDataScanned = d3.rollup(
     stateDeliveries,
     (group) => d3.sum(group, (x: any) => x.scanned),
@@ -119,18 +121,26 @@ function stateLevelData(state: any, data: any) {
       return {
         state: x.state,
         aggregateValue: rolledupDataPieces.get(x.state),
-        deliveryPrc: Math.floor(
-          (rolledUpDataDelivered.get(x.state) /
-            rolledupDataPieces.get(x.state)) *
-            100
+        deliveryPrc: Number(
+          formatNumber(
+            (rolledUpDataDelivered.get(x.state) /
+              rolledupDataPieces.get(x.state)) *
+              100
+          )
         ),
-        inTransitPrc: Math.floor(
-          (rolledUpDataTransit.get(x.state) / rolledupDataPieces.get(x.state)) *
-            100
+        inTransitPrc: Number(
+          formatNumber(
+            (rolledUpDataTransit.get(x.state) /
+              rolledupDataPieces.get(x.state)) *
+              100
+          )
         ),
-        scannedPrc: Math.floor(
-          (rolledUpDataScanned.get(x.state) / rolledupDataPieces.get(x.state)) *
-            100
+        scannedPrc: Number(
+          formatNumber(
+            (rolledUpDataScanned.get(x.state) /
+              rolledupDataPieces.get(x.state)) *
+              100
+          )
         ),
         aggregateAvgSpeed: rolledUpDataSpeed.get(x.state),
       }
@@ -145,5 +155,7 @@ function stateLevelData(state: any, data: any) {
   if (state) return finalData.filter((d: any) => d.deliveryPrc >= 0)[0]
   return finalData.filter((d: any) => d.deliveryPrc >= 0)
 }
+
+function zipcodeLevelData(data: any) {}
 
 export { countyLevelData, stateLevelData }
