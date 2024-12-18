@@ -11,7 +11,7 @@ function drawCountyLevelCircles(
   data: any,
   transform: any,
   zoomToCounty: any,
-  countiesJson: any, 
+  countiesJson: any,
   stateLevel: boolean = false
 ) {
   if (!circlesData) return
@@ -26,9 +26,9 @@ function drawCountyLevelCircles(
     ])
     .range(stateLevel ? [5, 10] : [15, 30])
 
-  const colorScale = d3
+  const colorScales = d3
     .scaleLinear<string>()
-    .domain(d3.extent(circlesData, (d: any) => d?.deliveryPrc) as any)
+    .domain(d3.extent(data, (d: any) => d?.deliveryPrc) as any)
     .range(['#FF0000', '#00D06C'] as [string, string])
 
 
@@ -40,7 +40,9 @@ function drawCountyLevelCircles(
       .attr('cx', (d: any) => d.x)
       .attr('cy', (d: any) => d.y)
       .attr('r', (d: any) => radiusScale(d.aggregateValue))
-      .attr('fill', (d: any) => colorScale(d.deliveryPrc) || '#ccc')
+      .attr('fill', (d: any) => {
+        return colorScales(d.deliveryPrc) || '#ccc'
+      })
       .attr('stroke', '#fff')
       .attr('stroke-width', 0.5)
       .style('opacity', 0.5)
@@ -53,7 +55,7 @@ function drawCountyLevelCircles(
         const zipCodeLevelData = data.filter(
           (x: any) => x.county === county.county
         )
-        drawZipCodeLevelCircles(zipCodeLevelData, g, transform)
+        drawZipCodeLevelCircles(zipCodeLevelData, g, transform,data)
         const zipCodeData = countiesJson.features.filter(
           (x: any) => x.id === county.countyId
         )
@@ -76,7 +78,12 @@ function drawCountyLevelCircles(
 
 // Zip code level circles
 let tippyInstanceZipCodeLevel: any
-function drawZipCodeLevelCircles(circlesData: any, g: any, stateLevel: boolean = false) {
+function drawZipCodeLevelCircles(
+  circlesData: any,
+  g: any,
+  stateLevel: boolean = false,
+  data: any
+) {
   if (!circlesData) return
   g.selectAll('.circle').remove()
   // Circle radius scale
@@ -88,10 +95,11 @@ function drawZipCodeLevelCircles(circlesData: any, g: any, stateLevel: boolean =
     ])
     .range(stateLevel ? [2, 5] : [15, 20])
 
-    const colorScale = d3
-    .scaleLinear<string>()
-    .domain(d3.extent(circlesData, (d: any) => d?.scannedPrc) as any)
-    .range(['#FF0000', '#00D06C'] as [string, string])
+      const colorScale = d3
+      .scaleLinear<string>()
+      .domain(d3.extent(data !== null ? data : circlesData, (d: any) => d?.deliveryPrc) as any)
+      .range(['#FF0000', '#00D06C'] as [string, string])
+
 
   if (circlesData.length) {
     g.selectAll('circle')
@@ -101,7 +109,7 @@ function drawZipCodeLevelCircles(circlesData: any, g: any, stateLevel: boolean =
       .attr('cx', (d: any) => d.x)
       .attr('cy', (d: any) => d.y)
       .attr('r', (d: any) => radiusScale(d.scanned))
-      .attr('fill', (d:any) => colorScale(d.scannedPrc || 0) || "#ccc")
+      .attr('fill', (d: any) => colorScale(d.deliveryPrc || 0) || '#ccc')
       .attr('stroke', '#fff')
       .attr('stroke-width', 0.5)
       .style('opacity', 0.5)

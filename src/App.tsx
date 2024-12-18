@@ -5,12 +5,14 @@ import './App.css'
 import UsMap from './vizualization/Map'
 import { AppContext } from './components/AppContext'
 import csvData from './data/data.csv'
+import jsonData from './data/data.json'
 import mapjson from './data/map.json'
 import { geocoding, dayDiff, getProjection } from './utils'
 import { Data } from './types'
 
 function App() {
   const { data, setData } = React.useContext(AppContext) as Data
+  const formater = d3.format('.1f')
 
   // Topojson to geojson
   const stateJson = topojson.feature(
@@ -39,46 +41,53 @@ function App() {
   })
 
   React.useEffect(() => {
-    d3.csv(csvData)
-      .then(async (data) => {
-        const updatedData = await Promise.all(
-          data.map(async (d) => {
-            return {
-              ...d,
-              delivery_date: d.delivery_date.replace(/\[|\]/g, ''),
-              mailing_date: d.mailing_date,
-              scanned: Number(d.scanned),
-              allPieces: Number(d.all_pieces),
-              status:
-                new Date(d.delivery_date.replace(/\[|\]/g, '')) < new Date()
-                  ? 'Delivered'
-                  : 'in-Transit',
-              state: (await geocoding(d.longitude, d.latitude))?.state,
-              county: (await geocoding(d.longitude, d.latitude))?.county,
-              x: getProjection(d.longitude, d.latitude).x,
-              y: getProjection(d.longitude, d.latitude).y,
-            }
-          })
-        )
-        const vizData = updatedData.map((d) => ({
-          ...d,
-          notScannedPrc: ((d.allPieces - d.scanned) / d.allPieces) * 100,
-          scannedPrc: Math.floor((d.scanned / d.allPieces) * 100),
-          delivered: d.status === 'Delivered' ? d.scanned : 0,
-          inTransit: d.status === 'in-Transit' ? d.scanned : 0,
-          delivery_speed: dayDiff(d.delivery_date, d.mailing_date),
-          id: ids.find((id: any) => id.state === d.state)?.id || '0',
-          countyId: countiesIds
-            .filter((x: any) => x.state === d.state)
-            .find((x: any) => x.county === d.county)?.id,
-        }))
-        setData(vizData)
-      })
-      .catch((err) => {
-        console.log(err)
-      })
+    // With jsondata, already assigned state and county. No need to geocode.  
+    (async () => {
+      const data = jsonData
+      const updatedData = await Promise.all(
+        data.map(async (d: any) => {
+          return {
+            ...d,
+            delivery_date: d.delivery_date.replace(/\[|\]/g, ''),
+            mailing_date: d.mailing_date,
+            scanned: Number(d.scanned),
+            allPieces: Number(d.all_pieces),
+            status:
+              new Date(d.delivery_date.replace(/\[|\]/g, '')) < new Date()
+                ? 'Delivered'
+                : 'in-Transit',
+            state: d.state,
+            county: d.county,
+            // state: (await geocoding(d.longitude, d.latitude))?.state,
+            // county: (await geocoding(d.longitude, d.latitude))?.county,
+            x: getProjection(d.longitude, d.latitude).x,
+            y: getProjection(d.longitude, d.latitude).y,
+          }
+        })
+      )
+      const vizData = updatedData.map((d) => ({
+        ...d,
+        notScannedPrc: ((d.allPieces - d.scanned) / d.allPieces) * 100,
+        scannedPrc: Number(formater((d.scanned / d.allPieces) * 100)),
+        delivered: d.status === 'Delivered' ? Number(d.scanned) : 0,
+        inTransit: d.status === 'in-Transit' ? Number(d.scanned) : 0,
+        deliveryPrc:
+          d.status === 'Delivered'
+            ? Number(formater((d.scanned / d.allPieces) * 100))
+            : 0,
+        transitPrc:
+          d.status === 'in-Transit'
+            ? Number(formater((d.scanned / d.allPieces) * 100))
+            : 0,
+        delivery_speed: dayDiff(d.delivery_date, d.mailing_date),
+        id: ids.find((id: any) => id.state === d.state)?.id || '0',
+        countyId: countiesIds
+          .filter((x: any) => x.state === d.state)
+          .find((x: any) => x.county === d.county)?.id,
+      }))
+      setData(vizData)
+    })()
   }, [])
-  console.log(data)
 
   return (
     <>

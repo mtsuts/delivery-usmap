@@ -74,7 +74,7 @@ function CountyLevelTooltip(event: any, d: any) {
 function ZipCodeLevelTooltip(event: any, data: any) {
   const content = (
     <>
-      <table style={{ width: '190px', borderCollapse: 'collapse' }}>
+      <table style={{ width: '320px', borderCollapse: 'collapse' }}>
         <thead>
           <tr>
             <th>Zip Code</th>
@@ -96,7 +96,7 @@ function ZipCodeLevelTooltip(event: any, data: any) {
         <ProgressBar
           data={data}
           progress={data.scannedPrc / 100}
-          width={190}
+          width={320}
           color={data.scannedPrc === 100 ? '#00D06C' : '#004d40'}
         />
       </div>

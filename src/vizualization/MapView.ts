@@ -72,7 +72,6 @@ function MapView(
         return '#fff'
       }
     })
-
   // Draw pattern for states
   pathGroup
     .append('path')
@@ -102,6 +101,7 @@ function MapView(
         const stateData = aggregate.find(
           (x: any) => x.state === d.properties.name
         )
+        console.log(stateData)
         if (tippyInstanceState) {
           tippyInstanceState.destroy()
         }
