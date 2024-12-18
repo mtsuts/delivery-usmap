@@ -19,7 +19,7 @@ const ProgressBar = ({ progress, width, color }: ProgressBarProps) => {
       .append('rect')
       .attr('width', width)
       .attr('height', height)
-      .attr('fill', '#e0e0e0')
+      .attr('fill','#fff')
       .attr('rx', borderRadius)
       .attr('ry', borderRadius)
 
@@ -34,20 +34,20 @@ const ProgressBar = ({ progress, width, color }: ProgressBarProps) => {
       .duration(1000)
       .attr('width', progress * width)
 
-    svg
-      .append('text')
-      .attr('x', width / 2)
-      .attr('y', height / 2)
-      .attr('dy', '.35em')
-      .attr('text-anchor', 'middle')
-      .attr('fill', '#fff')
-      .style('font-weight', 'bold')
-      .text(`${Math.round(progress * 100)}%`)
+    // svg
+    //   .append('text')
+    //   .attr('x', width / 2)
+    //   .attr('y', height / 2)
+    //   .attr('dy', '.35em')
+    //   .attr('text-anchor', 'middle')
+    //   .attr('fill', '#000')
+    //   .style('font-weight', 'bold')
+    //   .text(`${Math.round(progress * 100)}%`)
   }, [progress])
 
   return (
     <>
-      <div> Scanned %</div>
+      <div> Scanned {Math.round(progress * 100)}%</div>
       <div className='progress-bar-container'></div>
     </>
   )
