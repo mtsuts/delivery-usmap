@@ -95,7 +95,7 @@ function MapViz({
         data,
         transform,
         zoomToCounty,
-        countiesJson, 
+        countiesJson,
         true
       )
     } else if (view === 'counties') {
@@ -107,12 +107,12 @@ function MapViz({
         data,
         transform,
         zoomToCounty,
-        countiesJson, 
+        countiesJson,
         false
       )
     } else if (view === 'zipcodes') {
       MapView(stateJson.features, g, clicked, view, data)
-      drawZipCodeLevelCircles(data, g, false, null )
+      drawZipCodeLevelCircles(data, g, false, null)
     } else if (view === 'transit') {
       MapView(stateJson.features, g, clicked, view, data)
       drawTransitArrows(
@@ -149,7 +149,7 @@ function MapViz({
       data,
       transform,
       zoomToCounty,
-      countiesJson, 
+      countiesJson,
       true
     )
   }
@@ -184,7 +184,13 @@ function MapViz({
   }
 
   // SVG call zoom and disable it on wheel event
-  svg.call(zoom).on('wheel.zoom', null)
+  svg
+    .call(zoom)
+    .on('wheel.zoom', null)
+    .on('mousedown.zoom', null)
+    .on('touchstart.zoom', null)
+    .on('mousemove.zoom', null)
+    .on('dblclick.zoom', null)
 
   // Zoom reset
   d3.select('#zoom_reset').on('click', reset)
@@ -234,7 +240,7 @@ function MapViz({
         data,
         transform,
         zoomToCounty,
-        countiesJson, 
+        countiesJson,
         true
       )
     }
@@ -248,7 +254,7 @@ function MapViz({
         data,
         transform,
         zoomToCounty,
-        countiesJson, 
+        countiesJson,
         true
       )
     }
