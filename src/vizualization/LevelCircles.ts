@@ -12,7 +12,8 @@ function drawCountyLevelCircles(
   transform: any,
   zoomToCounty: any,
   countiesJson: any,
-  stateLevel: boolean = false
+  stateLevel: boolean = false,
+  view: any
 ) {
   if (!circlesData) return
   g.selectAll('.circle').remove()
@@ -46,7 +47,7 @@ function drawCountyLevelCircles(
       .attr('stroke', '#fff')
       .attr('stroke-width', 0.5)
       .style('opacity', 0.5)
-      .style('cursor', 'pointer')
+      .style('cursor', `${view === 'states' ? 'pointer' : 'default'}`)
       .attr('xcoordinate', (d: any) => d.x)
       .on('click', (event: any, county: any) => {
         console.log(county)

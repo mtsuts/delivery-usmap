@@ -96,7 +96,8 @@ function MapViz({
         transform,
         zoomToCounty,
         countiesJson,
-        true
+        true,
+        view
       )
     } else if (view === 'counties') {
       MapView(stateJson.features, g, clicked, view, data)
@@ -108,7 +109,8 @@ function MapViz({
         transform,
         zoomToCounty,
         countiesJson,
-        false
+        false,
+        view
       )
     } else if (view === 'zipcodes') {
       MapView(stateJson.features, g, clicked, view, data)
@@ -150,7 +152,8 @@ function MapViz({
       transform,
       zoomToCounty,
       countiesJson,
-      true
+      true,
+      view
     )
   }
 
@@ -241,7 +244,8 @@ function MapViz({
         transform,
         zoomToCounty,
         countiesJson,
-        true
+        true,
+        view
       )
     }
     if (currentZoom > 2 && currentZoom < 10) {
@@ -255,7 +259,8 @@ function MapViz({
         transform,
         zoomToCounty,
         countiesJson,
-        true
+        true,
+        view
       )
     }
   })
