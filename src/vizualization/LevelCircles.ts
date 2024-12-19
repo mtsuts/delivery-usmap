@@ -113,7 +113,6 @@ function drawZipCodeLevelCircles(
       .attr('stroke', '#fff')
       .attr('stroke-width', 0.5)
       .style('opacity', 0.5)
-      .style('cursor', 'pointer')
       .attr('xcoordinate', (d: any) => d.x)
       .on('click', (event: any, d: any) => {
         event.stopPropagation()

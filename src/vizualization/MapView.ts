@@ -35,8 +35,8 @@ function MapView(
       .append('pattern')
       .attr('id', 'diagonal-lines')
       .attr('patternUnits', 'userSpaceOnUse')
-      .attr('width', 10)
-      .attr('height', 10)
+      .attr('width', 5)
+      .attr('height', 5)
       .attr('patternTransform', 'rotate(45)')
       .append('line')
       .attr('x1', 0)
@@ -44,7 +44,7 @@ function MapView(
       .attr('x2', 0)
       .attr('y2', 10)
       .attr('stroke', strokeColor)
-      .attr('stroke-width', 8)
+      .attr('stroke-width', 6)
 
     return 'url(#diagonal-lines)'
   }
@@ -78,13 +78,22 @@ function MapView(
     .attr('d', path)
     .attr('class', 'path-pattern')
     .attr('stroke', '#fff')
-    .attr('stroke-width', 0.5)
-    .style('cursor', 'pointer')
+    .attr('stroke-width', 1.5)
+    .style('cursor', `${view === 'states' ? 'pointer' : 'default'}`)
     .attr('xcoordinate', (d: any) => {
       const coordinateXonMap =
         data.find((x: any) => x.state === d.properties.name)?.x || 0
 
       return Math.floor(coordinateXonMap)
+    })
+    .on('mouseover', function () {
+      if (view !== 'states') return
+      d3.select(this).attr('stroke', '#000')
+      d3.select(this.parentElement).raise()
+    })
+    .on('mouseout', function (event: any, d: any) {
+      if (view !== 'states') return
+      d3.select(this).attr('stroke', '#fff')
     })
 
   pathGroup
@@ -107,6 +116,7 @@ function MapView(
         tippyInstanceState = StateLevelTooltip(event, d, stateData)
       }
     })
+
     .attr('fill', (d: any) => {
       const stateData = aggregate.find(
         (x: any) => x.state === d.properties.name
@@ -150,7 +160,7 @@ function MapView(
     .on('click', (event: any, d: any) => {
       event.stopPropagation()
     })
-    .on('mouseover', (event: any, d:any) => {
+    .on('mouseover', (event: any, d: any) => {
       event.stopPropagation()
     })
 }
