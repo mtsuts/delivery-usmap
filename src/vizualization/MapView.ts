@@ -132,7 +132,7 @@ function MapView(
       const stateData = aggregate.find(
         (x: any) => x.state === d.properties.name
       )
-      const strokeWidthScale = d3.scaleLinear().domain([0, 100]).range([8, 1])
+      const strokeWidthScale = d3.scaleLinear().domain([0, 100]).range([6, 1])
       if (stateData && view === 'states') {
         if (stateData?.scannedPrc !== 100) {
           return drawPattern(
