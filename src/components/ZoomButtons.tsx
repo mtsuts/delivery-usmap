@@ -19,6 +19,7 @@ function ZoomButtons(view: any) {
           border: 'none',
           color: '#fff',
           cursor: 'pointer',
+          borderRadius: '4px',
         }}
         id='zoom_in'
       >
@@ -56,6 +57,7 @@ function ZoomButtons(view: any) {
           marginTop: '5px',
           color: '#fff',
           cursor: 'pointer',
+          borderRadius: '4px',
         }}
         id='zoom_out'
       >
@@ -95,6 +97,7 @@ function ZoomButtons(view: any) {
           color: '#fff',
           cursor: 'pointer',
           opacity: view.view === 'states' ? 1 : 0.5,
+          borderRadius: '4px',
         }}
         id='zoom_reset'
       >

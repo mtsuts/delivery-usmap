@@ -29,13 +29,19 @@ function MapView(
     .range(['#FF0000', '#00D06C'] as [string, string])
 
   // Draw Shading pattern
-  function drawPattern() {
+  function drawPattern(strokeWidth: number) {
     const strokeColor: string = '#004d40'
-    // Define the pattern for diagonal lines
+
+    const patternId = `diagonal-lines-${strokeWidth}`
+
+    if (!g.select(`#${patternId}`).empty()) {
+      return `url(#${patternId})`
+    }
     const defs = g.append('defs')
+
     defs
       .append('pattern')
-      .attr('id', 'diagonal-lines')
+      .attr('id', patternId)
       .attr('patternUnits', 'userSpaceOnUse')
       .attr('width', 5)
       .attr('height', 5)
@@ -46,9 +52,9 @@ function MapView(
       .attr('x2', 0)
       .attr('y2', 10)
       .attr('stroke', strokeColor)
-      .attr('stroke-width', 6)
+      .attr('stroke-width', strokeWidth)
 
-    return 'url(#diagonal-lines)'
+    return `url(#${patternId})`
   }
 
   const pathGroup = g
@@ -126,9 +132,12 @@ function MapView(
       const stateData = aggregate.find(
         (x: any) => x.state === d.properties.name
       )
+      const strokeWidthScale = d3.scaleLinear().domain([0, 100]).range([8, 1])
       if (stateData && view === 'states') {
         if (stateData?.scannedPrc !== 100) {
-          return drawPattern()
+          return drawPattern(
+            Math.floor(strokeWidthScale(stateData?.scannedPrc)) || 1
+          )
         } else {
           return colorScales(stateData?.deliveryPrc)
         }
