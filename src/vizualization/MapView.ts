@@ -19,7 +19,9 @@ function MapView(
   g.selectAll('g').remove()
   g.selectAll('.circle').remove()
   g.selectAll('.arrow').remove()
+
   const aggregate = stateLevelData(null, data)
+  let isClicked = false
 
   const colorScales = d3
     .scaleLinear<string>()
@@ -87,7 +89,9 @@ function MapView(
       return Math.floor(coordinateXonMap)
     })
     .on('mouseover', function () {
+      console.log(view)
       if (view !== 'states') return
+      if (isClicked) return
       d3.select(this).attr('stroke', '#000')
       d3.select(this.parentElement).raise()
     })
@@ -98,6 +102,7 @@ function MapView(
 
   pathGroup
     .on('click', (event: any, d: any) => {
+      isClicked = true
       const stateData = aggregate.find(
         (x: any) => x.state === d.properties.name
       )
