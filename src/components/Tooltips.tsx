@@ -99,7 +99,7 @@ function ZipCodeLevelTooltip(event: any, data: any) {
           data={data}
           progress={data.scannedPrc / 100}
           width={320}
-          color={'#004d40'}
+          color={'#00D06C'}
         />
       </div>
     </>

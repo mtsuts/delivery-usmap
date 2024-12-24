@@ -6,6 +6,7 @@ const ProgressBar = ({ progress, width, color }: ProgressBarProps) => {
   React.useEffect(() => {
     const height = 14
     let borderRadius = 5
+    console.log(height)
 
     const container = d3.select('.progress-bar-container')
     container.selectAll('.progress-bar-container').remove()

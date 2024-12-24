@@ -31,8 +31,6 @@ function MapView(
   // Draw Shading pattern
   function drawPattern(strokeWidth: number, state: string) {
     const strokeColor: string = '#004d40'
-    console.log(state)
-
     const patternId = `diagonal-lines-${state}`
 
     if (!g.select(`#${patternId}`).empty()) {
@@ -134,7 +132,6 @@ function MapView(
       )
       const strokeWidthScale = d3.scaleLinear().domain([0, 100]).range([6, 0])
       if (stateData && view === 'states') {
-        console.log(strokeWidthScale(54))
         if (stateData?.scannedPrc !== 100) {
           return drawPattern(
             strokeWidthScale(stateData?.scannedPrc),
