@@ -20,16 +20,16 @@ function generateTooltipContent(event: any, data: any, title: string) {
         <thead>
           <tr>
             <th>Mailpieces</th>
-            <th>Delivered</th>
             <th>In-Transit</th>
+            <th>Delivered</th>
             <th>Avg.Delivery Speed</th>
           </tr>
         </thead>
         <tbody>
           <tr>
             <td>{data?.aggregateValue || 0}</td>
-            <td>{data?.deliveryPrc || 0}%</td>
             <td>{data?.inTransitPrc || 0}%</td>
+            <td>{data?.deliveryPrc || 0}%</td>
             <td>{data?.aggregateAvgSpeed || 0} days</td>
           </tr>
         </tbody>
@@ -39,7 +39,7 @@ function generateTooltipContent(event: any, data: any, title: string) {
           data={data}
           progress={data.scannedPrc / 100}
           width={320}
-          color={'#004d40'}
+          color={'#00D06C'}
         />
       </div>
     </>

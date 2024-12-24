@@ -156,6 +156,5 @@ function stateLevelData(state: any, data: any) {
   return finalData.filter((d: any) => d.deliveryPrc >= 0)
 }
 
-function zipcodeLevelData(data: any) {}
 
 export { countyLevelData, stateLevelData }

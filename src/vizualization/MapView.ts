@@ -29,10 +29,11 @@ function MapView(
     .range(['#FF0000', '#00D06C'] as [string, string])
 
   // Draw Shading pattern
-  function drawPattern(strokeWidth: number) {
+  function drawPattern(strokeWidth: number, state: string) {
     const strokeColor: string = '#004d40'
+    console.log(state)
 
-    const patternId = `diagonal-lines-${strokeWidth}`
+    const patternId = `diagonal-lines-${state}`
 
     if (!g.select(`#${patternId}`).empty()) {
       return `url(#${patternId})`
@@ -94,8 +95,7 @@ function MapView(
 
       return Math.floor(coordinateXonMap)
     })
-    .on('mouseover', function () {
-      console.log(view)
+    .on('mouseover', function (event: any, d: any) {
       if (view !== 'states') return
       if (isClicked) return
       d3.select(this).attr('stroke', '#000')
@@ -132,11 +132,13 @@ function MapView(
       const stateData = aggregate.find(
         (x: any) => x.state === d.properties.name
       )
-      const strokeWidthScale = d3.scaleLinear().domain([0, 100]).range([6, 1])
+      const strokeWidthScale = d3.scaleLinear().domain([0, 100]).range([6, 0])
       if (stateData && view === 'states') {
+        console.log(strokeWidthScale(54))
         if (stateData?.scannedPrc !== 100) {
           return drawPattern(
-            Math.floor(strokeWidthScale(stateData?.scannedPrc)) || 1
+            strokeWidthScale(stateData?.scannedPrc),
+            stateData?.state.split(' ').join('-')
           )
         } else {
           return colorScales(stateData?.deliveryPrc)
