@@ -116,7 +116,7 @@ thead th {
 
 tbody td {
   font-size: 12px;
-  border: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
   padding: 4px;
   font-weight: 600;
   text-align: center;
