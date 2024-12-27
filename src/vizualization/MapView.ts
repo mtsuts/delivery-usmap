@@ -122,7 +122,12 @@ function MapView(
         if (tippyInstanceState) {
           tippyInstanceState.destroy()
         }
-        tippyInstanceState = StateLevelTooltip(event, d, stateData)
+        tippyInstanceState = StateLevelTooltip(
+          event,
+          d,
+          stateData,
+          colorScales(stateData?.deliveryPrc)
+        )
       }
     })
 
