@@ -31,9 +31,20 @@ function generateTooltipContent(
                 color: '#ffffff',
               }}
             >
-              <div style={{ display: 'flex', alignItems: 'center', height: '10px', gap: 3 }}>
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  height: '10px',
+                  gap: 3,
+                }}
+              >
                 <div>Delivered </div>
-                <img src={checkedIcon} style={{height: '10px', width: '10%'}} alt='checkedIcon'></img>
+                <img
+                  src={checkedIcon}
+                  style={{ height: '10px', width: '10%' }}
+                  alt='checkedIcon'
+                ></img>
               </div>
             </th>
             <th>In-Transit</th>
@@ -81,9 +92,9 @@ function StateLevelTooltip(event: any, d: any, data: any, color: any) {
 }
 
 // County level tooltip generator
-function CountyLevelTooltip(event: any, d: any) {
+function CountyLevelTooltip(event: any, d: any, color: any) {
   const title = `${d.county} County`
-  return generateTooltipContent(event, d, title, 'transparent')
+  return generateTooltipContent(event, d, title, color)
 }
 
 // Zio code level tooltip generator
