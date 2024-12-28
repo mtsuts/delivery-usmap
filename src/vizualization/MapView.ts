@@ -93,6 +93,12 @@ function MapView(
 
       return Math.floor(coordinateXonMap)
     })
+    .attr('ycoordinate', (d: any) => {
+      const coordinateYonMap =
+        data.find((x: any) => x.state === d.properties.name)?.y || 0
+
+      return Math.floor(coordinateYonMap)
+    })
     .on('mouseover', function (event: any, d: any) {
       if (view !== 'states') return
       if (isClicked) return

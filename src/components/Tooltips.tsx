@@ -7,6 +7,7 @@ import { createRoot } from 'react-dom/client'
 import ProgressBar from './ProgressBar'
 import checkedIcon from '../images/checked.svg'
 import statusPending from '../images/statusPending.svg'
+import { getTooltipPlacement } from '../utils'
 
 // Generate tooltip instance
 function generateTooltipContent(
@@ -26,24 +27,7 @@ function generateTooltipContent(
       >
         <thead>
           <tr>
-            <th>
-              Delivered
-              {/* <div
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  height: '10px',
-                  gap: 3,
-                }}
-              >
-                <div>Delivered </div>
-                <img
-                  src={checkedIcon}
-                  style={{ height: '10px', width: '10%' }}
-                  alt='checkedIcon'
-                ></img>
-              </div> */}
-            </th>
+            <th>Delivered</th>
             <th>In-Transit</th>
             <th>Avg.Delivery Speed</th>
             <th>Mailpieces</th>
@@ -91,13 +75,14 @@ function generateTooltipContent(
   const container = document.createElement('div')
   createRoot(container).render(content)
   const xcoordinate = event.target.getAttribute('xcoordinate')
+  const ycoordinate = event.target.getAttribute('ycoordinate')
   // Tooltip instance
   return tippy(event.target, {
     allowHTML: true,
     content: container,
     arrow: false,
     theme: 'light-border',
-    placement: xcoordinate > 450 ? 'bottom-end' : 'bottom-start',
+    placement: getTooltipPlacement(xcoordinate, ycoordinate),
   })
 }
 
@@ -153,12 +138,13 @@ function ZipCodeLevelTooltip(event: any, data: any) {
   const container = document.createElement('div')
   createRoot(container).render(content)
   const xcoordinate = event.target.getAttribute('xcoordinate')
+  const ycoordinate = event.target.getAttribute('ycoordinate')
   return tippy(event.target, {
     allowHTML: true,
     content: container,
     arrow: false,
     theme: 'light-border',
-    placement: xcoordinate > 450 ? 'bottom-end' : 'bottom-start',
+    placement: getTooltipPlacement(xcoordinate, ycoordinate),
   })
 }
 
