@@ -74,7 +74,7 @@ function generateTooltipContent(
             </td>
             <td>{data?.inTransitPrc || 0}%</td>
             <td>{data?.aggregateAvgSpeed || 0} days</td>
-            <td className='mailpieces'>{data?.aggregateValue || 0}</td>
+            <td style={{ fontWeight: 900 }}>{data?.aggregateValue || 0}</td>
           </tr>
         </tbody>
       </table>
@@ -122,19 +122,19 @@ function ZipCodeLevelTooltip(event: any, data: any) {
         <thead>
           <tr>
             <th>Zip Code</th>
-            <th>Mailpieces</th>
             <th>Delivery Status</th>
             {data.status === 'Delivered' && <th> Delivered</th>}
             {data.status === 'in-Transit' && <th>Delivery Time</th>}
+            <th>Mailpieces</th>
           </tr>
         </thead>
         <tbody>
           <tr>
             <td>{data.location.split(',')[0]}</td>
-            <td>{data.allPieces}</td>
             <td>{data.status}</td>
             {data.status === 'Delivered' && <td> {data.delivered} </td>}
             {data.status === 'in-Transit' && <td>{data.delivery_date}</td>}
+            <td style={{ fontWeight: 900 }}>{data.allPieces}</td>
           </tr>
         </tbody>
       </table>
