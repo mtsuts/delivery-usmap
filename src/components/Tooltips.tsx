@@ -6,6 +6,7 @@ import 'tippy.js/dist/backdrop.css'
 import { createRoot } from 'react-dom/client'
 import ProgressBar from './ProgressBar'
 import checkedIcon from '../images/checked.svg'
+import statusPending from '../images/statusPending.svg'
 
 // Generate tooltip instance
 function generateTooltipContent(
@@ -25,13 +26,9 @@ function generateTooltipContent(
       >
         <thead>
           <tr>
-            <th
-              style={{
-                backgroundColor: color,
-                color: '#ffffff',
-              }}
-            >
-              <div
+            <th>
+              Delivered
+              {/* <div
                 style={{
                   display: 'flex',
                   alignItems: 'center',
@@ -45,7 +42,7 @@ function generateTooltipContent(
                   style={{ height: '10px', width: '10%' }}
                   alt='checkedIcon'
                 ></img>
-              </div>
+              </div> */}
             </th>
             <th>In-Transit</th>
             <th>Avg.Delivery Speed</th>
@@ -54,10 +51,30 @@ function generateTooltipContent(
         </thead>
         <tbody>
           <tr>
-            <td>{data?.deliveryPrc || 0}%</td>
+            <td
+              style={{
+                backgroundColor: color,
+                color: '#ffffff',
+              }}
+            >
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  height: '10px',
+                  gap: 3,
+                }}
+              >
+                <div>{data?.deliveryPrc || 0}%</div>
+                <img
+                  src={data?.deliveryPrc > 80 ? checkedIcon : statusPending}
+                  alt='statusIcon'
+                ></img>
+              </div>
+            </td>
             <td>{data?.inTransitPrc || 0}%</td>
             <td>{data?.aggregateAvgSpeed || 0} days</td>
-            <td>{data?.aggregateValue || 0}</td>
+            <td className='mailpieces'>{data?.aggregateValue || 0}</td>
           </tr>
         </tbody>
       </table>
