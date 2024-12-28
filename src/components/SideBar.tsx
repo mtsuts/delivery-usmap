@@ -1,6 +1,7 @@
 import React from 'react'
 import { SideBarProps } from '../types'
 import LegendBar from './Legend'
+import ScannedLegendBar from './ScannedLegendBar'
 
 const SideBar = ({ data }: SideBarProps) => {
   const [isMobile, setIsMobile] = React.useState(false)
@@ -38,9 +39,12 @@ const SideBar = ({ data }: SideBarProps) => {
           </div>
         </div>
       ))}
-      <div style={{ marginLeft: '40px', marginTop: '20px' }}>
+      <div style={{ marginLeft: '40px', marginTop: '30px' }}>
         <div>
           <LegendBar />
+          <div style={{ marginTop: '20px' }}>
+            <ScannedLegendBar />
+          </div>
         </div>
       </div>
     </div>
@@ -52,6 +56,9 @@ const SideBar = ({ data }: SideBarProps) => {
         <div style={{ marginLeft: '20px' }}>
           <div>
             <LegendBar />
+            <div style={{ marginTop: '20px' }}>
+              <ScannedLegendBar />
+            </div>
           </div>
         </div>
       </div>

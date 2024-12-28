@@ -59,4 +59,11 @@ function getTooltipPlacement(xcoordinate: number, ycoordinate: number) {
   }
 }
 
-export { dayDiff, getProjection, geocoding, formatNumber, getTooltipPlacement }
+// Scanned color scale
+
+const scannedColorScale = d3
+  .scaleLinear<string>()
+  .domain([0, 100] as [number, number])
+  .range(['#FF0000', '#006CD0'] as [string, string])
+
+export { dayDiff, getProjection, geocoding, formatNumber, getTooltipPlacement, scannedColorScale }

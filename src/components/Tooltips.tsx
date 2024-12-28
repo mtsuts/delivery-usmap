@@ -7,7 +7,7 @@ import { createRoot } from 'react-dom/client'
 import ProgressBar from './ProgressBar'
 import checkedIcon from '../images/checked.svg'
 import statusPending from '../images/statusPending.svg'
-import { getTooltipPlacement } from '../utils'
+import { getTooltipPlacement, scannedColorScale } from '../utils'
 
 // Generate tooltip instance
 function generateTooltipContent(
@@ -67,7 +67,7 @@ function generateTooltipContent(
           data={data}
           progress={data.scannedPrc / 100}
           width={330}
-          color={data.scannedPrc > 50 ? '#006CD0' : '#FF0000'}
+          color={scannedColorScale(data.scannedPrc)}
         />
       </div>
     </>
@@ -128,7 +128,7 @@ function ZipCodeLevelTooltip(event: any, data: any) {
           data={data}
           progress={data.scannedPrc / 100}
           width={320}
-          color={'#00D06C'}
+          color={scannedColorScale(data.scannedPrc)}
         />
       </div>
     </>

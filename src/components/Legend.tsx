@@ -5,6 +5,8 @@ const LegendBar = ({
   startColor = '#FF0000',
   endColor = '#00D06C',
   height = '10px',
+  notScanned = false,
+  title = 'Delivery %',
 }) => {
   const gradientStyle = {
     background: `linear-gradient(90deg, ${startColor} 0%, ${endColor} 100%)`,
@@ -16,11 +18,15 @@ const LegendBar = ({
 
   return (
     <div style={{ width: '100%', position: 'relative' }}>
-      <div> Delivery %</div>
+      <div> {title}</div>
       <div style={gradientStyle}></div>
       <div>
-        <div style={{ marginTop: '10px' }}> Not Scanned 100% </div>
-        <img src={scanned} style={{ height: '10px',  marginTop: '5px' }} />
+        {notScanned && (
+          <>
+            <div style={{ marginTop: '10px' }}> Not Scanned 100% </div>
+            <img src={scanned} style={{ height: '10px', marginTop: '5px' }} />
+          </>
+        )}
       </div>
     </div>
   )
