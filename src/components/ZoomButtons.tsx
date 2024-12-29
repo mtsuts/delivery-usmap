@@ -1,6 +1,6 @@
 import React from 'react'
 
-function ZoomButtons(view: any) {
+function ZoomButtons() {
   return (
     <div
       style={{
@@ -96,7 +96,6 @@ function ZoomButtons(view: any) {
           border: 'none',
           color: '#fff',
           cursor: 'pointer',
-          opacity: view.view === 'states' ? 1 : 0.5,
           borderRadius: '4px',
         }}
         id='zoom_reset'
