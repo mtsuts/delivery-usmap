@@ -14,7 +14,7 @@ function MapView(
   g: any,
   clicked: Function,
   view: string,
-  data: any
+  data: any, 
 ) {
   g.selectAll('g').remove()
   g.selectAll('.circle').remove()
