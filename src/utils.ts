@@ -42,23 +42,6 @@ function getProjection(long: string, lat: string) {
 // Format number to 2 decimal places
 const formatNumber = d3.format('.1f')
 
-// Get tooltip placement
-function getTooltipPlacement(xcoordinate: number, ycoordinate: number) {
-  if (xcoordinate > 450) {
-    if (ycoordinate > 400) {
-      return 'top-end'
-    } else {
-      return 'bottom-end'
-    }
-  } else {
-    if (ycoordinate > 400) {
-      return 'top-start'
-    } else {
-      return 'bottom-start'
-    }
-  }
-}
-
 // Scanned color scale
 const scannedColorScale = d3
   .scaleLinear<string>()
@@ -82,7 +65,6 @@ export {
   getProjection,
   geocoding,
   formatNumber,
-  getTooltipPlacement,
   scannedColorScale,
-  colorScale
+  colorScale,
 }

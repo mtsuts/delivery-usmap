@@ -194,7 +194,6 @@ function MapView(
       event.stopPropagation()
     })
     .on('mouseover', (event: any, d: any) => {
-      console.log(d)
       event.stopPropagation()
     })
 }
