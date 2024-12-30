@@ -1,6 +1,7 @@
 import * as d3 from 'd3'
 import { StateLevelTooltip } from '../components/Tooltips'
 import { stateLevelData } from '../data/data'
+import { colorScale } from '../utils'
 
 // Path generator
 const path = d3.geoPath()
@@ -22,17 +23,6 @@ function MapView(
 
   const aggregate = stateLevelData(null, data)
   let isClicked = false
-
-  const colorScale = d3
-    .scaleLinear()
-    .domain([0, 10, 30, 80, 100] as [any, any, any, any, any])
-    .range(['#db3834', '#e43f2f', '#f3b701', '#5ca63d', '#0b9d56'] as [
-      any,
-      any,
-      any,
-      any,
-      any
-    ])
 
   const patternColorScale = d3
     .scaleLinear()
