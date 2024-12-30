@@ -14,7 +14,7 @@ function MapView(
   g: any,
   clicked: Function,
   view: string,
-  data: any, 
+  data: any
 ) {
   g.selectAll('g').remove()
   g.selectAll('.circle').remove()
@@ -23,10 +23,16 @@ function MapView(
   const aggregate = stateLevelData(null, data)
   let isClicked = false
 
-  const colorScales = d3
-    .scaleLinear<string>()
-    .domain(d3.extent(aggregate, (d: any) => d?.deliveryPrc) as any)
-    .range(['#FF0000', '#00D06C'] as [string, string])
+  const colorScale = d3
+    .scaleLinear()
+    .domain([0, 10, 30, 80, 100] as [any, any, any, any, any])
+    .range(['#db3834', '#e43f2f', '#f3b701', '#5ca63d', '#0b9d56'] as [
+      any,
+      any,
+      any,
+      any,
+      any
+    ])
 
   // Draw Shading pattern
   function drawPattern(strokeWidth: number, state: string) {
@@ -70,7 +76,7 @@ function MapView(
     .attr('fill', (d: any) => {
       if (view === 'states') {
         return (
-          colorScales(
+          colorScale(
             aggregate.find((x: any) => x.state === d.properties.name)
               ?.deliveryPrc
           ) || '#fff'
@@ -132,7 +138,7 @@ function MapView(
           event,
           d,
           stateData,
-          colorScales(stateData?.deliveryPrc)
+          colorScale(stateData?.deliveryPrc)
         )
       }
     })
@@ -149,7 +155,7 @@ function MapView(
             stateData?.state.split(' ').join('-')
           )
         } else {
-          return colorScales(stateData?.deliveryPrc)
+          return colorScale(stateData?.deliveryPrc)
         }
       } else {
         return '#f3f3f3'
