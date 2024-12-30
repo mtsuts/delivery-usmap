@@ -168,9 +168,7 @@ function MapView(
     })
 
   pathGroup
-    .selectAll('text')
-    .data(pathData)
-    .join('text')
+    .append('text')
     .attr('class', 'path-label')
     .attr('x', (d: any) => {
       const centroid = path.centroid(d)

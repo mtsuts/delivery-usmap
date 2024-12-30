@@ -1,5 +1,5 @@
 import React from 'react'
-import tippy from 'tippy.js'
+import tippy, { followCursor } from 'tippy.js'
 import 'tippy.js/dist/tippy.css'
 import 'tippy.js/themes/light-border.css'
 import 'tippy.js/dist/backdrop.css'
@@ -7,7 +7,7 @@ import { createRoot } from 'react-dom/client'
 import ProgressBar from './ProgressBar'
 import checkedIcon from '../images/checked.svg'
 import statusPending from '../images/statusPending.svg'
-import { getTooltipPlacement, scannedColorScale } from '../utils'
+import {  scannedColorScale } from '../utils'
 
 // Generate tooltip instance
 function generateTooltipContent(
@@ -21,7 +21,7 @@ function generateTooltipContent(
       <div style={{ fontSize: '15px', fontWeight: 'bold' }}>{title}</div>
       <table
         style={{
-          width: '330px',
+          width: '100%',
           borderCollapse: 'collapse',
         }}
       >
@@ -72,30 +72,19 @@ function generateTooltipContent(
       </div>
     </>
   )
-  let isMobile = window.innerWidth < 768
-
   const container = document.createElement('div')
   createRoot(container).render(content)
-  const xcoordinate = event.target.getAttribute('xcoordinate')
-  const ycoordinate = event.target.getAttribute('ycoordinate')
+  console.log(window.innerWidth)
   // Tooltip instance
   return tippy(event.target, {
+    plugins: [followCursor],
     allowHTML: true,
     content: container,
     arrow: false,
     theme: 'light-border',
+    trigger: 'mouseenter',
     placement: 'auto',
-    // placement: getTooltipPlacement(xcoordinate, ycoordinate),
-    popperOptions: {
-      modifiers: [
-        {
-          name: 'flip',
-          options: {
-            fallbackPlacements: ['top', 'bottom', 'left', 'right'], // Ensure flexibility
-          },
-        },
-      ],
-    },
+    followCursor: true,
   })
 }
 
@@ -146,19 +135,18 @@ function ZipCodeLevelTooltip(event: any, data: any) {
       </div>
     </>
   )
-
   // Create a container to render the React element
   const container = document.createElement('div')
   createRoot(container).render(content)
-  const xcoordinate = event.target.getAttribute('xcoordinate')
-  const ycoordinate = event.target.getAttribute('ycoordinate')
   return tippy(event.target, {
+    plugins: [followCursor],
     allowHTML: true,
     content: container,
     arrow: false,
     theme: 'light-border',
-    // placement: getTooltipPlacement(xcoordinate, ycoordinate),
-    placement: 'auto'
+    placement: 'auto',
+    followCursor: true
+
   })
 }
 
