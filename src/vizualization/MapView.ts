@@ -34,9 +34,23 @@ function MapView(
       any
     ])
 
+  const patternColorScale = d3
+    .scaleLinear()
+    .domain([0, 10, 30, 80, 100] as [any, any, any, any, any])
+    .range(['#B32E2B', '#B83126', '#C99201', '#4A832F', '#097A44'] as [
+      any,
+      any,
+      any,
+      any,
+      any
+    ])
+
   // Draw Shading pattern
-  function drawPattern(strokeWidth: number, state: string) {
-    const strokeColor: string = '#004d40'
+  function drawPattern(
+    strokeWidth: number,
+    state: string,
+    strokeColor: any = '#004d40'
+  ) {
     const patternId = `diagonal-lines-${state}`
 
     if (!g.select(`#${patternId}`).empty()) {
@@ -152,7 +166,8 @@ function MapView(
         if (stateData?.scannedPrc !== 100) {
           return drawPattern(
             strokeWidthScale(stateData?.scannedPrc),
-            stateData?.state.split(' ').join('-')
+            stateData?.state.split(' ').join('-'),
+            patternColorScale(stateData?.scannedPrc)
           )
         } else {
           return colorScale(stateData?.deliveryPrc)
