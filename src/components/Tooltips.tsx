@@ -21,7 +21,7 @@ function generateTooltipContent(
       <div style={{ fontSize: '15px', fontWeight: 'bold' }}>{title}</div>
       <table
         style={{
-          width: '330px',
+          // width: '330px',
           borderCollapse: 'collapse',
         }}
       >
@@ -72,8 +72,6 @@ function generateTooltipContent(
       </div>
     </>
   )
-  let isMobile = window.innerWidth < 768
-
   const container = document.createElement('div')
   createRoot(container).render(content)
   const xcoordinate = event.target.getAttribute('xcoordinate')
@@ -85,17 +83,25 @@ function generateTooltipContent(
     arrow: false,
     theme: 'light-border',
     placement: 'auto',
-    // placement: getTooltipPlacement(xcoordinate, ycoordinate),
     popperOptions: {
+      strategy: 'fixed',
       modifiers: [
         {
           name: 'flip',
           options: {
-            fallbackPlacements: ['top', 'bottom', 'left', 'right'], // Ensure flexibility
+            fallbackPlacements: ['bottom', 'right', 'top', 'left'],
+          },
+        },
+        {
+          name: 'preventOverflow',
+          options: {
+            altAxis: true,
+            tether: false,
           },
         },
       ],
     },
+    touch: true,
   })
 }
 
@@ -158,7 +164,7 @@ function ZipCodeLevelTooltip(event: any, data: any) {
     arrow: false,
     theme: 'light-border',
     // placement: getTooltipPlacement(xcoordinate, ycoordinate),
-    placement: 'auto'
+    placement: 'auto',
   })
 }
 
