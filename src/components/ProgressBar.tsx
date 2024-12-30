@@ -4,7 +4,7 @@ import { ProgressBarProps } from '../types'
 
 const ProgressBar = ({ progress, width, color }: ProgressBarProps) => {
   React.useEffect(() => {
-    const height = 14
+    const height = 12
     let borderRadius = 5
 
     const container = d3.select('.progress-bar-container')

@@ -10,9 +10,9 @@ import { MapProps, Data } from '../types'
 import ZoomButtons from '../components/ZoomButtons'
 
 function UsMap(params: MapProps) {
-  const [view, setView] = React.useState<'states' | 'counties' | 'zipcodes' | 'transit'>(
-    'states'
-  )
+  const [view, setView] = React.useState<
+    'states' | 'counties' | 'zipcodes' | 'transit'
+  >('states')
   const { data, setData } = React.useContext(AppContext) as Data
   const isMobile = window.innerWidth < 768
 
@@ -84,11 +84,11 @@ function UsMap(params: MapProps) {
         padding: '0 80px',
       }}
     >
-      <SideBar data={sideBarData}/>
+      <SideBar data={sideBarData} />
       <div style={{ flexGrow: 1, marginTop: '40px', position: 'relative' }}>
         <div id={params.container}></div>
         <div style={{ position: 'absolute', left: -20, top: -20 }}>
-          <ZoomButtons view={view} />
+          <ZoomButtons />
         </div>
       </div>
     </div>
@@ -101,7 +101,7 @@ function UsMap(params: MapProps) {
     >
       <div style={{ flexGrow: 1, marginTop: '40px', position: 'relative' }}>
         <div style={{ position: 'absolute', width: 40, right: 80, bottom: 20 }}>
-          <ZoomButtons view={view} />
+          <ZoomButtons />
         </div>
         <div id={params.container}></div>
       </div>
