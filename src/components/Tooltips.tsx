@@ -83,25 +83,6 @@ function generateTooltipContent(
     arrow: false,
     theme: 'light-border',
     placement: 'auto',
-    popperOptions: {
-      strategy: 'fixed',
-      modifiers: [
-        {
-          name: 'flip',
-          options: {
-            fallbackPlacements: ['bottom', 'right', 'top', 'left'],
-          },
-        },
-        {
-          name: 'preventOverflow',
-          options: {
-            altAxis: true,
-            tether: false,
-          },
-        },
-      ],
-    },
-    touch: true,
   })
 }
 
@@ -163,7 +144,6 @@ function ZipCodeLevelTooltip(event: any, data: any) {
     content: container,
     arrow: false,
     theme: 'light-border',
-    // placement: getTooltipPlacement(xcoordinate, ycoordinate),
     placement: 'auto',
   })
 }
