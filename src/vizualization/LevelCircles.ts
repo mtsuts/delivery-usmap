@@ -1,5 +1,6 @@
 import * as d3 from 'd3'
 import { ZipCodeLevelTooltip, CountyLevelTooltip } from '../components/Tooltips'
+import { colorScale } from '../utils'
 
 // Tippy instance for county level
 let tippyInstanceCountyLevel: any
@@ -27,12 +28,6 @@ function drawCountyLevelCircles(
     ])
     .range(stateLevel ? [5, 10] : [15, 30])
 
-  const colorScales = d3
-    .scaleLinear<string>()
-    .domain(d3.extent(data, (d: any) => d?.deliveryPrc) as any)
-    .range(['#FF0000', '#00D06C'] as [string, string])
-
-
   if (circlesData.length) {
     g.selectAll('circle')
       .data(circlesData.filter((d: any) => d.x !== 0 && d.y !== 0))
@@ -42,7 +37,7 @@ function drawCountyLevelCircles(
       .attr('cy', (d: any) => d.y)
       .attr('r', (d: any) => radiusScale(d.aggregateValue))
       .attr('fill', (d: any) => {
-        return colorScales(d.deliveryPrc) || '#ccc'
+        return colorScale(d.deliveryPrc) || '#ccc'
       })
       .attr('stroke', '#fff')
       .attr('stroke-width', 0.5)
@@ -55,7 +50,7 @@ function drawCountyLevelCircles(
         const zipCodeLevelData = data.filter(
           (x: any) => x.county === county.county
         )
-        drawZipCodeLevelCircles(zipCodeLevelData, g, transform,data)
+        drawZipCodeLevelCircles(zipCodeLevelData, g, transform, data)
         const zipCodeData = countiesJson.features.filter(
           (x: any) => x.id === county.countyId
         )
@@ -67,7 +62,11 @@ function drawCountyLevelCircles(
         if (tippyInstanceCountyLevel) {
           tippyInstanceCountyLevel.destroy()
         }
-        tippyInstanceCountyLevel = CountyLevelTooltip(event, d, colorScales(d.deliveryPrc))
+        tippyInstanceCountyLevel = CountyLevelTooltip(
+          event,
+          d,
+          colorScale(d.deliveryPrc)
+        )
       })
       .on('mouseout', function (event: any, d: any) {
         d3.select(this).attr('stroke', '#fff')
@@ -95,11 +94,15 @@ function drawZipCodeLevelCircles(
     ])
     .range(stateLevel ? [2, 5] : [15, 20])
 
-      const colorScale = d3
-      .scaleLinear<string>()
-      .domain(d3.extent(data !== null ? data : circlesData, (d: any) => d?.deliveryPrc) as any)
-      .range(['#FF0000', '#00D06C'] as [string, string])
-
+  const colorScale = d3
+    .scaleLinear<string>()
+    .domain(
+      d3.extent(
+        data !== null ? data : circlesData,
+        (d: any) => d?.deliveryPrc
+      ) as any
+    )
+    .range(['#FF0000', '#00D06C'] as [string, string])
 
   if (circlesData.length) {
     g.selectAll('circle')

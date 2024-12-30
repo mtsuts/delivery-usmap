@@ -2,14 +2,14 @@ import React from 'react'
 import scanned from '../images/scanned.png'
 
 const LegendBar = ({
-  startColor = '#FF0000',
-  endColor = '#00D06C',
+  startColor = '#db3834',
+  endColor = '#0b9d58',
   height = '10px',
   notScanned = false,
   title = 'Delivery %',
 }) => {
   const gradientStyle = {
-    background: `linear-gradient(90deg, ${startColor} 0%, ${endColor} 100%)`,
+    background: `linear-gradient(45deg, ${startColor} 0%, ${endColor} 100%)`,
     height: height,
     borderRadius: '10px',
     width: '170px',
