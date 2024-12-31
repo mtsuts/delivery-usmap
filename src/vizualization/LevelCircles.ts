@@ -65,6 +65,7 @@ function drawCountyLevelCircles(
         tippyInstanceCountyLevel = CountyLevelTooltip(
           event,
           d,
+          d,
           colorScale(d.deliveryPrc)
         )
       })
@@ -94,16 +95,6 @@ function drawZipCodeLevelCircles(
     ])
     .range(stateLevel ? [2, 5] : [15, 20])
 
-  const colorScale = d3
-    .scaleLinear<string>()
-    .domain(
-      d3.extent(
-        data !== null ? data : circlesData,
-        (d: any) => d?.deliveryPrc
-      ) as any
-    )
-    .range(['#FF0000', '#00D06C'] as [string, string])
-
   if (circlesData.length) {
     g.selectAll('circle')
       .data(circlesData.filter((d: any) => d.x !== 0 && d.y !== 0))
@@ -121,7 +112,6 @@ function drawZipCodeLevelCircles(
         event.stopPropagation()
       })
       .on('mouseover', function (event: any, d: any) {
-        console.log(d)
         if (d.length === 0) return
         d3.select(this).attr('stroke', '#000')
         d3.select(this).style('opacity', 1)

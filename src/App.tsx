@@ -11,6 +11,7 @@ import { geocoding, dayDiff, getProjection } from './utils'
 import { Data } from './types'
 import { formatNumber } from './utils'
 
+
 function App() {
   const { data, setData } = React.useContext(AppContext) as Data
 

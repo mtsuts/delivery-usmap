@@ -2,17 +2,20 @@ import React from 'react'
 import scanned from '../images/scanned.png'
 
 const LegendBar = ({
-  startColor = '#db3834',
-  endColor = '#0b9d58',
+  color1 = '#db3834',
+  color2 = '#e43f2f',
+  color3 = '#f3b701',
+  color4 = '#5ca63d',
+  color5 = '#0b9d56',
   height = '10px',
   notScanned = false,
   title = 'Delivery %',
 }) => {
   const gradientStyle = {
-    background: `linear-gradient(45deg, ${startColor} 0%, ${endColor} 100%)`,
+    background: `linear-gradient(45deg, ${color1} 0%, ${color2} 25%, ${color3} 50%, ${color4} 75%, ${color5} 100%)`,
     height: height,
     borderRadius: '10px',
-    width: '170px',
+    width: '180px',
     position: 'relative' as 'relative',
   }
 
@@ -20,14 +23,6 @@ const LegendBar = ({
     <div style={{ width: '100%', position: 'relative' }}>
       <div> {title}</div>
       <div style={gradientStyle}></div>
-      <div>
-        {notScanned && (
-          <>
-            <div style={{ marginTop: '10px' }}> Not Scanned 100% </div>
-            <img src={scanned} style={{ height: '10px', marginTop: '5px' }} />
-          </>
-        )}
-      </div>
     </div>
   )
 }

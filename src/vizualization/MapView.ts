@@ -26,7 +26,7 @@ function MapView(
 
   const patternColorScale = d3
     .scaleLinear()
-    .domain([0, 10, 30, 80, 100] as [any, any, any, any, any])
+    .domain([5, 10, 30, 80, 100] as [any, any, any, any, any])
     .range(['#B32E2B', '#B83126', '#C99201', '#4A832F', '#097A44'] as [
       any,
       any,
@@ -151,7 +151,7 @@ function MapView(
       const stateData = aggregate.find(
         (x: any) => x.state === d.properties.name
       )
-      const strokeWidthScale = d3.scaleLinear().domain([0, 100]).range([7, 0])
+      const strokeWidthScale = d3.scaleLinear().domain([0, 100]).range([6, 0])
       if (stateData && view === 'states') {
         if (stateData?.scannedPrc !== 100) {
           return drawPattern(
