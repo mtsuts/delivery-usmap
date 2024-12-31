@@ -7,7 +7,7 @@ import { createRoot } from 'react-dom/client'
 import ProgressBar from './ProgressBar'
 import checkedIcon from '../images/checked.svg'
 import statusPending from '../images/statusPending.svg'
-import {  scannedColorScale, colorScale } from '../utils'
+
 
 // Generate tooltip instance
 function generateTooltipContent(
@@ -64,11 +64,8 @@ function generateTooltipContent(
       </table>
       <div style={{ marginTop: '10px' }}>
         <ProgressBar
-          data={data}
           progress={data.scannedPrc / 100}
           width={330}
-          color={scannedColorScale(data.scannedPrc)}
-          deliveryColor={colorScale(data.deliveryPrc)}
           scannedValue={data.scannedPrc}
         />
       </div>
@@ -100,8 +97,6 @@ function StateLevelTooltip(event: any, d: any, data: any, color: any) {
 // County level tooltip generator
 function CountyLevelTooltip(event: any, d: any, data: any, color: any) {
   const title = `${d.county} County`
-  console.log(data)
-
   return generateTooltipContent(event, data, title, color)
 }
 
@@ -131,11 +126,8 @@ function ZipCodeLevelTooltip(event: any, data: any) {
       </table>
       <div style={{ marginTop: '10px' }}>
         <ProgressBar
-          data={data}
           progress={data.scannedPrc / 100}
           width={320}
-          color={scannedColorScale(data.scannedPrc)}
-          deliveryColor={colorScale(data.deliveryPrc)}
           scannedValue={data.scannedPrc}
         />
       </div>

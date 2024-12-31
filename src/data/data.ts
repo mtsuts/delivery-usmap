@@ -96,6 +96,7 @@ function stateLevelData(state: any, data: any) {
     (group) => d3.sum(group, (x: any) => x.inTransit),
     (x: any) => x.state
   )
+  console.log(rolledUpDataTransit)
 
   const rolledUpDataScanned = d3.rollup(
     stateDeliveries,

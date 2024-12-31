@@ -1,5 +1,4 @@
 import React from 'react'
-import scanned from '../images/scanned.png'
 
 const LegendBar = ({
   color1 = '#db3834',
@@ -23,6 +22,7 @@ const LegendBar = ({
     <div style={{ width: '100%', position: 'relative' }}>
       <div> {title}</div>
       <div style={gradientStyle}></div>
+      <div> Scanned %</div>
     </div>
   )
 }

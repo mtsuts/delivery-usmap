@@ -11,7 +11,6 @@ import { geocoding, dayDiff, getProjection } from './utils'
 import { Data } from './types'
 import { formatNumber } from './utils'
 
-
 function App() {
   const { data, setData } = React.useContext(AppContext) as Data
 
@@ -70,15 +69,18 @@ function App() {
         ...d,
         notScannedPrc: ((d.allPieces - d.scanned) / d.allPieces) * 100,
         scannedPrc: Number(formatNumber((d.scanned / d.allPieces) * 100)),
-        delivered: d.status === 'Delivered' ? Number(d.scanned) : 0,
-        inTransit: d.status === 'in-Transit' ? Number(d.scanned) : 0,
+        delivered:
+          d.state === 'Utah'
+            ? Number(d.scanned)
+            : Math.floor(Number(d.scanned) * 0.8),
+        inTransit: Number(d.scanned) - Math.floor(Number(d.scanned) * 0.8),
         deliveryPrc:
           d.status === 'Delivered'
-            ? Number(formatNumber((d.scanned / d.allPieces) * 100))
+            ? Number(formatNumber((Math.floor(Number(d.scanned) * 0.8)/ d.allPieces) * 100))
             : 0,
         transitPrc:
           d.status === 'in-Transit'
-            ? Number(formatNumber((d.scanned / d.allPieces) * 100))
+            ? Number(formatNumber((Number(d.scanned) - Math.floor(Number(d.scanned) * 0.8) / d.allPieces) * 100))
             : 0,
         delivery_speed: dayDiff(d.delivery_date, d.mailing_date),
         id: ids.find((id: any) => id.state === d.state)?.id || '0',
@@ -90,6 +92,7 @@ function App() {
     })()
   }, [])
 
+  console.log(data.filter((d: any) => d.state === 'California'))
   return (
     <>
       <UsMap
@@ -97,7 +100,7 @@ function App() {
         container='us-map'
         stateJson={stateJson}
         countiesJson={countiesJson}
-        mobileHeight={300}
+        mobileHeight={350}
         desktopHeight={650}
         color={['#33E48E', '#00A356']}
       ></UsMap>
