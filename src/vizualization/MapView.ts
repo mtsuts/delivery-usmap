@@ -141,11 +141,15 @@ function MapView(
       )
       const strokeWidthScale = d3.scaleLinear().domain([0, 100]).range([8, 2])
       if (stateData && view === 'states') {
+        if (stateData.scannedPrc !== 100) {
           return drawPattern(
             strokeWidthScale(stateData?.scannedPrc),
             stateData?.state.split(' ').join('-'),
             colorScale(stateData?.scannedPrc)
           )
+        } else {
+          return colorScale(stateData?.deliveryPrc)
+        }
       } else {
         return '#f3f3f3'
       }

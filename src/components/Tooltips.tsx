@@ -8,7 +8,6 @@ import ProgressBar from './ProgressBar'
 import checkedIcon from '../images/checked.svg'
 import statusPending from '../images/statusPending.svg'
 
-
 // Generate tooltip instance
 function generateTooltipContent(
   event: any,
@@ -108,18 +107,16 @@ function ZipCodeLevelTooltip(event: any, data: any) {
         <thead>
           <tr>
             <th>Zip Code</th>
-            <th>Delivery Status</th>
-            {data.status === 'Delivered' && <th> Delivered</th>}
-            {data.status === 'in-Transit' && <th>Delivery Time</th>}
+            <th> Delivered</th>
+            <th>In-Transit</th>
             <th>Mailpieces</th>
           </tr>
         </thead>
         <tbody>
           <tr>
             <td>{data.location.split(',')[0]}</td>
-            <td>{data.status}</td>
-            {data.status === 'Delivered' && <td> {data.delivered} </td>}
-            {data.status === 'in-Transit' && <td>{data.delivery_date}</td>}
+            <td> {data.delivered} </td>
+            <td>{data.inTransit}</td>
             <td style={{ fontWeight: 900 }}>{data.allPieces}</td>
           </tr>
         </tbody>
@@ -143,8 +140,7 @@ function ZipCodeLevelTooltip(event: any, data: any) {
     arrow: false,
     theme: 'light-border',
     placement: 'auto',
-    followCursor: true
-
+    followCursor: true,
   })
 }
 
