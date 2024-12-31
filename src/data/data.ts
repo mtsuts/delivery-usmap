@@ -45,21 +45,21 @@ function countyLevelData(id: any, data: any) {
         county: d.county,
         aggregateValue: rolledupDataPieces.get(d.county),
         aggregateAvgSpeed: rolledUpDataSpeed.get(d.county),
-        deliveryPrc: formatNumber(
+        deliveryPrc: Number(formatNumber(
           (rolledUpDataDelivered.get(d.county) /
             rolledupDataPieces.get(d.county)) *
             100
-        ),
-        inTransitPrc: formatNumber(
+        )),
+        inTransitPrc: Number(formatNumber(
           (rolledUpDataTransit.get(d.county) /
             rolledupDataPieces.get(d.county)) *
             100
-        ),
-        scannedPrc: formatNumber(
+        )),
+        scannedPrc: Number(formatNumber(
           (rolledUpDataScanned.get(d.county) /
             rolledupDataPieces.get(d.county)) *
             100
-        ),
+        )),
         x: d.x,
         y: d.y,
       }

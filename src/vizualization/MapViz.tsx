@@ -231,7 +231,6 @@ function MapViz({
 
   // Zoom out
   d3.select('#zoom_out').on('click', () => {
-    console.log(currentZoom)
     if (currentZoom <= 1.5 && currentZoom > 1) {
       reset()
     }

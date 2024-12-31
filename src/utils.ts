@@ -1,5 +1,6 @@
 import dayjs from 'dayjs'
 import * as d3 from 'd3'
+import StripeColors from './components/StripeColors'
 
 const apiKey = process.env.REACT_APP_GOOGLE_API_KEY
 
@@ -44,9 +45,16 @@ const formatNumber = d3.format('.1f')
 
 // Scanned color scale
 const scannedColorScale = d3
-  .scaleLinear<string>()
-  .domain([0, 100] as [number, number])
-  .range(['#FF0000', '#006CD0'] as [string, string])
+  .scaleLinear()
+  .domain([0, 10, 30, 80, 100] as [any, any, any, any, any])
+  .range(['#B32E2B', '#B83126', '#C99201', '#4A832F', '#097A44'] as [
+    any,
+    any,
+    any,
+    any,
+    any
+  ])
+
 
 // State and circle color scale
 const colorScale = d3

@@ -7,7 +7,7 @@ import { createRoot } from 'react-dom/client'
 import ProgressBar from './ProgressBar'
 import checkedIcon from '../images/checked.svg'
 import statusPending from '../images/statusPending.svg'
-import {  scannedColorScale } from '../utils'
+import {  scannedColorScale, colorScale } from '../utils'
 
 // Generate tooltip instance
 function generateTooltipContent(
@@ -68,13 +68,14 @@ function generateTooltipContent(
           progress={data.scannedPrc / 100}
           width={330}
           color={scannedColorScale(data.scannedPrc)}
+          deliveryColor={colorScale(data.deliveryPrc)}
+          scannedValue={data.scannedPrc}
         />
       </div>
     </>
   )
   const container = document.createElement('div')
   createRoot(container).render(content)
-  console.log(window.innerWidth)
   // Tooltip instance
   return tippy(event.target, {
     plugins: [followCursor],
@@ -91,14 +92,17 @@ function generateTooltipContent(
 // State level tooltip generator
 function StateLevelTooltip(event: any, d: any, data: any, color: any) {
   const stateName = d.properties.name
+  console.log(data)
   if (!data) return
   return generateTooltipContent(event, data, stateName, color)
 }
 
 // County level tooltip generator
-function CountyLevelTooltip(event: any, d: any, color: any) {
+function CountyLevelTooltip(event: any, d: any, data: any, color: any) {
   const title = `${d.county} County`
-  return generateTooltipContent(event, d, title, color)
+  console.log(data)
+
+  return generateTooltipContent(event, data, title, color)
 }
 
 // Zio code level tooltip generator
@@ -131,6 +135,8 @@ function ZipCodeLevelTooltip(event: any, data: any) {
           progress={data.scannedPrc / 100}
           width={320}
           color={scannedColorScale(data.scannedPrc)}
+          deliveryColor={colorScale(data.deliveryPrc)}
+          scannedValue={data.scannedPrc}
         />
       </div>
     </>

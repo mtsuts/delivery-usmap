@@ -55,8 +55,10 @@ export type SideBarProps = {
 export type ProgressBarProps = {
   progress: number
   width: number
-  color: string
+  color: any
   data: any
+  deliveryColor: any
+  scannedValue: any
 }
 
 export interface Data {
