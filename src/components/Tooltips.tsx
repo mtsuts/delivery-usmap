@@ -79,8 +79,6 @@ function generateTooltipContent(
     arrow: false,
     theme: 'light-border',
     trigger: window.innerWidth < 768 ? 'click' : 'mouseenter',
-    hideOnClick: window.innerWidth < 768 ? true : false,  
-    appendTo: document.body,
     placement: window.innerWidth < 768 ? 'bottom' : 'auto',
     followCursor: true,
   })
@@ -138,8 +136,8 @@ function ZipCodeLevelTooltip(event: any, data: any) {
     content: container,
     arrow: false,
     theme: 'light-border',
-    placement: 'auto',
-    trigger: 'mouseenter',
+    trigger: window.innerWidth < 768 ? 'click' : 'mouseenter',
+    placement: window.innerWidth < 768 ? 'bottom' : 'auto',
     followCursor: true,
   })
 }
