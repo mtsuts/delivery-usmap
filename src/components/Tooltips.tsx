@@ -7,7 +7,6 @@ import { createRoot } from 'react-dom/client'
 import ProgressBar from './ProgressBar'
 import checkedIcon from '../images/checked.svg'
 import statusPending from '../images/statusPending.svg'
-import {  scannedColorScale, colorScale } from '../utils'
 
 // Generate tooltip instance
 function generateTooltipContent(
@@ -64,12 +63,8 @@ function generateTooltipContent(
       </table>
       <div style={{ marginTop: '10px' }}>
         <ProgressBar
-          data={data}
           progress={data.scannedPrc / 100}
           width={330}
-          color={scannedColorScale(data.scannedPrc)}
-          deliveryColor={colorScale(data.deliveryPrc)}
-          scannedValue={data.scannedPrc}
         />
       </div>
     </>
@@ -83,8 +78,10 @@ function generateTooltipContent(
     content: container,
     arrow: false,
     theme: 'light-border',
-    trigger: 'mouseenter',
-    placement: 'auto',
+    trigger: window.innerWidth < 768 ? 'click' : 'mouseenter',
+    hideOnClick: window.innerWidth < 768 ? true : false,  
+    appendTo: document.body,
+    placement: window.innerWidth < 768 ? 'bottom' : 'auto',
     followCursor: true,
   })
 }
@@ -92,7 +89,6 @@ function generateTooltipContent(
 // State level tooltip generator
 function StateLevelTooltip(event: any, d: any, data: any, color: any) {
   const stateName = d.properties.name
-  console.log(data)
   if (!data) return
   return generateTooltipContent(event, data, stateName, color)
 }
@@ -100,8 +96,6 @@ function StateLevelTooltip(event: any, d: any, data: any, color: any) {
 // County level tooltip generator
 function CountyLevelTooltip(event: any, d: any, data: any, color: any) {
   const title = `${d.county} County`
-  console.log(data)
-
   return generateTooltipContent(event, data, title, color)
 }
 
@@ -113,30 +107,24 @@ function ZipCodeLevelTooltip(event: any, data: any) {
         <thead>
           <tr>
             <th>Zip Code</th>
-            <th>Delivery Status</th>
-            {data.status === 'Delivered' && <th> Delivered</th>}
-            {data.status === 'in-Transit' && <th>Delivery Time</th>}
+            <th> Delivered</th>
+            <th>In-Transit</th>
             <th>Mailpieces</th>
           </tr>
         </thead>
         <tbody>
           <tr>
             <td>{data.location.split(',')[0]}</td>
-            <td>{data.status}</td>
-            {data.status === 'Delivered' && <td> {data.delivered} </td>}
-            {data.status === 'in-Transit' && <td>{data.delivery_date}</td>}
+            <td> {data.delivered} </td>
+            <td>{data.inTransit}</td>
             <td style={{ fontWeight: 900 }}>{data.allPieces}</td>
           </tr>
         </tbody>
       </table>
       <div style={{ marginTop: '10px' }}>
         <ProgressBar
-          data={data}
           progress={data.scannedPrc / 100}
           width={320}
-          color={scannedColorScale(data.scannedPrc)}
-          deliveryColor={colorScale(data.deliveryPrc)}
-          scannedValue={data.scannedPrc}
         />
       </div>
     </>
@@ -151,8 +139,8 @@ function ZipCodeLevelTooltip(event: any, data: any) {
     arrow: false,
     theme: 'light-border',
     placement: 'auto',
-    followCursor: true
-
+    trigger: 'mouseenter',
+    followCursor: true,
   })
 }
 

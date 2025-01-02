@@ -24,17 +24,6 @@ function MapView(
   const aggregate = stateLevelData(null, data)
   let isClicked = false
 
-  const patternColorScale = d3
-    .scaleLinear()
-    .domain([5, 10, 30, 80, 100] as [any, any, any, any, any])
-    .range(['#B32E2B', '#B83126', '#C99201', '#4A832F', '#097A44'] as [
-      any,
-      any,
-      any,
-      any,
-      any
-    ])
-
   // Draw Shading pattern
   function drawPattern(
     strokeWidth: number,
@@ -146,18 +135,17 @@ function MapView(
         )
       }
     })
-
     .attr('fill', (d: any) => {
       const stateData = aggregate.find(
         (x: any) => x.state === d.properties.name
       )
-      const strokeWidthScale = d3.scaleLinear().domain([0, 100]).range([6, 0])
+      const strokeWidthScale = d3.scaleLinear().domain([0, 100]).range([8, 2])
       if (stateData && view === 'states') {
-        if (stateData?.scannedPrc !== 100) {
+        if (stateData.scannedPrc !== 100) {
           return drawPattern(
             strokeWidthScale(stateData?.scannedPrc),
             stateData?.state.split(' ').join('-'),
-            patternColorScale(stateData?.scannedPrc)
+            colorScale(stateData?.scannedPrc)
           )
         } else {
           return colorScale(stateData?.deliveryPrc)

@@ -42,9 +42,6 @@ const SideBar = ({ data }: SideBarProps) => {
       <div style={{ marginLeft: '40px', marginTop: '30px' }}>
         <div>
           <LegendBar />
-          <div style={{ marginTop: '20px' }}>
-            <ScannedLegendBar />
-          </div>
         </div>
       </div>
     </div>
@@ -56,9 +53,6 @@ const SideBar = ({ data }: SideBarProps) => {
         <div style={{ marginLeft: '20px' }}>
           <div>
             <LegendBar />
-            <div style={{ marginTop: '20px' }}>
-              <ScannedLegendBar />
-            </div>
           </div>
         </div>
       </div>
