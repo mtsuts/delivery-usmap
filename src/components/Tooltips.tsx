@@ -65,7 +65,6 @@ function generateTooltipContent(
         <ProgressBar
           progress={data.scannedPrc / 100}
           width={330}
-          scannedValue={data.scannedPrc}
         />
       </div>
     </>
@@ -79,8 +78,10 @@ function generateTooltipContent(
     content: container,
     arrow: false,
     theme: 'light-border',
-    trigger: 'mouseenter',
-    placement: 'auto',
+    trigger: window.innerWidth < 768 ? 'click' : 'mouseenter',
+    hideOnClick: window.innerWidth < 768 ? true : false,  
+    appendTo: document.body,
+    placement: window.innerWidth < 768 ? 'bottom' : 'auto',
     followCursor: true,
   })
 }
@@ -124,7 +125,6 @@ function ZipCodeLevelTooltip(event: any, data: any) {
         <ProgressBar
           progress={data.scannedPrc / 100}
           width={320}
-          scannedValue={data.scannedPrc}
         />
       </div>
     </>
@@ -139,6 +139,7 @@ function ZipCodeLevelTooltip(event: any, data: any) {
     arrow: false,
     theme: 'light-border',
     placement: 'auto',
+    trigger: 'mouseenter',
     followCursor: true,
   })
 }

@@ -1,20 +1,23 @@
-import React from 'react'
+import React, { useRef, useEffect } from 'react'
 import * as d3 from 'd3'
 import { ProgressBarProps } from '../types'
 import { colorScale } from '../utils'
 
-const ProgressBar = ({
-  progress,
-  width,
-  scannedValue,
-}: ProgressBarProps) => {
-  React.useEffect(() => {
-    const height = 12
-    let borderRadius = 5
-    const container = d3.select('.progress-bar-container')
-    container.selectAll('.progress-bar-container').remove()
+const ProgressBar = ({ progress, width }: ProgressBarProps) => {
+  const containerRef = useRef<HTMLDivElement>(null)
 
-    const svg = container
+  useEffect(() => {
+    if (!containerRef.current) return
+
+    const scannedValue = Math.floor(progress * 100)
+    const height = 12
+    const borderRadius = 5
+
+    // Clear previous SVG content
+    d3.select(containerRef.current).selectAll('svg').remove()
+
+    const svg = d3
+      .select(containerRef.current)
       .append('svg')
       .attr('width', width)
       .attr('height', height)
@@ -23,7 +26,7 @@ const ProgressBar = ({
       .append('rect')
       .attr('width', width)
       .attr('height', height)
-      .attr('fill', Math.floor(scannedValue) === 0 ? '#db3834' : '#e0e0e0')
+      .attr('fill', scannedValue === 0 ? '#db3834' : '#e0e0e0')
       .attr('rx', borderRadius)
       .attr('ry', borderRadius)
 
@@ -31,7 +34,7 @@ const ProgressBar = ({
       .append('rect')
       .attr('width', 0)
       .attr('height', height)
-      .attr('fill', (d) => colorScale(scannedValue))
+      .attr('fill', colorScale(scannedValue))
       .attr('rx', borderRadius)
       .attr('ry', borderRadius)
       .transition()
@@ -46,13 +49,13 @@ const ProgressBar = ({
       .attr('text-anchor', 'middle')
       .attr('fill', '#fff')
       .style('font-weight', 'bold')
-      .text(`${Math.round(progress * 100)}%`)
-  }, [progress])
+      .text(`${scannedValue}%`)
+  }, [progress, width])
 
   return (
     <>
-      <div> Scanned %</div>
-      <div className='progress-bar-container'></div>
+      <div>Scanned %</div>
+      <div ref={containerRef} className='progress-bar-container'></div>
     </>
   )
 }

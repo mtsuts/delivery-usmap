@@ -2,16 +2,22 @@ import React from 'react'
 import StripeColors from './StripeColors'
 
 function ScannedLegendBar() {
-  const lineGradient1 = StripeColors('#db3828', '#B32E2B', '4px', '28px', true)
-  const lineGradient2 = StripeColors('#e43f2f', '#B83126', '5px', '28px', false)
-  const lineGradient3 = StripeColors('#f3b701', '#C99201', '6px', '28px', false)
-  const lineGradient = StripeColors('#82AA2E', '#6A8723', '7px', '28px')
-  const lineGradient4 = StripeColors('#5ca63d', '#4A832F', '7.5px', '28px', false)
-  const lineGradient5 = StripeColors('#0b9d56', '#097A44', '8px', '28px', false)
+  const lineGradient1 = StripeColors('#ffffff', '#db3828', '4px', '28px', true)
+  const lineGradient2 = StripeColors('#ffffff', '#e43f2f', '5px', '28px', false)
+  const lineGradient3 = StripeColors('#ffffff', '#f3b701', '6px', '28px', false)
+  const lineGradient = StripeColors('#ffffff', '#82AA2E', '7px', '28px')
+  const lineGradient4 = StripeColors(
+    '#ffffff',
+    '#5ca63d',
+    '7.5px',
+    '28px',
+    false
+  )
+  const lineGradient5 = StripeColors('#ffffff', '#0b9d56', '8px', '28px', false)
   const lineGradient6 = StripeColors(
-    '#097A44',
-    '#097A44',
-    '0px',
+    '#ffffff',
+    '#ffffff',
+    '9px',
     '12px',
     false,
     true
