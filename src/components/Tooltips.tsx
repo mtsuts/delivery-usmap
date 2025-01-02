@@ -88,7 +88,6 @@ function generateTooltipContent(
 // State level tooltip generator
 function StateLevelTooltip(event: any, d: any, data: any, color: any) {
   const stateName = d.properties.name
-  console.log(data)
   if (!data) return
   return generateTooltipContent(event, data, stateName, color)
 }

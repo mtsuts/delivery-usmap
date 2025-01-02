@@ -22,7 +22,6 @@ const LegendBar = ({
     <div style={{ width: '100%', position: 'relative' }}>
       <div> {title}</div>
       <div style={gradientStyle}></div>
-      <div> Scanned %</div>
     </div>
   )
 }

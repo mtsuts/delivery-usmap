@@ -11,9 +11,6 @@ const ProgressBar = ({
   React.useEffect(() => {
     const height = 12
     let borderRadius = 5
-    console.log(progress)
-    console.log(scannedValue)
-
     const container = d3.select('.progress-bar-container')
     container.selectAll('.progress-bar-container').remove()
 
