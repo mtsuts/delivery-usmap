@@ -62,10 +62,7 @@ function generateTooltipContent(
         </tbody>
       </table>
       <div style={{ marginTop: '10px' }}>
-        <ProgressBar
-          progress={data.scannedPrc / 100}
-          width={330}
-        />
+        <ProgressBar progress={data.scannedPrc / 100} width={330} />
       </div>
     </>
   )
@@ -81,6 +78,7 @@ function generateTooltipContent(
     trigger: window.innerWidth < 768 ? 'click' : 'mouseenter',
     placement: window.innerWidth < 768 ? 'bottom' : 'auto',
     followCursor: true,
+    offset: window.innerWidth < 768 ? [0, 140] : [0, 0],
   })
 }
 
@@ -120,10 +118,7 @@ function ZipCodeLevelTooltip(event: any, data: any) {
         </tbody>
       </table>
       <div style={{ marginTop: '10px' }}>
-        <ProgressBar
-          progress={data.scannedPrc / 100}
-          width={320}
-        />
+        <ProgressBar progress={data.scannedPrc / 100} width={320} />
       </div>
     </>
   )
@@ -139,6 +134,7 @@ function ZipCodeLevelTooltip(event: any, data: any) {
     trigger: window.innerWidth < 768 ? 'click' : 'mouseenter',
     placement: window.innerWidth < 768 ? 'bottom' : 'auto',
     followCursor: true,
+    offset: window.innerWidth < 768 ? [0, 160] : [0, 0],
   })
 }
 
