@@ -56,7 +56,7 @@ const SideBar = ({ data }: SideBarProps) => {
           </div>
         </div>
       </div>
-      <div style={{ display: 'flex', flexDirection: 'row', overflow: 'auto' }}>
+      <div style={{ display: 'flex', flexDirection: 'row', overflow: 'auto', marginBottom: '20px' }}>
         {data.map((d, index) => (
           <div
             key={index}
