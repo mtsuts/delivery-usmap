@@ -1,16 +1,14 @@
-import React from 'react'
 import * as d3 from 'd3'
 import { MapVizProps } from '../types'
 import { MapView } from './MapView'
 import { countyLevelData } from '../data/data'
-import drawTransitArrows from './TransitArrows'
 import { drawZipCodeLevelCircles, drawCountyLevelCircles } from './LevelCircles'
 
 function MapViz({
   mainContainer,
   stateJson,
-  countiesJson,
   data,
+  countiesJson,
   mobileHeight,
   desktopHeight,
   view,
@@ -125,10 +123,6 @@ function MapViz({
     } else if (view === 'transit') {
       isClicked = false
       MapView(stateJson.features, g, clicked, view, data)
-      drawTransitArrows(
-        data.filter((d) => d.status === 'in-Transit'),
-        g
-      )
       svg.call(zoom)
     }
   }
