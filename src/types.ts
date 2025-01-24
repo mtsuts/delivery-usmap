@@ -36,6 +36,8 @@ export interface Data {
 export interface AppContextProps {
   data: Data[]
   setData: (data: Data[]) => void
+  stateJson: any
+  countiesJson: any
 }
 
 export interface MapProps {

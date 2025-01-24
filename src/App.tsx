@@ -8,18 +8,10 @@ import mapjson from './data/map.json'
 import { AppContextProps, Data } from './types'
 
 
-// Topojson to geojson
-const stateJson = topojson.feature(
-  mapjson as any,
-  (mapjson as any).objects.states
-)
-const countiesJson = topojson.feature(
-  mapjson as any,
-  (mapjson as any).objects.counties
-)
-
 function App() {
   const { setData } = React.useContext(AppContext) as AppContextProps
+  const { stateJson } = React.useContext(AppContext) as AppContextProps
+  const {countiesJson} = React.useContext(AppContext) as AppContextProps
 
   React.useEffect(() => {
     setData(jsonData)
