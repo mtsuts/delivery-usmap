@@ -1,7 +1,6 @@
 import React from 'react'
 import { SideBarProps } from '../types'
 import LegendBar from './Legend'
-import ScannedLegendBar from './ScannedLegendBar'
 
 const SideBar = ({ data }: SideBarProps) => {
   const [isMobile, setIsMobile] = React.useState(false)

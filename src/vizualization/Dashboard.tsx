@@ -4,16 +4,20 @@ import SideBar from '../components/SideBar'
 import stateView from '../images/stateView.png'
 import countiesViewImage from '../images/countiesView.png'
 import zipCodeViewImage from '../images/zipCodeViews.png'
-import transitViewImage from '../images/TransitView.png'
 import MapViz from './MapViz'
-import { MapProps, Data } from '../types'
+import { MapProps, AppContextProps } from '../types'
 import ZoomButtons from '../components/ZoomButtons'
 
-function UsMap(params: MapProps) {
+function Dashboard(params: MapProps) {
+  // State for view
   const [view, setView] = React.useState<
     'states' | 'counties' | 'zipcodes' | 'transit'
   >('states')
-  const { data, setData } = React.useContext(AppContext) as Data
+
+  // Get data from context
+  const { data } = React.useContext(AppContext) as AppContextProps
+
+  // Check if mobile
   const isMobile = window.innerWidth < 768
 
   const map = React.useRef(null)
@@ -45,15 +49,6 @@ function UsMap(params: MapProps) {
       },
       isActive: view === 'zipcodes',
     },
-    {
-      label: 'Transit View',
-      imageSrc: transitViewImage,
-      position: 250,
-      onClick: () => {
-        setView('transit')
-      },
-      isActive: view === 'transit',
-    },
   ]
 
   React.useEffect(() => {
@@ -77,7 +72,39 @@ function UsMap(params: MapProps) {
     }
   }, [view])
 
-  return !isMobile ? (
+  if (isMobile) {
+    return (
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+        }}
+      >
+        <div
+          style={{
+            flexGrow: 1,
+            marginTop: window.innerHeight > 500 ? '10px' : '0px',
+            position: 'relative',
+          }}
+        >
+          <div
+            style={{ position: 'absolute', width: 40, right: 80, bottom: 20 }}
+          >
+            <ZoomButtons />
+          </div>
+          <div id={params.container}></div>
+        </div>
+
+        <div
+          style={{ marginBottom: window.innerHeight > 500 ? '0px' : '20px' }}
+        >
+          <SideBar data={sideBarData} />
+        </div>
+      </div>
+    )
+  }
+
+  return (
     <div
       style={{
         display: 'flex',
@@ -98,31 +125,7 @@ function UsMap(params: MapProps) {
         </div>
       </div>
     </div>
-  ) : (
-    <div
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-      }}
-    >
-      <div
-        style={{
-          flexGrow: 1,
-          marginTop: window.innerHeight > 500 ? '10px' : '0px',
-          position: 'relative',
-        }}
-      >
-        <div style={{ position: 'absolute', width: 40, right: 80, bottom: 20 }}>
-          <ZoomButtons />
-        </div>
-        <div id={params.container}></div>
-      </div>
-
-      <div style={{ marginBottom: window.innerHeight > 500 ? '0px' : '20px' }}>
-        <SideBar data={sideBarData} />
-      </div>
-    </div>
   )
 }
 
-export default UsMap
+export default Dashboard

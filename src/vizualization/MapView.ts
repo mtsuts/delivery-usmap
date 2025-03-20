@@ -109,6 +109,7 @@ function MapView(
       d3.select(this).attr('stroke', '#fff')
     })
 
+  // Handle click event on state path
   pathGroup
     .on('click', (event: any, d: any) => {
       isClicked = true
@@ -155,6 +156,7 @@ function MapView(
       }
     })
 
+  // Draw state labels
   pathGroup
     .append('text')
     .attr('class', 'path-label')
