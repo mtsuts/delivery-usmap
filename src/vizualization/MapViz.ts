@@ -86,7 +86,7 @@ function MapViz({
   }
 
   // Draw map, based on view
-  function updateView(view: 'states' | 'counties') {
+  function updateView(view: 'states' | 'counties' | 'zipcodes' | 'transit') {
     if (view === 'states') {
       MapView(stateJson.features, g, clicked, view, data)
       drawCountyLevelCircles(
@@ -201,9 +201,9 @@ function MapViz({
   // Zoom reset
   d3.select('#zoom_reset').on('click', reset)
 
+  let viewUpdate = false
   // Zoom buttons actions
   d3.select('#zoom_in').on('click', () => {
-    svg.call(zoom)
     if (eventAction && dm) {
       zoomToCounty(eventAction, dm)
     }
@@ -212,7 +212,7 @@ function MapViz({
         currentZoom = currentZoom + zoomDiff
       }
       svg.transition().duration(600).call(zoom.scaleTo, currentZoom)
-    } else if (currentZoom > 2 && currentZoom < 10) {
+    } else if (currentZoom > 2 && currentZoom <= 10) {
       svg.transition().duration(600).call(zoom.scaleTo, 10)
       drawZipCodeLevelCircles(
         data.filter((d: any) => d.id === stateId),
@@ -220,6 +220,12 @@ function MapViz({
         true,
         data
       )
+      viewUpdate = true
+    }
+    if (!viewUpdate) {
+      g.selectAll('circle').attr('r', function (d: any) {
+        return +d3.select(this).attr('r') / Math.sqrt(currentZoom)
+      })
     }
   })
 
@@ -255,6 +261,7 @@ function MapViz({
         true,
         view
       )
+      viewUpdate = true
     }
     if (currentZoom > 2 && currentZoom < 10) {
       reset()
@@ -271,6 +278,13 @@ function MapViz({
         true,
         view
       )
+      viewUpdate = true
+    }
+
+    if (!viewUpdate) {
+      g.selectAll('circle').attr('r', function (d: any) {
+        return +d3.select(this).attr('r') * Math.sqrt(currentZoom)
+      })
     }
   })
 
