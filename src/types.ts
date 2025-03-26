@@ -30,7 +30,7 @@ export interface Data {
   deliveryPrc: number
   transitPrc: number
   delivery_speed: number
-  countyId?: string
+  countyId?: string, 
 }
 
 export interface AppContextProps {
