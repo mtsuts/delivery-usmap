@@ -191,9 +191,9 @@ function MapViz({
       )
   }
 
-  let previousZoom = 1 // Initial zoom level
-  const minRadius = 2 // Minimum radius limit
-  const maxRadius = 20 // Maximum radius limit
+  let previousZoom = 1 
+  const minRadius = 2 
+  const maxRadius = 20 
 
   function zoomed(event: any) {
     g.attr('transform', event.transform).on('wheel', null)
@@ -206,12 +206,10 @@ function MapViz({
     // Apply scaling gradually and limit radius size
     g.selectAll('circle').attr('r', function (d: any) {
       let newRadius = +d3.select(this).attr('r') / scaleFactor
-
       // Ensure the radius stays within the min and max limits
       newRadius = Math.max(minRadius, Math.min(newRadius, maxRadius))
       return newRadius
     })
-
     previousZoom = currentZoom
   }
 
@@ -239,11 +237,7 @@ function MapViz({
       )
       viewUpdate = true
     }
-    if (!viewUpdate) {
-      g.selectAll('circle').attr('r', function (d: any) {
-        return +d3.select(this).attr('r') / Math.sqrt(currentZoom)
-      })
-    }
+
   })
 
   // Zoom out
@@ -298,11 +292,6 @@ function MapViz({
       viewUpdate = true
     }
 
-    if (!viewUpdate) {
-      g.selectAll('circle').attr('r', function (d: any) {
-        return +d3.select(this).attr('r') * Math.sqrt(currentZoom)
-      })
-    }
   })
 
   // Draw initial map
