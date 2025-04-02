@@ -208,6 +208,14 @@ function MapViz({
         newRadius = Math.max(minRadius, Math.min(newRadius, maxRadius))
         return newRadius
       })
+    } else {
+      if (event.sourceEvent) {
+        g.selectAll('circle').attr('r', function (d: any) {
+          let newRadius = +d3.select(this).attr('r') / scaleFactor
+          newRadius = Math.max(minRadius, Math.min(newRadius, maxRadius))
+          return newRadius
+        })
+      }
     }
 
     previousZoom = currentZoom
